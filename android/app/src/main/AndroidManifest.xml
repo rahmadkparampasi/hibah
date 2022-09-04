@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="go.id.simhega.sultengprov.simhega">
+    package="go.id.SimhegaM.sultengprov.SimhegaM">
    <application
-        android:label="simhega"
+        android:label="SimhegaM"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

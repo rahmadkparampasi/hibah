@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = simhega
+PRODUCT_NAME = SimhegaM
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = go.id.simhega.sultengprov.simhega
+PRODUCT_BUNDLE_IDENTIFIER = go.id.SimhegaM.sultengprov.SimhegaM
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2022 go.id.simhega.sultengprov. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2022 go.id.SimhegaM.sultengprov. All rights reserved.

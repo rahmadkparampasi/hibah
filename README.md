@@ -1,4 +1,4 @@
-# simhega
+# SimhegaM
 
 A new Flutter project.
 

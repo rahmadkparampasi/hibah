@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "go.id.simhega.sultengprov" "\0"
-            VALUE "FileDescription", "simhega" "\0"
+            VALUE "CompanyName", "go.id.SimhegaM.sultengprov" "\0"
+            VALUE "FileDescription", "SimhegaM" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "simhega" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 go.id.simhega.sultengprov. All rights reserved." "\0"
-            VALUE "OriginalFilename", "simhega.exe" "\0"
-            VALUE "ProductName", "simhega" "\0"
+            VALUE "InternalName", "SimhegaM" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 go.id.SimhegaM.sultengprov. All rights reserved." "\0"
+            VALUE "OriginalFilename", "SimhegaM.exe" "\0"
+            VALUE "ProductName", "SimhegaM" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

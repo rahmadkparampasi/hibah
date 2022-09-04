@@ -1,4 +1,4 @@
-package go.id.simhega.sultengprov.simhega
+package go.id.SimhegaM.sultengprov.SimhegaM
 
 import io.flutter.embedding.android.FlutterActivity
 
