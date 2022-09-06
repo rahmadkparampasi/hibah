@@ -95,4 +95,22 @@ class HibahService {
       ),
     );
   }
+
+  Future<APIResponseHibah<Hibah>> getHibah(String uslIdEx) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/viewData/$uslIdEx');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseHibah<Hibah>(data: Hibah.fromJson(jsonData));
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseHibah<Hibah>(
+          error: true,
+          errorMessage: 'Terjadi Masalah',
+          data: Hibah.fromJson(jsonData),
+        );
+      }
+    }).catchError((_) => APIResponseHibah<Hibah>(
+        error: true, errorMessage: 'Terjadi Kesalahan'));
+  }
 }

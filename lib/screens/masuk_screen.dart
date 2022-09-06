@@ -170,6 +170,7 @@ class _MasukScreenState extends State<MasukScreen> {
                                   MaterialPageRoute(
                                     builder: (context) => HomeScreen(
                                       token: result.data!.token,
+                                      selectedIndex: 0,
                                     ),
                                   ),
                                 );

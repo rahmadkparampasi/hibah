@@ -1,3 +1,4 @@
+import 'package:SimhegaM/screens/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/api_response.dart';
@@ -7,8 +8,9 @@ import 'package:get_it/get_it.dart';
 
 class ProsesScreen extends StatefulWidget {
   final String token;
+  final int selectedIndex;
 
-  const ProsesScreen({required this.token});
+  const ProsesScreen({required this.token, required this.selectedIndex});
 
   @override
   State<ProsesScreen> createState() => _ProsesScreenState();
@@ -22,6 +24,7 @@ class _ProsesScreenState extends State<ProsesScreen> {
   APIResponseHibah<List<HibahForList>>? _apiResponseHibah;
 
   bool _isLoading = false;
+  int? _selectedIndex;
 
   @override
   void initState() {
@@ -29,6 +32,7 @@ class _ProsesScreenState extends State<ProsesScreen> {
     _fetchHibah();
     setState(() {
       _token = widget.token;
+      _selectedIndex = widget.selectedIndex;
     });
   }
 
@@ -136,10 +140,12 @@ class _ProsesScreenState extends State<ProsesScreen> {
         ),
         Builder(builder: (_) {
           if (_isLoading) {
-            return const SizedBox(
-              height: 40,
-              width: 40,
-              child: CircularProgressIndicator(),
+            return Column(
+              children: const <Widget>[
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ],
             );
           }
           if (_apiResponseHibah!.error) {
@@ -162,8 +168,9 @@ class _ProsesScreenState extends State<ProsesScreen> {
                   confirmDismiss: (direction) async {
                     final result = await showDialog(
                       context: context,
-                      builder: (_) => const ProsesScreen(
-                        token: '',
+                      builder: (_) => ProsesScreen(
+                        token: _token,
+                        selectedIndex: _selectedIndex!,
                       ),
                     );
                     return result;
@@ -195,7 +202,18 @@ class _ProsesScreenState extends State<ProsesScreen> {
                       ),
                       subtitle: Text(
                           '${_apiResponseHibah!.data![index].anggaran} - ${_apiResponseHibah!.data![index].uslHsl}'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DetailScreen(
+                              token: _token,
+                              uslIdEx: _apiResponseHibah!.data![index].uslIdEx,
+                              selectedIndex: _selectedIndex!,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 );

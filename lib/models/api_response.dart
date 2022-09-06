@@ -1,4 +1,3 @@
-import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
 class APIResponseHibah<T> {

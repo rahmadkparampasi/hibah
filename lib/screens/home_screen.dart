@@ -8,14 +8,18 @@ class HomeScreen extends StatefulWidget {
   final int changeOptions;
 
   final String token;
-  const HomeScreen({this.changeOptions = 0, required this.token});
+  final int selectedIndex = 0;
+  const HomeScreen(
+      {this.changeOptions = 0,
+      required this.token,
+      required int selectedIndex});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int? _selectedIndex;
   late String _token;
 
   void _onItemTapped(int index) {
@@ -34,8 +38,12 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     setState(() {
       _token = widget.token;
+      _selectedIndex = widget.selectedIndex;
       options = [
-        ProsesScreen(token: _token),
+        ProsesScreen(
+          token: _token,
+          selectedIndex: _selectedIndex!,
+        ),
         SelesaiScreen(token: _token),
       ];
     });
@@ -49,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         bottomNavigationBar: Container(
-          height: 100,
+          height: 80,
           decoration: BoxDecoration(
             color: mFillColor,
             boxShadow: [
@@ -91,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: 'Telah Selesai',
               ),
             ],
-            currentIndex: _selectedIndex,
+            currentIndex: _selectedIndex!,
             selectedItemColor: mBlueColor,
             onTap: _onItemTapped,
             backgroundColor: Colors.transparent,
@@ -102,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Row(
           children: <Widget>[
-            Expanded(child: options.elementAt(_selectedIndex)),
+            Expanded(child: options.elementAt(_selectedIndex!)),
           ],
         ),
       );

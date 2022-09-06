@@ -1,10 +1,12 @@
 class HibahForList {
+  String uslIdEx;
   String orgNama;
   String anggaran;
   String uslHsl;
   String uslNm;
   int no;
   HibahForList({
+    required this.uslIdEx,
     required this.orgNama,
     required this.anggaran,
     required this.uslHsl,
@@ -13,11 +15,33 @@ class HibahForList {
   });
   factory HibahForList.fromJson(Map<String, dynamic> item) {
     return HibahForList(
+      uslIdEx: item['usl_id_ex'],
       orgNama: item['org_nm'],
       anggaran: item['anggaran'],
       uslHsl: item['usl_hsl'],
       no: item['no'],
       uslNm: item['usl_nm'],
+    );
+  }
+}
+
+class Hibah {
+  String uslIdEx;
+  String uslNm;
+  String uslLb;
+  String uslTtp;
+  Hibah({
+    required this.uslIdEx,
+    required this.uslNm,
+    required this.uslLb,
+    required this.uslTtp,
+  });
+  factory Hibah.fromJson(Map<String, dynamic> item) {
+    return Hibah(
+      uslIdEx: item['usl_id_ex'],
+      uslNm: item['usl_nm'],
+      uslLb: item['usl_lb'],
+      uslTtp: item['usl_ttp'],
     );
   }
 }

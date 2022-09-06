@@ -15,7 +15,7 @@ class SelesaiScreen extends StatefulWidget {
 }
 
 class _SelesaiScreenState extends State<SelesaiScreen> {
-  late String _token;
+  String? _token;
 
   HibahService get service => GetIt.I<HibahService>();
 
