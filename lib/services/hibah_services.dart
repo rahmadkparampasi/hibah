@@ -113,4 +113,24 @@ class HibahService {
     }).catchError((_) => APIResponseHibah<Hibah>(
         error: true, errorMessage: 'Terjadi Kesalahan'));
   }
+
+  Future<APIResponseOrganisasi<Organisasi>> getOrganisasi(String orgIdEx) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/viewOrg/$orgIdEx');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseOrganisasi<Organisasi>(
+          data: Organisasi.fromJson(jsonData),
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseOrganisasi<Organisasi>(
+          error: true,
+          errorMessage: 'Terjadi Kesalahan',
+          data: Organisasi.fromJson(jsonData),
+        );
+      }
+    }).catchError((_) => APIResponseOrganisasi<Organisasi>(
+        error: true, errorMessage: 'Terjadi Kesalahan'));
+  }
 }

@@ -13,6 +13,19 @@ class APIResponseHibah<T> {
   });
 }
 
+class APIResponseOrganisasi<T> {
+  T? data;
+  bool error;
+  String? errorMessage;
+  int? status;
+  APIResponseOrganisasi({
+    this.data,
+    this.error = false,
+    this.errorMessage,
+    this.status = 500,
+  });
+}
+
 class APIResponseMasuk<T> {
   T? data;
   bool error;

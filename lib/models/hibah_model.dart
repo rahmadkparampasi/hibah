@@ -30,18 +30,60 @@ class Hibah {
   String uslNm;
   String uslLb;
   String uslTtp;
-  Hibah({
-    required this.uslIdEx,
-    required this.uslNm,
-    required this.uslLb,
-    required this.uslTtp,
-  });
+  String uslOrg;
+
+  Hibah(
+      {required this.uslIdEx,
+      required this.uslNm,
+      required this.uslLb,
+      required this.uslTtp,
+      required this.uslOrg});
   factory Hibah.fromJson(Map<String, dynamic> item) {
     return Hibah(
       uslIdEx: item['usl_id_ex'],
       uslNm: item['usl_nm'],
       uslLb: item['usl_lb'],
       uslTtp: item['usl_ttp'],
+      uslOrg: item['usl_org'],
+    );
+  }
+}
+
+class Organisasi {
+  String orgIdEx;
+  String riNm;
+  String orgNm;
+  String orgAlt;
+  String orgMail;
+  String orgNpwp;
+  String orgHp;
+  String orgAkt;
+  String orgTgl;
+  String orgRek;
+
+  Organisasi(
+      {required this.orgIdEx,
+      required this.riNm,
+      required this.orgNm,
+      required this.orgAlt,
+      required this.orgMail,
+      required this.orgNpwp,
+      required this.orgHp,
+      required this.orgAkt,
+      required this.orgTgl,
+      required this.orgRek});
+  factory Organisasi.fromJson(Map<String, dynamic> item) {
+    return Organisasi(
+      orgIdEx: item['org_id_ex'],
+      riNm: item['ri_nm'],
+      orgNm: item['org_nm'],
+      orgAlt: item['alamat'],
+      orgMail: item['org_mail'],
+      orgNpwp: item['org_npwp'],
+      orgHp: item['org_hp'],
+      orgAkt: item['org_akt'],
+      orgTgl: item['org_tgl'],
+      orgRek: item['org_rek'],
     );
   }
 }
