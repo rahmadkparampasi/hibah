@@ -102,7 +102,7 @@ class _DetailScreenState extends State<DetailScreen> {
             )
           : options.elementAt(_selectedIndexD),
       bottomNavigationBar: Container(
-        height: 60,
+        height: 80,
         decoration: BoxDecoration(
           color: mFillColor,
           boxShadow: [
