@@ -26,6 +26,19 @@ class APIResponseOrganisasi<T> {
   });
 }
 
+class APIResponsePengOrganisasi<T> {
+  T? data;
+  bool error;
+  String? errorMessage;
+  int? status;
+  APIResponsePengOrganisasi({
+    this.data,
+    this.error = false,
+    this.errorMessage,
+    this.status = 500,
+  });
+}
+
 class APIResponseMasuk<T> {
   T? data;
   bool error;

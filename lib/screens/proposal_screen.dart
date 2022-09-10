@@ -1,3 +1,4 @@
+import 'package:SimhegaM/screens/items/sp_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
@@ -22,41 +23,35 @@ class ProposalScreen extends StatelessWidget {
           ),
           child: Column(
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Latar Belakang',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    decoration: TextDecoration.none,
-                    fontWeight: FontWeight.bold,
+              Container(
+                child: ListTile(
+                  minLeadingWidth: 0,
+                  leading: const SizedBox(
+                    height: double.infinity,
+                    child: SPIcon(assetName: 'story.png'),
                   ),
+                  title: const Text(
+                    'Latar Belakang',
+                    style: TextStyle(color: Colors.black54, fontSize: 15),
+                  ),
+                  subtitle: Html(data: uslLb),
                 ),
               ),
-              const SizedBox(
-                height: 1,
-              ),
-              Html(data: uslLb),
-              const SizedBox(
-                height: 5,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Text(
-                  'Penutup',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black,
-                    decoration: TextDecoration.none,
-                    fontWeight: FontWeight.bold,
+              Divider(),
+              Container(
+                child: ListTile(
+                  minLeadingWidth: 0,
+                  leading: const SizedBox(
+                    height: double.infinity,
+                    child: SPIcon(assetName: 'check.png'),
                   ),
+                  title: const Text(
+                    'Penutup',
+                    style: TextStyle(color: Colors.black54, fontSize: 15),
+                  ),
+                  subtitle: Html(data: uslTtp),
                 ),
               ),
-              const SizedBox(
-                height: 0.5,
-              ),
-              Html(data: uslTtp),
             ],
           ),
         ),

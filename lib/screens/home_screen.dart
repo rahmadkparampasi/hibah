@@ -44,7 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
           token: _token,
           selectedIndex: _selectedIndex!,
         ),
-        SelesaiScreen(token: _token),
+        SelesaiScreen(
+          token: _token,
+          selectedIndex: _selectedIndex!,
+        ),
       ];
     });
     if (widget.changeOptions != 0) {

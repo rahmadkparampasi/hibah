@@ -4,15 +4,17 @@ class HibahForList {
   String anggaran;
   String uslHsl;
   String uslNm;
+  String uslOrg;
+
   int no;
-  HibahForList({
-    required this.uslIdEx,
-    required this.orgNama,
-    required this.anggaran,
-    required this.uslHsl,
-    required this.no,
-    required this.uslNm,
-  });
+  HibahForList(
+      {required this.uslIdEx,
+      required this.orgNama,
+      required this.anggaran,
+      required this.uslHsl,
+      required this.no,
+      required this.uslNm,
+      required this.uslOrg});
   factory HibahForList.fromJson(Map<String, dynamic> item) {
     return HibahForList(
       uslIdEx: item['usl_id_ex'],
@@ -21,6 +23,7 @@ class HibahForList {
       uslHsl: item['usl_hsl'],
       no: item['no'],
       uslNm: item['usl_nm'],
+      uslOrg: item['usl_org'],
     );
   }
 }
@@ -84,6 +87,28 @@ class Organisasi {
       orgAkt: item['org_akt'],
       orgTgl: item['org_tgl'],
       orgRek: item['org_rek'],
+    );
+  }
+}
+
+class PengOrganisasiForList {
+  String pengIdEx;
+  String pengNm;
+  String pengJk;
+
+  int no;
+  PengOrganisasiForList({
+    required this.pengIdEx,
+    required this.pengNm,
+    required this.pengJk,
+    required this.no,
+  });
+  factory PengOrganisasiForList.fromJson(Map<String, dynamic> item) {
+    return PengOrganisasiForList(
+      pengIdEx: item['peng_id_ex'],
+      pengNm: item['peng_nm'],
+      pengJk: item['peng_jkAlt'],
+      no: item['no'],
     );
   }
 }

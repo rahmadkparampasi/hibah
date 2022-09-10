@@ -1,3 +1,4 @@
+import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/api_response.dart';
@@ -7,8 +8,9 @@ import 'package:get_it/get_it.dart';
 
 class SelesaiScreen extends StatefulWidget {
   final String token;
+  final int selectedIndex;
 
-  const SelesaiScreen({required this.token});
+  const SelesaiScreen({required this.token, required this.selectedIndex});
 
   @override
   State<SelesaiScreen> createState() => _SelesaiScreenState();
@@ -20,8 +22,11 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
   HibahService get service => GetIt.I<HibahService>();
 
   APIResponseHibah<List<HibahForList>>? _apiResponseHibah;
+  int? _selectedIndex;
 
   bool _isLoading = false;
+
+  String errorMessage = 'Terjadi Masalah, Silahkan Muat Kembali';
 
   @override
   void initState() {
@@ -29,6 +34,8 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
     _fetchHibah();
     setState(() {
       _token = widget.token;
+      _selectedIndex = widget.selectedIndex;
+      _isLoading = false;
     });
   }
 
@@ -39,6 +46,9 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
     _apiResponseHibah = await service.getHibahSlsListPage();
     setState(() {
       _isLoading = false;
+      if (_apiResponseHibah!.error) {
+        errorMessage = _apiResponseHibah!.errorMessage!;
+      }
     });
   }
 
@@ -136,15 +146,40 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
         ),
         Builder(builder: (_) {
           if (_isLoading) {
-            return const SizedBox(
-              height: 40,
-              width: 40,
-              child: CircularProgressIndicator(),
+            return Column(
+              children: const <Widget>[
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                ),
+              ],
             );
           }
-          if (_apiResponseHibah!.error) {
+          if (_apiResponseHibah == null) {
             return Center(
-              child: Text(_apiResponseHibah!.errorMessage!),
+              child: Column(
+                children: <Widget>[
+                  Text(errorMessage),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(
+                            token: _token!,
+                            selectedIndex: _selectedIndex!,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Muat Kembali',
+                    ),
+                  ),
+                ],
+              ),
             );
           }
           if (_apiResponseHibah == null) {
@@ -167,8 +202,9 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
                   confirmDismiss: (direction) async {
                     final result = await showDialog(
                       context: context,
-                      builder: (_) => const SelesaiScreen(
-                        token: '',
+                      builder: (_) => SelesaiScreen(
+                        token: _token!,
+                        selectedIndex: _selectedIndex!,
                       ),
                     );
                     return result;

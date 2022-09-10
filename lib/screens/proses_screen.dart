@@ -1,4 +1,5 @@
 import 'package:SimhegaM/screens/detail_screen.dart';
+import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/api_response.dart';
@@ -26,6 +27,8 @@ class _ProsesScreenState extends State<ProsesScreen> {
   bool _isLoading = false;
   int? _selectedIndex;
 
+  String errorMessage = 'Terjadi Masalah, Silahkan Muat Kembali';
+
   @override
   void initState() {
     super.initState();
@@ -33,6 +36,7 @@ class _ProsesScreenState extends State<ProsesScreen> {
     setState(() {
       _token = widget.token;
       _selectedIndex = widget.selectedIndex;
+      _isLoading = false;
     });
   }
 
@@ -42,7 +46,12 @@ class _ProsesScreenState extends State<ProsesScreen> {
     });
     _apiResponseHibah = await service.getHibahListPage();
     setState(() {
-      _isLoading = false;
+      if (_apiResponseHibah!.error) {
+        _isLoading = false;
+        errorMessage = _apiResponseHibah!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
     });
   }
 
@@ -148,9 +157,32 @@ class _ProsesScreenState extends State<ProsesScreen> {
               ],
             );
           }
-          if (_apiResponseHibah!.error) {
+          if (_apiResponseHibah == null) {
             return Center(
-              child: Text(_apiResponseHibah!.errorMessage!),
+              child: Column(
+                children: <Widget>[
+                  Text(errorMessage),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(
+                            token: _token,
+                            selectedIndex: _selectedIndex!,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text(
+                      'Muat Kembali',
+                    ),
+                  ),
+                ],
+              ),
             );
           }
           return ListView.separated(
@@ -209,6 +241,7 @@ class _ProsesScreenState extends State<ProsesScreen> {
                             builder: (context) => DetailScreen(
                               token: _token,
                               uslIdEx: _apiResponseHibah!.data![index].uslIdEx,
+                              orgIdEx: _apiResponseHibah!.data![index].uslOrg,
                               selectedIndex: _selectedIndex!,
                             ),
                           ),

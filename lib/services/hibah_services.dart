@@ -1,5 +1,3 @@
-// ignore_for_file: invalid_return_type_for_catch_error
-
 import 'dart:convert';
 
 import 'package:SimhegaM/constants/var_constant.dart';
@@ -62,7 +60,7 @@ class HibahService {
     }).catchError(
       (_) => APIResponseHibah<HibahForList>(
         error: true,
-        errorMessage: 'Terjadi Kesalahan',
+        errorMessage: 'Terjadi Kesalahan, Silahkan Muat Kembali',
         status: 500,
       ),
     );
@@ -132,5 +130,36 @@ class HibahService {
       }
     }).catchError((_) => APIResponseOrganisasi<Organisasi>(
         error: true, errorMessage: 'Terjadi Kesalahan'));
+  }
+
+  Future<APIResponsePengOrganisasi<List<PengOrganisasiForList>>>
+      getPengOrganisasiList(String pengOrg) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/viewPengOrg/$pengOrg');
+
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final pengOrganisasiList = <PengOrganisasiForList>[];
+        for (var item in jsonData) {
+          pengOrganisasiList.add(PengOrganisasiForList.fromJson(item));
+        }
+        return APIResponsePengOrganisasi<List<PengOrganisasiForList>>(
+            data: pengOrganisasiList);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final pengOrganisasiList = <PengOrganisasiForList>[];
+        for (var item in jsonData) {
+          pengOrganisasiList.add(PengOrganisasiForList.fromJson(item));
+        }
+        return APIResponsePengOrganisasi<List<PengOrganisasiForList>>(
+            data: pengOrganisasiList);
+      }
+    }).catchError(
+      (_) => APIResponsePengOrganisasi<PengOrganisasiForList>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
   }
 }

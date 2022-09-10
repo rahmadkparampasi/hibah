@@ -1,26 +1,24 @@
 import 'package:SimhegaM/constants/style_constant.dart';
+import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/home_screen.dart';
+import 'package:SimhegaM/screens/items/detail_items.dart';
+import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailOScreen extends StatefulWidget {
   final String token;
-  final String uslIdEx;
-
-  final Organisasi organisasi;
-  final Hibah hibah;
+  final String orgIdEx;
 
   final int selectedIndex;
   const DetailOScreen({
     Key? key,
     required this.token,
-    required this.uslIdEx,
-    this.selectedIndex = 0,
-    required this.organisasi,
-    required this.hibah,
+    required this.orgIdEx,
+    required this.selectedIndex,
   }) : super(key: key);
 
   @override
@@ -29,11 +27,13 @@ class DetailOScreen extends StatefulWidget {
 
 class _DetailOScreenState extends State<DetailOScreen> {
   late String _token;
-  String? _uslIdEx;
+  String? _orgIdEx;
   bool _isLoading = false;
+  HibahService get service => GetIt.I<HibahService>();
 
   Organisasi? organisasi;
-  Hibah? hibah;
+
+  APIResponsePengOrganisasi<List<PengOrganisasiForList>>? pengOrganisasi;
 
   int? _selectedIndex;
 
@@ -43,318 +43,258 @@ class _DetailOScreenState extends State<DetailOScreen> {
 
     setState(() {
       _token = widget.token;
-      _uslIdEx = widget.uslIdEx;
-      // _isLoading = true;
+      _orgIdEx = widget.orgIdEx;
+      _isLoading = true;
       _selectedIndex = widget.selectedIndex;
-      organisasi = widget.organisasi;
-      hibah = widget.hibah;
+    });
+    if (_orgIdEx != null) {
+      service.getOrganisasi(_orgIdEx!).then((value) {
+        setState(() {
+          organisasi = value.data;
+          _isLoading = false;
+        });
+        if (organisasi != null) {
+          _fetchPengOrg(_orgIdEx!);
+        }
+      });
+    }
+  }
+
+  _fetchPengOrg(String orgIdEx) async {
+    setState(() {
+      _isLoading = true;
+    });
+    pengOrganisasi = await service.getPengOrganisasiList(orgIdEx);
+    setState(() {
+      _isLoading = false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
+    const double topContainerHeight = 190;
     return _isLoading
         ? const Center(
             child: CircularProgressIndicator(
               color: Colors.blue,
             ),
           )
-        : ListView(
-            children: <Widget>[
-              Stack(
-                children: <Widget>[
-                  Container(
-                    height: height * 0.25,
-                    width: width,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/def_head_1.png"),
-                          fit: BoxFit.cover),
-                    ),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                            colors: [
-                              Colors.blue.withOpacity(1.0),
-                              Colors.blue.withOpacity(0.5),
-                              Colors.blue.withOpacity(0.1),
-                              Colors.blue.withOpacity(0.5),
-                              Colors.blue.withOpacity(1.0),
-                            ],
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomLeft),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 0.0,
-                    right: 0.0,
-                    left: 0.0,
-                    top: 50.0,
-                    child: Column(
-                      children: <Widget>[
-                        const Image(
-                            image: AssetImage("assets/images/favicon.png"),
-                            height: 50),
-                        RichText(
-                          text: const TextSpan(
-                            text: 'SI-MHEGA',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black,
-                                  blurRadius: 10.0,
-                                  offset: Offset.zero,
-                                )
-                              ],
+        : ListView(children: <Widget>[
+            Column(
+              children: <Widget>[
+                Container(
+                  height: topContainerHeight,
+                  child: Stack(
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            height: topContainerHeight * .58,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                image:
+                                    AssetImage("assets/images/def_head_1.png"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Colors.blue.withOpacity(1.0),
+                                      Colors.blue.withOpacity(0.5),
+                                      Colors.blue.withOpacity(0.1),
+                                      Colors.blue.withOpacity(0.5),
+                                      Colors.blue.withOpacity(1.0),
+                                    ],
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft),
+                              ),
                             ),
                           ),
-                        ),
-                        RichText(
-                          text: TextSpan(
-                            text: hibah!.uslNm,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              shadows: [
-                                Shadow(
-                                  color: Colors.black,
-                                  blurRadius: 10.0,
-                                  offset: Offset.zero,
-                                )
-                              ],
-                            ),
+                          Container(
+                            height: topContainerHeight * .42,
+                            color: Colors.white,
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    top: 10.0,
-                    left: 10.0,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                              token: _token,
-                              selectedIndex: _selectedIndex!,
-                            ),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.transparent,
-                        shadowColor: Colors.transparent.withOpacity(0.1),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back,
-                        shadows: [
-                          BoxShadow(
-                              color: Colors.black,
-                              offset: Offset(0.0, 0.0),
-                              blurRadius: 10.0)
                         ],
                       ),
-                    ),
-                  )
-                ],
-              ),
-              Transform.translate(
-                offset: Offset(0.5, -(height * 0.3 - height * 0.28)),
-                child: Container(
-                  width: width,
-                  padding: const EdgeInsets.only(top: 10),
-                  decoration: const BoxDecoration(
-                    color: mBackgroundColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15),
-                      topRight: Radius.circular(15),
-                    ),
-                  ),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                      right: 30,
-                      left: 30,
-                      bottom: 20,
-                    ),
-                    decoration: const BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: Colors.black12,
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(
-                          height: 8,
-                        ),
-                        Text(
-                          organisasi!.orgNm,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 26,
+                      Positioned(
+                        bottom: 0.0,
+                        left: 145.0,
+                        top: 20.0,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width - 145,
+                          child: Center(
+                            child: Column(
+                              children: <Widget>[
+                                const Image(
+                                  image:
+                                      AssetImage("assets/images/favicon.png"),
+                                  height: 40,
+                                ),
+                                RichText(
+                                  text: const TextSpan(
+                                    text: 'SI-MHEGA',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      shadows: [
+                                        Shadow(
+                                          color: Colors.black,
+                                          blurRadius: 10.0,
+                                          offset: Offset.zero,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Text(
-                          organisasi!.riNm,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.black54,
+                      ),
+                      Positioned(
+                        bottom: 20,
+                        left: 20,
+                        child: Container(
+                          height: 132,
+                          width: 132,
+                          child: Card(
+                            child: Container(
+                              padding: const EdgeInsets.all(5),
+                              child: Image.asset(
+                                'assets/images/def_head_1.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 16,
+                      ),
+                      Positioned(
+                        bottom: 22,
+                        left: 180,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            textStyle: MaterialStateProperty.all(
+                              const TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                          onPressed: () async {
+                            final Uri launcUri =
+                                Uri(scheme: 'tel', path: organisasi!.orgHp);
+                            if (await canLaunchUrl(launcUri)) {
+                              await launchUrl(launcUri);
+                            }
+                          },
+                          child: Container(
+                            height: 45,
+                            child: Center(
+                              child: Row(
+                                children: const <Widget>[
+                                  Icon(Icons.phone),
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                  Text('TELEPON'),
+                                ],
+                              ),
+                            ),
+                          ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            buildSocialIcon(
-                              FontAwesomeIcons.phone,
-                              'tel',
-                              organisasi!.orgHp,
+                      ),
+                      Positioned(
+                        bottom: 22,
+                        left: 310,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            textStyle: MaterialStateProperty.all(
+                              const TextStyle(
+                                fontSize: 13.5,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
-                            const SizedBox(
-                              width: 12,
+                          ),
+                          onPressed: () async {
+                            final Uri launcUri =
+                                Uri(scheme: 'sms', path: organisasi!.orgHp);
+                            if (await canLaunchUrl(launcUri)) {
+                              await launchUrl(launcUri);
+                            }
+                          },
+                          child: Container(
+                            height: 45,
+                            child: Center(
+                              child: Row(
+                                children: const <Widget>[
+                                  Icon(Icons.mail_outlined),
+                                  SizedBox(
+                                    width: 2,
+                                  ),
+                                  Text('SMS'),
+                                ],
+                              ),
                             ),
-                            buildSocialIcon(
-                              FontAwesomeIcons.message,
-                              'sms',
-                              organisasi!.orgHp,
-                            ),
-                          ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                padding: const EdgeInsets.only(left: 15, right: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    const Text(
-                      'Akta Notaris',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      organisasi!.orgAkt,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Tanggal Terbentuk',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      organisasi!.orgTgl,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Alamat',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      organisasi!.orgAlt,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Telepon',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      organisasi!.orgHp,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Email',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      organisasi!.orgMail,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Rekening',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: Colors.black54,
-                      ),
-                    ),
-                    Text(
-                      organisasi!.orgRek,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ],
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-            ],
-          );
-  }
-
-  Widget buildSocialIcon(IconData icon, String scheme, String to) =>
-      CircleAvatar(
-        backgroundColor: Colors.blue,
-        radius: 25,
-        child: Material(
-          shape: const CircleBorder(),
-          clipBehavior: Clip.hardEdge,
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () async {
-              final Uri launcUri = Uri(scheme: scheme, path: to);
-              if (await canLaunchUrl(launcUri)) {
-                await launchUrl(launcUri);
-              }
-            },
-            child: Center(
-              child: Icon(
-                icon,
-                size: 25,
-                color: Colors.white,
-              ),
+                Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: <Widget>[
+                      DetailItem(
+                        icon: "site.png",
+                        title: 'Organisasi',
+                        subtitle: '${organisasi!.riNm} - ${organisasi!.orgNm}',
+                        isLast: false,
+                      ),
+                      DetailItem(
+                        icon: "lawBook.png",
+                        title: 'Akta Notaris',
+                        subtitle: organisasi!.orgAkt,
+                        isLast: false,
+                      ),
+                      DetailItem(
+                        icon: "date.png",
+                        title: 'Tanggal Terbentuk',
+                        subtitle: organisasi!.orgTgl,
+                        isLast: false,
+                      ),
+                      DetailItem(
+                        icon: "place.png",
+                        title: 'Alamat',
+                        subtitle: organisasi!.orgAlt,
+                        isLast: false,
+                      ),
+                      DetailItem(
+                        icon: "contact.png",
+                        title: 'Kontak',
+                        subtitle: '${organisasi!.orgHp}/${organisasi!.orgMail}',
+                        isLast: false,
+                      ),
+                      DetailItem(
+                        icon: "wallet.png",
+                        title: 'Rekening',
+                        subtitle: organisasi!.orgRek,
+                        isLast: true,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                )
+              ],
             ),
-          ),
-        ),
-      );
+          ]);
+  }
 }
