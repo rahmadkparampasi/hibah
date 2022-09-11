@@ -2,9 +2,17 @@ PODS:
   - camera_avfoundation (0.0.1):
     - Flutter
   - Flutter (1.0.0)
+  - flutter_pdfview (1.0.2):
+    - Flutter
+  - gallery_saver (0.0.1):
+    - Flutter
+  - image_downloader (0.0.1):
+    - Flutter
   - image_picker_ios (0.0.1):
     - Flutter
   - path_provider_ios (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.0.4):
     - Flutter
   - url_launcher_ios (0.0.1):
     - Flutter
@@ -18,8 +26,12 @@ PODS:
 DEPENDENCIES:
   - camera_avfoundation (from `.symlinks/plugins/camera_avfoundation/ios`)
   - Flutter (from `Flutter`)
+  - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
+  - gallery_saver (from `.symlinks/plugins/gallery_saver/ios`)
+  - image_downloader (from `.symlinks/plugins/image_downloader/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
@@ -30,10 +42,18 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/camera_avfoundation/ios"
   Flutter:
     :path: Flutter
+  flutter_pdfview:
+    :path: ".symlinks/plugins/flutter_pdfview/ios"
+  gallery_saver:
+    :path: ".symlinks/plugins/gallery_saver/ios"
+  image_downloader:
+    :path: ".symlinks/plugins/image_downloader/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
   video_player_avfoundation:
@@ -46,8 +66,12 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   camera_avfoundation: 07c77549ea54ad95d8581be86617c094a46280d9
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_pdfview: 25f53dd6097661e6395b17de506e6060585946bd
+  gallery_saver: 9fc173c9f4fcc48af53b2a9ebea1b643255be542
+  image_downloader: 73e190d6c9f286f2649554051348d9cb319cd4b3
   image_picker_ios: b786a5dcf033a8336a657191401bfdf12017dabb
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
   video_player_avfoundation: e489aac24ef5cf7af82702979ed16f2a5ef84cff
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f

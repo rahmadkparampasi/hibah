@@ -1,6 +1,7 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/detail_items.dart';
+import 'package:SimhegaM/screens/items/preimg_items.dart';
 import 'package:flutter/material.dart';
 
 class PengDt extends StatefulWidget {
@@ -32,7 +33,8 @@ class _PengDtState extends State<PengDt> {
       'No. KTP',
       'Jenis Kelamin',
       'Kontak',
-      'Foto'
+      'Foto',
+      'KTP'
     ];
     return DataTable(
         columns: getColumns(columns), rows: getRows(_pengOrganisasi));
@@ -58,8 +60,44 @@ class _PengDtState extends State<PengDt> {
             text: user.pengHp,
           ),
           ButtonDTP(
-            img: user.pengPic,
-            name: 'Foto ${user.pengNm}',
+            child: IconButton(
+              iconSize: 20,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PreImg(
+                      name: 'Foto ${user.pengNm}',
+                      img: user.pengPic,
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          ButtonDTP(
+            child: IconButton(
+              iconSize: 20,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PreImg(
+                      name: 'Foto KTP ${user.pengNm}',
+                      img: user.pengPicKtp,
+                    ),
+                  ),
+                );
+              },
+              icon: const Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+              ),
+            ),
           ),
         ];
         return DataRow(cells: getCells(cells));

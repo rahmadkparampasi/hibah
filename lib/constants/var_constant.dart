@@ -1,1 +1,1 @@
-String apiURL = "http://simhega.sultengprov.go.id/";
+String apiURL = "http://simhega.sultengprov.go.id";

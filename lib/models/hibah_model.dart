@@ -52,6 +52,106 @@ class Hibah {
   }
 }
 
+class UslBrks {
+  String uslBrksUsl;
+  String uslBrksFl;
+  String brksNm;
+  int no;
+  UslBrks({
+    required this.brksNm,
+    required this.no,
+    required this.uslBrksFl,
+    required this.uslBrksUsl,
+  });
+  factory UslBrks.fromJson(Map<String, dynamic> item) {
+    return UslBrks(
+      brksNm: item['brks_nm'],
+      no: item['no'],
+      uslBrksFl: item['uslbrks_fl'],
+      uslBrksUsl: item['uslbrks_usl'],
+    );
+  }
+}
+
+class UslA {
+  String uslAUsl;
+  String uslAU;
+  String uslAV;
+  String uslAS;
+  String uslAStn;
+  String uslAHrg;
+  String uslANS;
+  int no;
+  UslA({
+    required this.no,
+    required this.uslAUsl,
+    required this.uslAU,
+    required this.uslAV,
+    required this.uslAS,
+    required this.uslAStn,
+    required this.uslANS,
+    required this.uslAHrg,
+  });
+  factory UslA.fromJson(Map<String, dynamic> item) {
+    return UslA(
+      no: item['no'],
+      uslAUsl: item['usla_usl'],
+      uslAU: item['usla_u'],
+      uslAV: item['usla_v'],
+      uslAS: item['usla_s'],
+      uslAStn: item['usla_stn'],
+      uslANS: item['nusla_s'],
+      uslAHrg: item['ttlHrg'],
+    );
+  }
+}
+
+class UslM {
+  String uslMT;
+  int no;
+  UslM({required this.uslMT, required this.no});
+  factory UslM.fromJson(Map<String, dynamic> item) {
+    return UslM(uslMT: item['uslm_t'], no: item['no']);
+  }
+}
+
+class UslT {
+  String uslTT;
+  int no;
+  UslT({required this.uslTT, required this.no});
+  factory UslT.fromJson(Map<String, dynamic> item) {
+    return UslT(uslTT: item['uslt_t'], no: item['no']);
+  }
+}
+
+class Anggaran {
+  String anggaran;
+  String anggaranb;
+
+  Anggaran({required this.anggaran, required this.anggaranb});
+
+  factory Anggaran.fromJson(Map<String, dynamic> item) {
+    return Anggaran(
+      anggaran: item['anggaran'],
+      anggaranb: item['anggaranb'],
+    );
+  }
+}
+
+class AnggaranStj {
+  String anggaran;
+  String anggaranb;
+
+  AnggaranStj({required this.anggaran, required this.anggaranb});
+
+  factory AnggaranStj.fromJson(Map<String, dynamic> item) {
+    return AnggaranStj(
+      anggaran: item['anggaran'],
+      anggaranb: item['anggaranb'],
+    );
+  }
+}
+
 class Organisasi {
   String orgIdEx;
   String riNm;

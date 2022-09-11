@@ -37,9 +37,10 @@ class _PreImgState extends State<PreImg> {
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
-              onTap: () {
-                _saveNetworkImage(
-                    "http://simhega.sultengprov.go.id/uploads/$img");
+              onTap: () async {
+                String url = "http://simhega.sultengprov.go.id/uploads/$img";
+
+                await GallerySaver.saveImage(url, toDcim: true);
               },
               child: const Icon(
                 Icons.download,

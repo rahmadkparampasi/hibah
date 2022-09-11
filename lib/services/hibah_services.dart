@@ -162,4 +162,156 @@ class HibahService {
       ),
     );
   }
+
+  Future<APIResponseHibah<List<UslBrks>>> getUslBrks(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslbkrsByUsl/$usl');
+
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslBrksList = <UslBrks>[];
+        for (var item in jsonData) {
+          uslBrksList.add(UslBrks.fromJson(item));
+        }
+        return APIResponseHibah<List<UslBrks>>(data: uslBrksList);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslBrksList = <UslBrks>[];
+        for (var item in jsonData) {
+          uslBrksList.add(UslBrks.fromJson(item));
+        }
+        return APIResponseHibah<List<UslBrks>>(data: uslBrksList);
+      }
+    }).catchError((_) => APIResponseHibah<UslBrks>(
+        error: true, errorMessage: 'Terjadi Kesalahan', status: 500));
+  }
+
+  Future<APIResponseHibah<List<UslA>>> getUslA(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslaByUsl/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslA = <UslA>[];
+        for (var item in jsonData) {
+          uslA.add(UslA.fromJson(item));
+        }
+        return APIResponseHibah<List<UslA>>(data: uslA);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslA = <UslA>[];
+        for (var item in jsonData) {
+          uslA.add(UslA.fromJson(item));
+        }
+        return APIResponseHibah<List<UslA>>(data: uslA);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslA>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<Anggaran>> getAnggaran(String uslIdEx) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/hitungAnggaran/$uslIdEx');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseHibah<Anggaran>(
+          data: Anggaran.fromJson(jsonData),
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseHibah<Anggaran>(
+          error: true,
+          errorMessage: 'Terjadi Kesalahan',
+          data: Anggaran.fromJson(jsonData),
+        );
+      }
+    }).catchError(
+      (_) => APIResponseHibah<Anggaran>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<AnggaranStj>> getAnggaranStj(String uslIdEx) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/hitungAnggaran/$uslIdEx');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseHibah<AnggaranStj>(
+          data: AnggaranStj.fromJson(jsonData),
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseHibah<AnggaranStj>(
+          error: true,
+          errorMessage: 'Terjadi Kesalahan',
+          data: AnggaranStj.fromJson(jsonData),
+        );
+      }
+    }).catchError(
+      (_) => APIResponseHibah<AnggaranStj>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslM>>> getUslM(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslmByUsl/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslM = <UslM>[];
+        for (var item in jsonData) {
+          uslM.add(UslM.fromJson(item));
+        }
+        return APIResponseHibah<List<UslM>>(data: uslM);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslM = <UslM>[];
+        for (var item in jsonData) {
+          uslM.add(UslM.fromJson(item));
+        }
+        return APIResponseHibah<List<UslM>>(data: uslM);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslM>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslT>>> getUslT(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUsltByUsl/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslT = <UslT>[];
+        for (var item in jsonData) {
+          uslT.add(UslT.fromJson(item));
+        }
+        return APIResponseHibah<List<UslT>>(data: uslT);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslT = <UslT>[];
+        for (var item in jsonData) {
+          uslT.add(UslT.fromJson(item));
+        }
+        return APIResponseHibah<List<UslT>>(data: uslT);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslT>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
 }

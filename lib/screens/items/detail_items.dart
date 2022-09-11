@@ -71,13 +71,8 @@ class ButtonDT extends StatelessWidget {
 }
 
 class ButtonDTP extends StatelessWidget {
-  final String img;
-  final String name;
-  const ButtonDTP({
-    Key? key,
-    required this.img,
-    required this.name,
-  }) : super(key: key);
+  final IconButton child;
+  const ButtonDTP({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -88,24 +83,7 @@ class ButtonDTP extends StatelessWidget {
       ),
       width: 38,
       height: 38,
-      child: IconButton(
-        iconSize: 20,
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PreImg(
-                name: name,
-                img: img,
-              ),
-            ),
-          );
-        },
-        icon: const Icon(
-          Icons.camera_alt,
-          color: Colors.white,
-        ),
-      ),
+      child: child,
     );
   }
 }

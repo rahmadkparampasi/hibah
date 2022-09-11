@@ -1,8 +1,9 @@
-import 'package:SimhegaM/constants/style_constant.dart';
+import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
-import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
-import 'package:SimhegaM/screens/proposal_screen.dart';
+import 'package:SimhegaM/screens/list/proposal_list.dart';
+import 'package:SimhegaM/screens/list/usla_list.dart';
+import 'package:SimhegaM/screens/list/uslbrks_list.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -22,7 +23,9 @@ class DetailPScreen extends StatefulWidget {
   State<DetailPScreen> createState() => _DetailPScreenState();
 }
 
-class _DetailPScreenState extends State<DetailPScreen> {
+class _DetailPScreenState extends State<DetailPScreen>
+    with SingleTickerProviderStateMixin {
+  TabController? _controller;
   late String _token;
   String? _uslIdEx;
 
@@ -35,6 +38,32 @@ class _DetailPScreenState extends State<DetailPScreen> {
   Hibah? hibah;
 
   int? _selectedIndex;
+
+  int? _selectedIndexD;
+
+  List<Widget> listTab = const [
+    Tab(
+      child: Text('Proposal'),
+    ),
+    Tab(
+      child: Text('Berkas'),
+    ),
+    Tab(
+      child: Text('Anggaran'),
+    ),
+    Tab(
+      child: Text('Tahapan'),
+    ),
+    Tab(
+      child: Text('Peninjauan'),
+    ),
+    Tab(
+      child: Text('Verifikator'),
+    ),
+    Tab(
+      child: Text('Surat'),
+    ),
+  ];
 
   @override
   void initState() {
@@ -51,8 +80,94 @@ class _DetailPScreenState extends State<DetailPScreen> {
           hibah = value.data;
           _isLoading = false;
         });
+        if (hibah != null) {
+          _fetchUslM(_uslIdEx!);
+          _fetchUslT(_uslIdEx!);
+        }
       });
     }
+
+    _controller = TabController(length: listTab.length, vsync: this);
+
+    _controller?.addListener(() {
+      setState(() {
+        _selectedIndexD = _controller!.index;
+      });
+    });
+  }
+
+  _fetchhibah(String uslIdEx) async {
+    await service.getHibah(uslIdEx).then((value) {
+      setState(() {
+        hibah = value.data;
+      });
+    });
+  }
+
+  APIResponseHibah<List<UslBrks>>? uslBrks;
+
+  _fetchUslBrks(String uslIdEx) async {
+    uslBrks = await service.getUslBrks(uslIdEx);
+    setState(() {
+      if (uslBrks!.error) {
+        _isLoading = false;
+        errorMessage = uslBrks!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
+  APIResponseHibah<List<UslA>>? uslA;
+
+  _fetchUslA(String uslIdEx) async {
+    uslA = await service.getUslA(uslIdEx);
+    setState(() {
+      if (uslA!.error) {
+        _isLoading = false;
+        errorMessage = uslA!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
+  APIResponseHibah<Anggaran>? anggaran;
+  _fetchAnggaran(String uslIdEx) async {
+    anggaran = await service.getAnggaran(uslIdEx);
+  }
+
+  APIResponseHibah<AnggaranStj>? anggaranStj;
+  _fetchAnggaranStj(String uslIdEx) async {
+    anggaranStj = await service.getAnggaranStj(uslIdEx);
+  }
+
+  APIResponseHibah<List<UslM>>? uslM;
+
+  _fetchUslM(String uslIdEx) async {
+    uslM = await service.getUslM(uslIdEx);
+    setState(() {
+      if (uslM!.error) {
+        _isLoading = false;
+        errorMessage = uslM!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
+  APIResponseHibah<List<UslT>>? uslT;
+
+  _fetchUslT(String uslIdEx) async {
+    uslT = await service.getUslT(uslIdEx);
+    setState(() {
+      if (uslT!.error) {
+        _isLoading = false;
+        errorMessage = uslT!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
   }
 
   @override
@@ -236,6 +351,42 @@ class _DetailPScreenState extends State<DetailPScreen> {
                               Material(
                                 color: Colors.white,
                                 child: TabBar(
+                                  onTap: (_selectedIndexD) {
+                                    switch (_selectedIndexD) {
+                                      case 0:
+                                        {
+                                          _fetchhibah(_uslIdEx!);
+                                          _fetchUslM(_uslIdEx!);
+                                          _fetchUslT(_uslIdEx!);
+                                        }
+                                        break;
+                                      case 1:
+                                        {
+                                          _fetchUslBrks(_uslIdEx!);
+                                        }
+                                        break;
+                                      case 2:
+                                        {
+                                          _fetchUslA(_uslIdEx!);
+                                          _fetchAnggaran(_uslIdEx!);
+                                          _fetchAnggaranStj(_uslIdEx!);
+                                        }
+                                        break;
+                                      case 3:
+                                        {}
+                                        break;
+                                      case 4:
+                                        {}
+                                        break;
+                                      case 5:
+                                        {}
+                                        break;
+                                      case 6:
+                                        {}
+                                        break;
+                                    }
+                                  },
+                                  controller: _controller,
                                   isScrollable: true,
                                   labelColor: Colors.black,
                                   labelStyle: const TextStyle(
@@ -249,49 +400,67 @@ class _DetailPScreenState extends State<DetailPScreen> {
                                   ),
                                   indicatorSize: TabBarIndicatorSize.label,
                                   indicatorColor: Colors.transparent,
-                                  tabs: const <Widget>[
-                                    Tab(
-                                      child: Text('Proposal'),
-                                    ),
-                                    Tab(
-                                      child: Text('Berkas'),
-                                    ),
-                                    Tab(
-                                      child: Text('Anggaran'),
-                                    ),
-                                    Tab(
-                                      child: Text('Tahapan'),
-                                    ),
-                                    Tab(
-                                      child: Text('Peninjauan'),
-                                    ),
-                                    Tab(
-                                      child: Text('Verifikator'),
-                                    ),
-                                    Tab(
-                                      child: Text('Surat'),
-                                    ),
-                                  ],
+                                  tabs: listTab,
                                 ),
                               ),
                               Container(
                                 height: height * 0.5,
                                 child: TabBarView(
+                                  controller: _controller,
                                   children: <Widget>[
-                                    ProposalScreen(
+                                    ProposalList(
                                       uslLb: hibah!.uslLb,
                                       uslTtp: hibah!.uslTtp,
+                                      uslM: uslM,
+                                      uslT: uslT,
                                     ),
-                                    ListView(
-                                      children: <Widget>[
-                                        Text('Tes'),
-                                      ],
-                                    ),
-                                    ListView(
-                                      children: <Widget>[
-                                        Text('Tes'),
-                                      ],
-                                    ),
+                                    uslBrks == null
+                                        ? Column(
+                                            children: const <Widget>[
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                'Belum Ada Berkas',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : UslBrksList(uslBrks: uslBrks!),
+                                    uslA == null || anggaran == null
+                                        ? Column(
+                                            children: const <Widget>[
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                'Belum Ada Anggaran Yang Diusulkan',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : UslAList(
+                                            uslA: uslA!,
+                                            ttlUsl: anggaran!.data != null
+                                                ? anggaran!.data!.anggaran
+                                                : '',
+                                            ttlUslB: anggaran!.data != null
+                                                ? anggaran!.data!.anggaranb
+                                                : '',
+                                            ttlUslStj: anggaranStj!.data != null
+                                                ? anggaranStj!.data!.anggaran
+                                                : '',
+                                            ttlUslStjB: anggaranStj!.data !=
+                                                    null
+                                                ? anggaranStj!.data!.anggaranb
+                                                : '',
+                                          ),
                                     ListView(
                                       children: <Widget>[
                                         Text('Tes'),
