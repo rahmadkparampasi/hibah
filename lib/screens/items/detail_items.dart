@@ -1,5 +1,7 @@
+import 'package:SimhegaM/screens/items/preimg_items.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailItem extends StatelessWidget {
   final String title;
@@ -41,6 +43,69 @@ class DetailItem extends StatelessWidget {
         ),
         isLast ? Container() : const Divider()
       ],
+    );
+  }
+}
+
+class ButtonDT extends StatelessWidget {
+  final String text;
+  const ButtonDT({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ElevatedButton(
+        onPressed: () async {
+          final Uri launcUri = Uri(scheme: 'tel', path: text);
+          if (await canLaunchUrl(launcUri)) {
+            await launchUrl(launcUri);
+          }
+        },
+        child: Text(text),
+      ),
+    );
+  }
+}
+
+class ButtonDTP extends StatelessWidget {
+  final String img;
+  final String name;
+  const ButtonDTP({
+    Key? key,
+    required this.img,
+    required this.name,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Ink(
+      decoration: const ShapeDecoration(
+        color: Colors.blue,
+        shape: CircleBorder(),
+      ),
+      width: 38,
+      height: 38,
+      child: IconButton(
+        iconSize: 20,
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PreImg(
+                name: name,
+                img: img,
+              ),
+            ),
+          );
+        },
+        icon: const Icon(
+          Icons.camera_alt,
+          color: Colors.white,
+        ),
+      ),
     );
   }
 }

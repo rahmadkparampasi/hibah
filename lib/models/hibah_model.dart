@@ -95,12 +95,22 @@ class PengOrganisasiForList {
   String pengIdEx;
   String pengNm;
   String pengJk;
+  String pengHp;
+  String strNm;
+  String pengNik;
+  String pengPicKtp;
+  String pengPic;
 
   int no;
   PengOrganisasiForList({
     required this.pengIdEx,
     required this.pengNm,
     required this.pengJk,
+    required this.pengHp,
+    required this.strNm,
+    required this.pengNik,
+    required this.pengPicKtp,
+    required this.pengPic,
     required this.no,
   });
   factory PengOrganisasiForList.fromJson(Map<String, dynamic> item) {
@@ -108,6 +118,11 @@ class PengOrganisasiForList {
       pengIdEx: item['peng_id_ex'],
       pengNm: item['peng_nm'],
       pengJk: item['peng_jkAlt'],
+      pengHp: item['peng_telp'],
+      strNm: item['str_nm'],
+      pengNik: item['peng_nik'],
+      pengPicKtp: item['peng_ktp'],
+      pengPic: item['peng_pic'],
       no: item['no'],
     );
   }
