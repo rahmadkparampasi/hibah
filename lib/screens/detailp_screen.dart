@@ -1,9 +1,14 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
-import 'package:SimhegaM/screens/list/proposal_list.dart';
+import 'package:SimhegaM/screens/list/prop_list.dart';
 import 'package:SimhegaM/screens/list/usla_list.dart';
+import 'package:SimhegaM/screens/list/uslba_list.dart';
 import 'package:SimhegaM/screens/list/uslbrks_list.dart';
+import 'package:SimhegaM/screens/list/uslgmbr_list.dart';
+import 'package:SimhegaM/screens/list/uslinb_list.dart';
+import 'package:SimhegaM/screens/list/uslthp_list.dart';
+import 'package:SimhegaM/screens/list/uslver_list.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -80,10 +85,6 @@ class _DetailPScreenState extends State<DetailPScreen>
           hibah = value.data;
           _isLoading = false;
         });
-        if (hibah != null) {
-          _fetchUslM(_uslIdEx!);
-          _fetchUslT(_uslIdEx!);
-        }
       });
     }
 
@@ -170,6 +171,19 @@ class _DetailPScreenState extends State<DetailPScreen>
     });
   }
 
+  APIResponseHibah<List<UslThp>>? uslThp;
+  _fetchUslThp(String uslIdEx) async {
+    uslThp = await service.getUslThp(uslIdEx);
+    setState(() {
+      if (uslThp!.error) {
+        _isLoading = false;
+        errorMessage = uslThp!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     const double topContainerHeight = 190;
@@ -242,6 +256,23 @@ class _DetailPScreenState extends State<DetailPScreen>
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 10.0,
+                                            offset: Offset.zero,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: const TextSpan(
+                                      text: 'BERKAS PENGUSULAN',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
                                         shadows: [
                                           Shadow(
                                             color: Colors.black,
@@ -356,8 +387,6 @@ class _DetailPScreenState extends State<DetailPScreen>
                                       case 0:
                                         {
                                           _fetchhibah(_uslIdEx!);
-                                          _fetchUslM(_uslIdEx!);
-                                          _fetchUslT(_uslIdEx!);
                                         }
                                         break;
                                       case 1:
@@ -373,7 +402,9 @@ class _DetailPScreenState extends State<DetailPScreen>
                                         }
                                         break;
                                       case 3:
-                                        {}
+                                        {
+                                          _fetchUslThp(_uslIdEx!);
+                                        }
                                         break;
                                       case 4:
                                         {}
@@ -408,11 +439,10 @@ class _DetailPScreenState extends State<DetailPScreen>
                                 child: TabBarView(
                                   controller: _controller,
                                   children: <Widget>[
-                                    ProposalList(
+                                    PropList(
                                       uslLb: hibah!.uslLb,
                                       uslTtp: hibah!.uslTtp,
-                                      uslM: uslM,
-                                      uslT: uslT,
+                                      uslIdEx: _uslIdEx!,
                                     ),
                                     uslBrks == null
                                         ? Column(
@@ -449,36 +479,180 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             uslA: uslA!,
                                             ttlUsl: anggaran!.data != null
                                                 ? anggaran!.data!.anggaran
-                                                : '',
+                                                : 'Belum Ada Anggaran',
                                             ttlUslB: anggaran!.data != null
                                                 ? anggaran!.data!.anggaranb
-                                                : '',
-                                            ttlUslStj: anggaranStj!.data != null
-                                                ? anggaranStj!.data!.anggaran
-                                                : '',
-                                            ttlUslStjB: anggaranStj!.data !=
+                                                : 'Belum Ada Anggaran',
+                                            ttlUslStj: anggaranStj!.data == null
+                                                ? 'Belum Ada Anggaran'
+                                                : anggaranStj!.data!.anggaran,
+                                            ttlUslStjB: anggaranStj!.data ==
                                                     null
-                                                ? anggaranStj!.data!.anggaranb
-                                                : '',
+                                                ? 'Belum Ada Anggaran'
+                                                : anggaranStj!.data!.anggaranb,
                                           ),
+                                    uslThp == null
+                                        ? Column(
+                                            children: const <Widget>[
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(
+                                                'Belum Ada Tahapan',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : UslThpList(uslThp: uslThp!),
                                     ListView(
                                       children: <Widget>[
-                                        Text('Tes'),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          child: const Center(
+                                            child: Text(
+                                              'Dokumentasi Lapangan',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 17),
+                                            ),
+                                          ),
+                                        ),
+                                        _uslIdEx == null
+                                            ? Column(
+                                                children: const <Widget>[
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    'Belum Ada Dokumentasi Lapangan',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black87,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : UslGmbrList(
+                                                uslIdEx: _uslIdEx!,
+                                              ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Divider(),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          child: const Center(
+                                            child: Text(
+                                              'Berita Acara',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 17),
+                                            ),
+                                          ),
+                                        ),
+                                        _uslIdEx == null
+                                            ? Column(
+                                                children: const <Widget>[
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    'Belum Ada Berita Acara',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black87,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : UslBaList(uslIdEx: _uslIdEx!),
                                       ],
                                     ),
                                     ListView(
                                       children: <Widget>[
-                                        Text('Tes'),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          child: const Center(
+                                            child: Text(
+                                              'Anggota Verifikator',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 17),
+                                            ),
+                                          ),
+                                        ),
+                                        _uslIdEx == null
+                                            ? Column(
+                                                children: const <Widget>[
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    'Belum Ada Anggota Verifikator',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black87,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : UslVerList(
+                                                uslIdEx: _uslIdEx!,
+                                              ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
                                       ],
                                     ),
                                     ListView(
                                       children: <Widget>[
-                                        Text('Tes'),
-                                      ],
-                                    ),
-                                    ListView(
-                                      children: <Widget>[
-                                        Text('Tes'),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          child: const Center(
+                                            child: Text(
+                                              'Surat Pemberitahuan',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  color: Colors.black54,
+                                                  fontSize: 17),
+                                            ),
+                                          ),
+                                        ),
+                                        _uslIdEx == null
+                                            ? Column(
+                                                children: const <Widget>[
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    'Belum Ada Surat Pemberitahuan',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black87,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : UslInbList(
+                                                uslIdEx: _uslIdEx!,
+                                              ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
                                       ],
                                     ),
                                   ],

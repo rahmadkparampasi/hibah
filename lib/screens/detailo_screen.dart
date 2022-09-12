@@ -1,13 +1,9 @@
-import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
-import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:SimhegaM/screens/items/detail_items.dart';
 import 'package:SimhegaM/screens/list/pengdt_list.dart';
-import 'package:SimhegaM/screens/items/sp_icon.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get_it/get_it.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -142,6 +138,23 @@ class _DetailOScreenState extends State<DetailOScreen> {
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
+                                        shadows: [
+                                          Shadow(
+                                            color: Colors.black,
+                                            blurRadius: 10.0,
+                                            offset: Offset.zero,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  RichText(
+                                    text: const TextSpan(
+                                      text: 'PROFIL ORGANISASI',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
                                         shadows: [
                                           Shadow(
                                             color: Colors.black,

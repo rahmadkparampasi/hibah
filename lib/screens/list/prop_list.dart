@@ -1,33 +1,90 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
+import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get_it/get_it.dart';
 
-class ProposalList extends StatelessWidget {
+class PropList extends StatefulWidget {
   String uslLb;
   String uslTtp;
-  APIResponseHibah<List<UslM>>? uslM;
-  APIResponseHibah<List<UslT>>? uslT;
+  String uslIdEx;
 
-  ProposalList(
+  PropList(
       {Key? key,
       required this.uslLb,
       required this.uslTtp,
-      required this.uslM,
-      required this.uslT})
+      required this.uslIdEx})
       : super(key: key);
 
   @override
+  State<PropList> createState() => _PropListState();
+}
+
+class _PropListState extends State<PropList> {
+  String? uslLb;
+  String? uslTtp;
+  String? _uslIdEx;
+
+  bool _isLoading = false;
+  String? errorMessage;
+
+  HibahService get service => GetIt.I<HibahService>();
+
+  APIResponseHibah<List<UslM>>? uslM;
+
+  _fetchUslM(String uslIdEx) async {
+    uslM = await service.getUslM(uslIdEx);
+    setState(() {
+      if (uslM!.error) {
+        _isLoading = false;
+        errorMessage = uslM!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
+  APIResponseHibah<List<UslT>>? uslT;
+
+  _fetchUslT(String uslIdEx) async {
+    uslT = await service.getUslT(uslIdEx);
+    setState(() {
+      if (uslT!.error) {
+        _isLoading = false;
+        errorMessage = uslT!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
+  final columns = [
+    'No',
+    'Maksud',
+  ];
+  final columnsT = [
+    'No',
+    'Tujuan',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      uslLb = widget.uslLb;
+      uslTtp = widget.uslTtp;
+      _uslIdEx = widget.uslIdEx;
+      if (_uslIdEx != null) {
+        _fetchUslM(_uslIdEx!);
+        _fetchUslT(_uslIdEx!);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final columns = [
-      'No',
-      'Maksud',
-    ];
-    final columnsT = [
-      'No',
-      'Tujuan',
-    ];
     return ListView(
       children: <Widget>[
         const SizedBox(

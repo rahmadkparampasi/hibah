@@ -314,4 +314,139 @@ class HibahService {
       ),
     );
   }
+
+  Future<APIResponseHibah<List<UslThp>>> getUslThp(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslThp/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslThp = <UslThp>[];
+        for (var item in jsonData) {
+          uslThp.add(UslThp.fromJson(item));
+        }
+        return APIResponseHibah<List<UslThp>>(data: uslThp);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslThp = <UslThp>[];
+        for (var item in jsonData) {
+          uslThp.add(UslThp.fromJson(item));
+        }
+        return APIResponseHibah<List<UslThp>>(data: uslThp);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslThp>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslGmbr>>> getUslGmbr(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslGmbr/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslGmbr = <UslGmbr>[];
+        for (var item in jsonData) {
+          uslGmbr.add(UslGmbr.fromJson(item));
+        }
+        return APIResponseHibah<List<UslGmbr>>(data: uslGmbr);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslGmbr = <UslGmbr>[];
+        for (var item in jsonData) {
+          uslGmbr.add(UslGmbr.fromJson(item));
+        }
+        return APIResponseHibah<List<UslGmbr>>(data: uslGmbr);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslGmbr>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslBa>>> getUslBa(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslBa/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslBa = <UslBa>[];
+        for (var item in jsonData) {
+          uslBa.add(UslBa.fromJson(item));
+        }
+        return APIResponseHibah<List<UslBa>>(data: uslBa);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslBa = <UslBa>[];
+        for (var item in jsonData) {
+          uslBa.add(UslBa.fromJson(item));
+        }
+        return APIResponseHibah<List<UslBa>>(data: uslBa);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslBa>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslVer>>> getUslVer(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslVer/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslVer = <UslVer>[];
+        for (var item in jsonData) {
+          uslVer.add(UslVer.fromJson(item));
+        }
+        return APIResponseHibah<List<UslVer>>(data: uslVer);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslVer = <UslVer>[];
+        for (var item in jsonData) {
+          uslVer.add(UslVer.fromJson(item));
+        }
+        return APIResponseHibah<List<UslVer>>(data: uslVer);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslVer>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslInb>>> getUslInb(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/getUslInb/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslInb = <UslInb>[];
+        for (var item in jsonData) {
+          uslInb.add(UslInb.fromJson(item));
+        }
+        return APIResponseHibah<List<UslInb>>(data: uslInb);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslInb = <UslInb>[];
+        for (var item in jsonData) {
+          uslInb.add(UslInb.fromJson(item));
+        }
+        return APIResponseHibah<List<UslInb>>(data: uslInb);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslInb>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
 }

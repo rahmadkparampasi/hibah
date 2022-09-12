@@ -1,8 +1,6 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class UslAList extends StatefulWidget {
   final APIResponseHibah<List<UslA>> uslA;
@@ -187,6 +185,9 @@ class _UslAListState extends State<UslAList> {
             ],
           ),
         ),
+        const SizedBox(
+          height: 20,
+        )
       ],
     );
   }

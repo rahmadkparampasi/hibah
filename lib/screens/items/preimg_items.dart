@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:image_downloader/image_downloader.dart';
 import 'package:photo_view/photo_view.dart';
 
 class PreImg extends StatefulWidget {

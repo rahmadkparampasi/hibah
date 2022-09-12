@@ -124,6 +124,132 @@ class UslT {
   }
 }
 
+class UslThp {
+  String uslThpNm;
+  String uslThpTglM;
+  String uslThpTglA;
+  String uslThpKet;
+  String uslThpJns;
+  int no;
+  UslThp({
+    required this.uslThpNm,
+    required this.uslThpTglM,
+    required this.uslThpTglA,
+    required this.uslThpKet,
+    required this.uslThpJns,
+    required this.no,
+  });
+  factory UslThp.fromJson(Map<String, dynamic> item) {
+    return UslThp(
+      uslThpNm: item['thp_nm'],
+      uslThpTglM: item['uslthp_tglm'],
+      uslThpTglA: item['uslthp_tgla'],
+      uslThpKet: item['uslthp_ket'],
+      uslThpJns: item['uslthp_jns'],
+      no: item['no'],
+    );
+  }
+}
+
+class UslGmbr {
+  String uslGmbrIdEx;
+  String uslGmbrUsl;
+  String uslGmbrNm;
+  String uslGmbrFl;
+  int no;
+  UslGmbr({
+    required this.uslGmbrIdEx,
+    required this.uslGmbrUsl,
+    required this.uslGmbrNm,
+    required this.uslGmbrFl,
+    required this.no,
+  });
+  factory UslGmbr.fromJson(Map<String, dynamic> item) {
+    return UslGmbr(
+      uslGmbrIdEx: item['uslgmbr_id_ex'],
+      uslGmbrUsl: item['uslgmbr_usl'],
+      uslGmbrNm: item['uslgmbr_nm'],
+      uslGmbrFl: item['uslgmbr_fl'],
+      no: item['no'],
+    );
+  }
+}
+
+class UslBa {
+  String uslBaIdEx;
+  String uslBaUsl;
+  String uslBaNm;
+  String uslBaFl;
+  int no;
+  UslBa({
+    required this.uslBaIdEx,
+    required this.uslBaUsl,
+    required this.uslBaNm,
+    required this.uslBaFl,
+    required this.no,
+  });
+  factory UslBa.fromJson(Map<String, dynamic> item) {
+    return UslBa(
+      uslBaIdEx: item['uslba_id_ex'],
+      uslBaUsl: item['uslba_usl'],
+      uslBaNm: item['uslba_nm'],
+      uslBaFl: item['uslba_fl'],
+      no: item['no'],
+    );
+  }
+}
+
+class UslVer {
+  String uslVerIdEx;
+  String pgwNm;
+  String pgwJbt;
+  String uslVerP;
+  int no;
+  UslVer({
+    required this.uslVerIdEx,
+    required this.pgwNm,
+    required this.pgwJbt,
+    required this.uslVerP,
+    required this.no,
+  });
+  factory UslVer.fromJson(Map<String, dynamic> item) {
+    return UslVer(
+      uslVerIdEx: item['uslver_id_ex'],
+      pgwNm: item['pgw_nm'],
+      pgwJbt: item['pgw_jbt'],
+      uslVerP: item['uslver_p'],
+      no: item['no'],
+    );
+  }
+}
+
+class UslInb {
+  String inbIdEx;
+  String inbJdl;
+  String inbUsl;
+  String inbTgl;
+  String inbJam;
+  int no;
+  UslInb({
+    required this.inbIdEx,
+    required this.inbJdl,
+    required this.inbUsl,
+    required this.inbTgl,
+    required this.inbJam,
+    required this.no,
+  });
+  factory UslInb.fromJson(Map<String, dynamic> item) {
+    return UslInb(
+      inbIdEx: item['inb_id_ex'],
+      inbJdl: item['inb_jdl'],
+      inbUsl: item['inb_usl'],
+      inbTgl: item['inb_tgl'],
+      inbJam: item['inb_jam'],
+      no: item['no'],
+    );
+  }
+}
+
 class Anggaran {
   String anggaran;
   String anggaranb;
