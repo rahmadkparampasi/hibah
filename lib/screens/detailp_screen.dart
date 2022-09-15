@@ -107,44 +107,6 @@ class _DetailPScreenState extends State<DetailPScreen>
     });
   }
 
-  APIResponseHibah<List<UslBrks>>? uslBrks;
-
-  _fetchUslBrks(String uslIdEx) async {
-    uslBrks = await service.getUslBrks(uslIdEx);
-    setState(() {
-      if (uslBrks!.error) {
-        _isLoading = false;
-        errorMessage = uslBrks!.errorMessage!;
-      } else {
-        _isLoading = false;
-      }
-    });
-  }
-
-  APIResponseHibah<List<UslA>>? uslA;
-
-  _fetchUslA(String uslIdEx) async {
-    uslA = await service.getUslA(uslIdEx);
-    setState(() {
-      if (uslA!.error) {
-        _isLoading = false;
-        errorMessage = uslA!.errorMessage!;
-      } else {
-        _isLoading = false;
-      }
-    });
-  }
-
-  APIResponseHibah<Anggaran>? anggaran;
-  _fetchAnggaran(String uslIdEx) async {
-    anggaran = await service.getAnggaran(uslIdEx);
-  }
-
-  APIResponseHibah<AnggaranStj>? anggaranStj;
-  _fetchAnggaranStj(String uslIdEx) async {
-    anggaranStj = await service.getAnggaranStj(uslIdEx);
-  }
-
   APIResponseHibah<List<UslThp>>? uslThp;
   _fetchUslThp(String uslIdEx) async {
     uslThp = await service.getUslThp(uslIdEx);
@@ -367,11 +329,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                         {}
                                         break;
                                       case 2:
-                                        {
-                                          _fetchUslA(_uslIdEx!);
-                                          _fetchAnggaran(_uslIdEx!);
-                                          _fetchAnggaranStj(_uslIdEx!);
-                                        }
+                                        {}
                                         break;
                                       case 3:
                                         {
@@ -443,7 +401,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             : UslBrksList(uslIdEx: _uslIdEx!),
                                       ],
                                     ),
-                                    uslA == null || anggaran == null
+                                    _uslIdEx == null
                                         ? Column(
                                             children: const <Widget>[
                                               SizedBox(
@@ -458,22 +416,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                               ),
                                             ],
                                           )
-                                        : UslAList(
-                                            uslA: uslA!,
-                                            ttlUsl: anggaran!.data != null
-                                                ? anggaran!.data!.anggaran
-                                                : 'Belum Ada Anggaran',
-                                            ttlUslB: anggaran!.data != null
-                                                ? anggaran!.data!.anggaranb
-                                                : 'Belum Ada Anggaran',
-                                            ttlUslStj: anggaranStj!.data == null
-                                                ? 'Belum Ada Anggaran'
-                                                : anggaranStj!.data!.anggaran,
-                                            ttlUslStjB: anggaranStj!.data ==
-                                                    null
-                                                ? 'Belum Ada Anggaran'
-                                                : anggaranStj!.data!.anggaranb,
-                                          ),
+                                        : UslAList(uslIdEx: _uslIdEx!),
                                     uslThp == null
                                         ? Column(
                                             children: const <Widget>[

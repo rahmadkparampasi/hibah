@@ -1,195 +1,270 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
+import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class UslAList extends StatefulWidget {
-  final APIResponseHibah<List<UslA>> uslA;
-  final String ttlUsl;
-  final String ttlUslB;
-  final String ttlUslStj;
-  final String ttlUslStjB;
-  const UslAList({
-    Key? key,
-    required this.uslA,
-    required this.ttlUsl,
-    required this.ttlUslB,
-    required this.ttlUslStj,
-    required this.ttlUslStjB,
-  }) : super(key: key);
+  final String uslIdEx;
+  const UslAList({super.key, required this.uslIdEx});
 
   @override
   State<UslAList> createState() => _UslAListState();
 }
 
 class _UslAListState extends State<UslAList> {
-  APIResponseHibah<List<UslA>>? uslA;
-  String? ttlUsl;
-  String? ttlUslB;
-
-  String? ttlUslStj;
-  String? ttlUslStjB;
+  String? uslIdEx;
 
   int? sortColumnIndex;
   bool isAscending = false;
+  bool _isLoading = false;
+  bool _isError = false;
+  bool _isErrorStj = false;
+
+  final columns = [
+    'No',
+    'Uraian',
+    'Volume',
+    'Satuan',
+    'Harga Satuan',
+    'Total Harga'
+  ];
+
+  String? errorMessage;
+  HibahService get service => GetIt.I<HibahService>();
+
+  APIResponseHibah<List<UslA>>? uslA;
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      uslA = widget.uslA;
-      ttlUsl = widget.ttlUsl;
-      ttlUslB = widget.ttlUslB;
-      ttlUslStj = widget.ttlUslStj;
-      ttlUslStjB = widget.ttlUslStjB;
+      uslIdEx = widget.uslIdEx;
+      _isError = true;
+      _isErrorStj = true;
+    });
+    _fetchUslA(uslIdEx!);
+    _fetchAnggaranStj(uslIdEx!);
+    _fetchAnggaran(uslIdEx!);
+  }
+
+  _fetchUslA(String uslIdEx) async {
+    uslA = await service.getUslA(uslIdEx);
+    setState(() {
+      if (uslA!.data!.isEmpty) {
+        _isError = true;
+      } else {
+        _isError = false;
+      }
+      if (uslA!.error) {
+        _isLoading = false;
+        errorMessage = uslA!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
+  APIResponseHibah<Anggaran>? anggaran;
+  _fetchAnggaran(String uslIdEx) async {
+    anggaran = await service.getAnggaran(uslIdEx);
+    setState(() {
+      if (anggaran!.data!.anggaran == '') {
+        _isError = true;
+      } else {
+        _isError = false;
+      }
+      if (anggaran!.error) {
+        _isLoading = false;
+        errorMessage = uslA!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
+    });
+  }
+
+  APIResponseHibah<AnggaranStj>? anggaranStj;
+  _fetchAnggaranStj(String uslIdEx) async {
+    anggaranStj = await service.getAnggaranStj(uslIdEx);
+    setState(() {
+      if (anggaranStj!.data!.anggaran == '') {
+        _isErrorStj = true;
+      } else {
+        _isErrorStj = false;
+      }
+      if (anggaranStj!.error) {
+        _isLoading = false;
+        errorMessage = uslA!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final columns = [
-      'No',
-      'Uraian',
-      'Volume',
-      'Satuan',
-      'Harga Satuan',
-      'Total Harga'
-    ];
-    return ListView(
-      children: <Widget>[
-        const SizedBox(
-          height: 5,
-        ),
-        Container(
-          child: const Center(
-            child: Text(
-              'Anggaran Pengusulan',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black54, fontSize: 17),
-            ),
-          ),
-        ),
-        Container(
-          padding: const EdgeInsets.only(left: 8, right: 8),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: <Widget>[
-                DataTable(columns: getColumns(columns), rows: getRows(uslA))
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Center(
-          widthFactor: MediaQuery.of(context).size.width,
-          child: Column(
-            children: <Widget>[
-              const Text(
-                'Total Pengusulan : ',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black87, fontSize: 16),
-              ),
-              ttlUsl != null
-                  ? Text(
-                      ttlUsl!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : const Text(
-                      'Belum Ada',
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-              const SizedBox(
-                height: 5,
-              ),
-              ttlUslB != null
-                  ? Text(
-                      ttlUslB!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                      ),
-                    )
-                  : const Text(
-                      'Tidak Ada Keterangan',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
+    return _isLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : _isError
+            ? ListView(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    child: const Center(
+                      child: Text(
+                        'Anggaran Pengusulan',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black54, fontSize: 17),
                       ),
                     ),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        const Divider(),
-        const SizedBox(
-          height: 5,
-        ),
-        Center(
-          widthFactor: MediaQuery.of(context).size.width,
-          child: Column(
-            children: <Widget>[
-              const Text(
-                'Anggaran Disetujui : ',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black87, fontSize: 16),
-              ),
-              ttlUslStj != null
-                  ? Text(
-                      ttlUslStj!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.black87,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  : const Text(
-                      'Belum Ada',
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Center(
+                    child: Text(
+                      'Belum Ada Anggaran Yang Diusulkan',
                       style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
-                    ),
-              const SizedBox(
-                height: 5,
-              ),
-              ttlUslStjB != null
-                  ? Text(
-                      ttlUslStjB!,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        color: Colors.black87,
                         fontSize: 16,
-                      ),
-                    )
-                  : const Text(
-                      'Tidak Ada Keterangan',
-                      style: TextStyle(
                         color: Colors.black87,
-                        fontSize: 16,
                       ),
                     ),
-            ],
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        )
-      ],
-    );
+                  ),
+                ],
+              )
+            : ListView(
+                children: <Widget>[
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    child: const Center(
+                      child: Text(
+                        'Anggaran Pengusulan',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.black54, fontSize: 17),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: <Widget>[
+                          DataTable(
+                              columns: getColumns(columns), rows: getRows(uslA))
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Center(
+                    widthFactor: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'Total Pengusulan : ',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.black87, fontSize: 16),
+                        ),
+                        anggaran!.data!.anggaran != ''
+                            ? Text(
+                                anggaran!.data!.anggaran,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            : const Text(
+                                'Belum Ada',
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        anggaran!.data!.anggaranb != ''
+                            ? Text(
+                                anggaran!.data!.anggaranb,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                ),
+                              )
+                            : const Text(
+                                'Tidak Ada Keterangan',
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                ),
+                              ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Divider(),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  _isErrorStj
+                      ? const Center(
+                          child: Text('Belum Ada Anggaran Disetujui'),
+                        )
+                      : Center(
+                          widthFactor: MediaQuery.of(context).size.width,
+                          child: Column(
+                            children: <Widget>[
+                              const Text(
+                                'Anggaran Disetujui : ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.black87, fontSize: 16),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                anggaranStj!.data!.anggaran,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                anggaranStj!.data!.anggaranb,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
+              );
   }
 
   List<DataColumn> getColumns(List<String> columns) => columns
