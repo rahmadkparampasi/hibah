@@ -39,7 +39,6 @@ class _UslVerListState extends State<UslVerList> {
   _fetchUslVer(String uslIdEx) async {
     uslVer = await service.getUslVer(uslIdEx);
     setState(() {
-      print(uslVer!.data);
       if (uslVer!.data!.isEmpty) {
         _isError = true;
       } else {

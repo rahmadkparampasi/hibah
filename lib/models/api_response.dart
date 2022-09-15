@@ -53,3 +53,18 @@ class APIResponseMasuk<T> {
     this.dialog = DialogType.SUCCES,
   });
 }
+
+class APIResponse<T> {
+  T? data;
+  bool error;
+  String? errorMessage;
+  int? status;
+  DialogType dialog;
+  APIResponse({
+    this.data,
+    this.errorMessage,
+    this.error = false,
+    this.status = 500,
+    this.dialog = DialogType.SUCCES,
+  });
+}

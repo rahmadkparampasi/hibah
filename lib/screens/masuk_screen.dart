@@ -1,4 +1,5 @@
 import 'package:SimhegaM/models/hibah_model.dart';
+import 'package:SimhegaM/models/hibahpost_model.dart';
 import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';

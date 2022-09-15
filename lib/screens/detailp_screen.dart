@@ -1,5 +1,7 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
+import 'package:SimhegaM/screens/items/func_item.dart';
+import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
 import 'package:SimhegaM/screens/list/prop_list.dart';
 import 'package:SimhegaM/screens/list/usla_list.dart';
@@ -141,34 +143,6 @@ class _DetailPScreenState extends State<DetailPScreen>
   APIResponseHibah<AnggaranStj>? anggaranStj;
   _fetchAnggaranStj(String uslIdEx) async {
     anggaranStj = await service.getAnggaranStj(uslIdEx);
-  }
-
-  APIResponseHibah<List<UslM>>? uslM;
-
-  _fetchUslM(String uslIdEx) async {
-    uslM = await service.getUslM(uslIdEx);
-    setState(() {
-      if (uslM!.error) {
-        _isLoading = false;
-        errorMessage = uslM!.errorMessage!;
-      } else {
-        _isLoading = false;
-      }
-    });
-  }
-
-  APIResponseHibah<List<UslT>>? uslT;
-
-  _fetchUslT(String uslIdEx) async {
-    uslT = await service.getUslT(uslIdEx);
-    setState(() {
-      if (uslT!.error) {
-        _isLoading = false;
-        errorMessage = uslT!.errorMessage!;
-      } else {
-        _isLoading = false;
-      }
-    });
   }
 
   APIResponseHibah<List<UslThp>>? uslThp;
@@ -357,7 +331,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                   TextStyle(color: Colors.grey, fontSize: 15),
                             ),
                             subtitle: Text(
-                              hibah!.uslNm,
+                              hibah == null ? 'Belum Ada Judul' : hibah!.uslNm,
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -390,9 +364,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                         }
                                         break;
                                       case 1:
-                                        {
-                                          _fetchUslBrks(_uslIdEx!);
-                                        }
+                                        {}
                                         break;
                                       case 2:
                                         {
@@ -440,26 +412,37 @@ class _DetailPScreenState extends State<DetailPScreen>
                                   controller: _controller,
                                   children: <Widget>[
                                     PropList(
-                                      uslLb: hibah!.uslLb,
-                                      uslTtp: hibah!.uslTtp,
+                                      uslLb: hibah == null
+                                          ? 'Belum Ada Latar Belakang'
+                                          : hibah!.uslLb,
+                                      uslTtp: hibah == null
+                                          ? 'Belum Ada Penutup'
+                                          : hibah!.uslTtp,
                                       uslIdEx: _uslIdEx!,
                                     ),
-                                    uslBrks == null
-                                        ? Column(
-                                            children: const <Widget>[
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                'Belum Ada Berkas',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : UslBrksList(uslBrks: uslBrks!),
+                                    ListView(
+                                      children: <Widget>[
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        _uslIdEx == null
+                                            ? Column(
+                                                children: const <Widget>[
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    'Belum Ada Berkas',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black87,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : UslBrksList(uslIdEx: _uslIdEx!),
+                                      ],
+                                    ),
                                     uslA == null || anggaran == null
                                         ? Column(
                                             children: const <Widget>[
@@ -665,8 +648,59 @@ class _DetailPScreenState extends State<DetailPScreen>
                     ),
                   ),
                   const SizedBox(
-                    height: 20,
-                  )
+                    height: 8,
+                  ),
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          child: ListTile(
+                            onTap: () => showBottomModal(
+                                context,
+                                CompBottomUslT(
+                                  uslIdEx: _uslIdEx!,
+                                  orgIdEx: hibah!.uslOrg,
+                                  selectedIndex: _selectedIndex!,
+                                  token: _token!,
+                                ),
+                                200),
+                            minLeadingWidth: 0,
+                            leading: const SizedBox(
+                              height: double.infinity,
+                              child: SPIcon(assetName: 'prize.png'),
+                            ),
+                            title: const Text(
+                              'Jenis Bantuan',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 15),
+                            ),
+                            subtitle: Text(
+                              hibah == null
+                                  ? 'Belum Ditentukan'
+                                  : hibah!.uslT == "0"
+                                      ? 'Belum Ditentukan'
+                                      : hibah!.uslT == "1"
+                                          ? 'Bantuan Uang ${hibah!.uslThn}'
+                                          : 'Bantuan Barang ${hibah!.uslThn}',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            trailing: const SizedBox(
+                              height: double.infinity,
+                              child: SPIcon(
+                                width: 15,
+                                height: 15,
+                                assetName: 'sync.png',
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ],

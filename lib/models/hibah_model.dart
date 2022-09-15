@@ -34,13 +34,18 @@ class Hibah {
   String uslLb;
   String uslTtp;
   String uslOrg;
+  String uslT;
+  String uslThn;
 
-  Hibah(
-      {required this.uslIdEx,
-      required this.uslNm,
-      required this.uslLb,
-      required this.uslTtp,
-      required this.uslOrg});
+  Hibah({
+    required this.uslIdEx,
+    required this.uslNm,
+    required this.uslLb,
+    required this.uslTtp,
+    required this.uslOrg,
+    required this.uslT,
+    required this.uslThn,
+  });
   factory Hibah.fromJson(Map<String, dynamic> item) {
     return Hibah(
       uslIdEx: item['usl_id_ex'],
@@ -48,6 +53,8 @@ class Hibah {
       uslLb: item['usl_lb'],
       uslTtp: item['usl_ttp'],
       uslOrg: item['usl_org'],
+      uslT: item['usl_t'],
+      uslThn: item['usl_thn'],
     );
   }
 }
@@ -350,38 +357,6 @@ class PengOrganisasiForList {
       pengPicKtp: item['peng_ktp'],
       pengPic: item['peng_pic'],
       no: item['no'],
-    );
-  }
-}
-
-class CheckMasuk {
-  String user;
-  String pass;
-
-  CheckMasuk({required this.user, required this.pass});
-
-  Map<String, dynamic> toJson() {
-    return {"user": user, "pass": pass};
-  }
-}
-
-class FeedBackMasuk {
-  String token;
-  String message;
-  String response;
-  String type;
-  FeedBackMasuk(
-      {required this.token,
-      required this.message,
-      required this.response,
-      required this.type});
-
-  factory FeedBackMasuk.fromJson(Map<String, dynamic> item) {
-    return FeedBackMasuk(
-      token: item['token'],
-      message: item['message'],
-      type: item['type'],
-      response: item['response'],
     );
   }
 }

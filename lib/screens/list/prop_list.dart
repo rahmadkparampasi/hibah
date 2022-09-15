@@ -73,6 +73,7 @@ class _PropListState extends State<PropList> {
   void initState() {
     super.initState();
     setState(() {
+      _isLoading = true;
       uslLb = widget.uslLb;
       uslTtp = widget.uslTtp;
       _uslIdEx = widget.uslIdEx;
@@ -125,19 +126,23 @@ class _PropListState extends State<PropList> {
                     'Maksud Proposal',
                     style: TextStyle(color: Colors.black54, fontSize: 15),
                   ),
-                  subtitle: uslM == null
-                      ? const Text('Tidak Ada Maksud Proposal')
-                      : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: <Widget>[
-                              DataTable(
-                                columns: getColumns(columns),
-                                rows: getRows(uslM),
-                              )
-                            ],
-                          ),
-                        ),
+                  subtitle: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : uslM == null
+                          ? const Text('Tidak Ada Maksud Proposal')
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: <Widget>[
+                                  DataTable(
+                                    columns: getColumns(columns),
+                                    rows: getRows(uslM),
+                                  )
+                                ],
+                              ),
+                            ),
                 ),
               ),
               Divider(),
@@ -153,19 +158,23 @@ class _PropListState extends State<PropList> {
                     'Tujuam Proposal',
                     style: TextStyle(color: Colors.black54, fontSize: 15),
                   ),
-                  subtitle: uslT == null
-                      ? const Text('Tidak Ada Tujuan Proposal')
-                      : SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: <Widget>[
-                              DataTable(
-                                columns: getColumns(columnsT),
-                                rows: getRowsT(uslT),
-                              )
-                            ],
-                          ),
-                        ),
+                  subtitle: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : uslT == null
+                          ? const Text('Tidak Ada Tujuan Proposal')
+                          : SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Row(
+                                children: <Widget>[
+                                  DataTable(
+                                    columns: getColumns(columnsT),
+                                    rows: getRowsT(uslT),
+                                  )
+                                ],
+                              ),
+                            ),
                 ),
               ),
               Divider(),
@@ -186,6 +195,9 @@ class _PropListState extends State<PropList> {
             ],
           ),
         ),
+        const SizedBox(
+          height: 20,
+        )
       ],
     );
   }

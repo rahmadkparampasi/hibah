@@ -1,46 +1,93 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
-import 'package:SimhegaM/screens/items/detail_items.dart';
+import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:SimhegaM/screens/items/prepdf_items.dart';
+import 'package:SimhegaM/services/hibah_services.dart';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 class UslBrksList extends StatefulWidget {
-  final APIResponseHibah<List<UslBrks>> uslBrks;
+  final String uslIdEx;
 
-  const UslBrksList({Key? key, required this.uslBrks}) : super(key: key);
+  const UslBrksList({Key? key, required this.uslIdEx}) : super(key: key);
 
   @override
   State<UslBrksList> createState() => _UslBrksListState();
 }
 
 class _UslBrksListState extends State<UslBrksList> {
+  String? uslIdEx;
   APIResponseHibah<List<UslBrks>>? uslBrks;
   int? sortColumnIndex;
   bool isAscending = false;
 
+  bool _isLoading = false;
+  bool _isError = false;
+
+  String? errorMessage;
+
+  HibahService get service => GetIt.I<HibahService>();
+
   @override
   void initState() {
     super.initState();
+
     setState(() {
-      uslBrks = widget.uslBrks;
+      _isLoading = true;
+      _isError = true;
+      uslIdEx = widget.uslIdEx;
+    });
+    _fetchUslBrks(uslIdEx!);
+  }
+
+  _fetchUslBrks(String uslIdEx) async {
+    uslBrks = await service.getUslBrks(uslIdEx);
+    setState(() {
+      if (uslBrks!.data!.isEmpty) {
+        _isError = true;
+      } else {
+        _isError = false;
+      }
+      if (uslBrks!.error) {
+        _isLoading = false;
+        errorMessage = uslBrks!.errorMessage!;
+      } else {
+        _isLoading = false;
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final columns = ['No', 'Nama Berkas', 'Berkas'];
-    return ListView(
-      children: <Widget>[
-        const SizedBox(
-          height: 5,
-        ),
-        Container(
-            padding: const EdgeInsets.only(left: 8, right: 8),
-            child:
-                DataTable(columns: getColumns(columns), rows: getRows(uslBrks)))
-      ],
-    );
+    return _isLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : _isError
+            ? Column(
+                children: const <Widget>[
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Belum Ada Berkas',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.black87,
+                    ),
+                  ),
+                  Divider(),
+                ],
+              )
+            : Container(
+                padding: const EdgeInsets.only(left: 8, right: 8),
+                child: DataTable(
+                  columns: getColumns(columns),
+                  rows: getRows(uslBrks),
+                ),
+              );
   }
 
   List<DataColumn> getColumns(List<String> columns) => columns
