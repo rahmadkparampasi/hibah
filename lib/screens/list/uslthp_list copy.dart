@@ -1,100 +1,60 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
-import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
 class UslThpList extends StatefulWidget {
-  final String uslIdEx;
-  const UslThpList({super.key, required this.uslIdEx});
+  final APIResponseHibah<List<UslThp>> uslThp;
+  const UslThpList({
+    Key? key,
+    required this.uslThp,
+  }) : super(key: key);
 
   @override
   State<UslThpList> createState() => _UslThpListState();
 }
 
 class _UslThpListState extends State<UslThpList> {
-  String? uslIdEx;
-  HibahService get service => GetIt.I<HibahService>();
-
+  APIResponseHibah<List<UslThp>>? uslThp;
   int? sortColumnIndex;
   bool isAscending = false;
-  bool _isLoading = false;
-  bool _isError = false;
-  String? errorMessage;
-
-  final columns = [
-    'No',
-    'Tahapan',
-    'Tanggal Mulai',
-    'Tanggal Akhir',
-    'Kategori',
-    'Keterangan',
-    'Aksi'
-  ];
 
   @override
   void initState() {
     super.initState();
     setState(() {
-      uslIdEx = widget.uslIdEx;
-      _isError = true;
-    });
-    _fetchUslThp(uslIdEx!);
-  }
-
-  APIResponseHibah<List<UslThp>>? uslThp;
-
-  _fetchUslThp(String uslIdEx) async {
-    uslThp = await service.getUslThp(uslIdEx);
-    setState(() {
-      if (uslThp!.data!.isEmpty) {
-        _isError = true;
-      } else {
-        _isError = false;
-      }
-      if (uslThp!.error) {
-        _isLoading = false;
-        errorMessage = uslThp!.errorMessage!;
-      } else {
-        _isLoading = false;
-      }
+      uslThp = widget.uslThp;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _isLoading
-        ? const Center(
-            child: CircularProgressIndicator(
-              color: Colors.blue,
-            ),
-          )
-        : _isError
-            ? Column(
-                children: const <Widget>[
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Text(
-                    'Belum Ada Tahapan',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  Divider(),
-                ],
-              )
-            : Container(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                child: DataTable(
-                  columns: getColumns(columns),
-                  rows: getRows(
-                    uslThp,
-                  ),
-                ),
-              );
+    final columns = [
+      'No',
+      'Tahapan',
+      'Tanggal Mulai',
+      'Tanggal Akhir',
+      'Kategori',
+      'Keterangan',
+      'Aksi'
+    ];
+    return ListView(
+      children: <Widget>[
+        const SizedBox(
+          height: 5,
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: DataTable(
+                  columns: getColumns(columns), rows: getRows(uslThp))),
+        ),
+        const SizedBox(
+          height: 20,
+        )
+      ],
+    );
   }
 
   List<DataColumn> getColumns(List<String> columns) => columns

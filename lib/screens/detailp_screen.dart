@@ -107,19 +107,6 @@ class _DetailPScreenState extends State<DetailPScreen>
     });
   }
 
-  APIResponseHibah<List<UslThp>>? uslThp;
-  _fetchUslThp(String uslIdEx) async {
-    uslThp = await service.getUslThp(uslIdEx);
-    setState(() {
-      if (uslThp!.error) {
-        _isLoading = false;
-        errorMessage = uslThp!.errorMessage!;
-      } else {
-        _isLoading = false;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     const double topContainerHeight = 190;
@@ -318,8 +305,8 @@ class _DetailPScreenState extends State<DetailPScreen>
                               Material(
                                 color: Colors.white,
                                 child: TabBar(
-                                  onTap: (_selectedIndexD) {
-                                    switch (_selectedIndexD) {
+                                  onTap: (selectedIndexD) {
+                                    switch (selectedIndexD) {
                                       case 0:
                                         {
                                           _fetchhibah(_uslIdEx!);
@@ -332,9 +319,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                         {}
                                         break;
                                       case 3:
-                                        {
-                                          _fetchUslThp(_uslIdEx!);
-                                        }
+                                        {}
                                         break;
                                       case 4:
                                         {}
@@ -417,22 +402,29 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             ],
                                           )
                                         : UslAList(uslIdEx: _uslIdEx!),
-                                    uslThp == null
-                                        ? Column(
-                                            children: const <Widget>[
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                              Text(
-                                                'Belum Ada Tahapan',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black87,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : UslThpList(uslThp: uslThp!),
+                                    ListView(
+                                      children: <Widget>[
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        _uslIdEx == null
+                                            ? Column(
+                                                children: const <Widget>[
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Text(
+                                                    'Belum Ada Dokumentasi Lapangan',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black87,
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : UslThpList(uslIdEx: _uslIdEx!),
+                                      ],
+                                    ),
                                     ListView(
                                       children: <Widget>[
                                         const SizedBox(

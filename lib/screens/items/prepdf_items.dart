@@ -38,7 +38,8 @@ class _PrePdfState extends State<PrePdf> {
       var data = await http.get(newApiUrl);
       var bytes = data.bodyBytes;
       var dir = await getApplicationDocumentsDirectory();
-      File file = File("${dir.path}/" + fileName + ".pdf");
+      File file = File("${dir.path}/$fileName.pdf");
+      print('dir');
       print(dir.path);
       File urlFile = await file.writeAsBytes(bytes);
       return urlFile;
@@ -82,9 +83,13 @@ class _PrePdfState extends State<PrePdf> {
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap: () async {
-                var dir = await getApplicationDocumentsDirectory();
+                var dir = await getDownloadPath();
+                print('Tes Dir');
+                print(dir);
+                WidgetsFlutterBinding.ensureInitialized();
+                await FlutterDownloader.initialize();
                 await FlutterDownloader.enqueue(
-                    url: pdf!, savedDir: "${dir.path}/${name!}.pdf");
+                    url: pdf!, savedDir: "$dir/${name!}.pdf");
               },
               child: const Icon(
                 Icons.download,
@@ -137,5 +142,24 @@ class _PrePdfState extends State<PrePdf> {
                   style: TextStyle(fontSize: 20),
                 ),
     );
+  }
+
+  Future<String?> getDownloadPath() async {
+    Directory? directory;
+    try {
+      if (Platform.isIOS) {
+        directory = await getApplicationDocumentsDirectory();
+      } else {
+        directory = Directory('/storage/emulated/0/Download');
+        // Put file in global download folder, if for an unknown reason it didn't exist, we fallback
+        // ignore: avoid_slow_async_io
+        if (!await directory.exists()) {
+          directory = await getExternalStorageDirectory();
+        }
+      }
+    } catch (err, stack) {
+      print("Cannot get download folder path");
+    }
+    return directory?.path;
   }
 }

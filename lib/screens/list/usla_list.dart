@@ -20,6 +20,7 @@ class _UslAListState extends State<UslAList> {
   bool _isLoading = false;
   bool _isError = false;
   bool _isErrorStj = false;
+  bool _isErrorAng = false;
 
   final columns = [
     'No',
@@ -42,6 +43,7 @@ class _UslAListState extends State<UslAList> {
       uslIdEx = widget.uslIdEx;
       _isError = true;
       _isErrorStj = true;
+      _isErrorAng = true;
     });
     _fetchUslA(uslIdEx!);
     _fetchAnggaranStj(uslIdEx!);
@@ -70,9 +72,9 @@ class _UslAListState extends State<UslAList> {
     anggaran = await service.getAnggaran(uslIdEx);
     setState(() {
       if (anggaran!.data!.anggaran == '') {
-        _isError = true;
+        _isErrorAng = true;
       } else {
-        _isError = false;
+        _isErrorAng = false;
       }
       if (anggaran!.error) {
         _isLoading = false;
@@ -150,18 +152,23 @@ class _UslAListState extends State<UslAList> {
                       ),
                     ),
                   ),
-                  Container(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: <Widget>[
-                          DataTable(
-                              columns: getColumns(columns), rows: getRows(uslA))
-                        ],
-                      ),
-                    ),
-                  ),
+                  uslA == null
+                      ? const Center(
+                          child: Text('Belum Ada Anggaran Yang Diusulkan'),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.only(left: 8, right: 8),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: <Widget>[
+                                DataTable(
+                                    columns: getColumns(columns),
+                                    rows: getRows(uslA))
+                              ],
+                            ),
+                          ),
+                        ),
                   const SizedBox(
                     height: 5,
                   ),
@@ -174,8 +181,15 @@ class _UslAListState extends State<UslAList> {
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.black87, fontSize: 16),
                         ),
-                        anggaran!.data!.anggaran != ''
-                            ? Text(
+                        _isErrorAng
+                            ? const Text(
+                                'Belum Ada',
+                                style: TextStyle(
+                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            : Text(
                                 anggaran!.data!.anggaran,
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
@@ -183,29 +197,22 @@ class _UslAListState extends State<UslAList> {
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              )
-                            : const Text(
-                                'Belum Ada',
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
                               ),
                         const SizedBox(
                           height: 5,
                         ),
-                        anggaran!.data!.anggaranb != ''
-                            ? Text(
-                                anggaran!.data!.anggaranb,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
+                        _isErrorAng
+                            ? const Text(
+                                'Tidak Ada Keterangan',
+                                style: TextStyle(
                                   color: Colors.black87,
                                   fontSize: 16,
                                 ),
                               )
-                            : const Text(
-                                'Tidak Ada Keterangan',
-                                style: TextStyle(
+                            : Text(
+                                anggaran!.data!.anggaranb,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
                                   color: Colors.black87,
                                   fontSize: 16,
                                 ),

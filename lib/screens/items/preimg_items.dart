@@ -60,12 +60,4 @@ class _PreImgState extends State<PreImg> {
       ),
     );
   }
-
-  void _saveNetworkImage(String path) async {
-    GallerySaver.saveImage(path).then((bool? success) {
-      setState(() {
-        print('Image is saved');
-      });
-    });
-  }
 }
