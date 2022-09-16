@@ -189,7 +189,7 @@ class _DetailOScreenState extends State<DetailOScreen> {
                         ),
                         Positioned(
                           bottom: 22,
-                          left: 180,
+                          left: 170,
                           child: ElevatedButton(
                             style: ButtonStyle(
                               textStyle: MaterialStateProperty.all(
@@ -224,7 +224,7 @@ class _DetailOScreenState extends State<DetailOScreen> {
                         ),
                         Positioned(
                           bottom: 22,
-                          left: 310,
+                          left: 300,
                           child: ElevatedButton(
                             style: ButtonStyle(
                               textStyle: MaterialStateProperty.all(

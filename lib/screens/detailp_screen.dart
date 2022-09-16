@@ -1,4 +1,3 @@
-import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
@@ -7,22 +6,28 @@ import 'package:SimhegaM/screens/list/prop_list.dart';
 import 'package:SimhegaM/screens/list/usla_list.dart';
 import 'package:SimhegaM/screens/list/uslba_list.dart';
 import 'package:SimhegaM/screens/list/uslbrks_list.dart';
+import 'package:SimhegaM/screens/list/uslconf_list.dart';
 import 'package:SimhegaM/screens/list/uslgmbr_list.dart';
+import 'package:SimhegaM/screens/list/uslgmbru_list.dart';
 import 'package:SimhegaM/screens/list/uslinb_list.dart';
 import 'package:SimhegaM/screens/list/uslthp_list.dart';
 import 'package:SimhegaM/screens/list/uslver_list.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPScreen extends StatefulWidget {
   final String token;
   final String uslIdEx;
   final int selectedIndex;
+  final int selectedIndexD;
   const DetailPScreen(
       {required this.token,
       required this.uslIdEx,
       required this.selectedIndex,
+      required this.selectedIndexD,
       Key? key})
       : super(key: key);
 
@@ -46,7 +51,7 @@ class _DetailPScreenState extends State<DetailPScreen>
 
   int? _selectedIndex;
 
-  int? _selectedIndexD;
+  int _selectedIndexD = 0;
 
   List<Widget> listTab = const [
     Tab(
@@ -74,12 +79,12 @@ class _DetailPScreenState extends State<DetailPScreen>
 
   @override
   void initState() {
-    super.initState();
     setState(() {
       _token = widget.token;
       _uslIdEx = widget.uslIdEx;
       _isLoading = true;
       _selectedIndex = widget.selectedIndex;
+      _selectedIndexD = widget.selectedIndexD;
     });
     if (_uslIdEx != null) {
       service.getHibah(_uslIdEx!).then((value) {
@@ -90,13 +95,15 @@ class _DetailPScreenState extends State<DetailPScreen>
       });
     }
 
-    _controller = TabController(length: listTab.length, vsync: this);
+    _controller = TabController(
+        length: listTab.length, vsync: this, initialIndex: _selectedIndexD);
 
     _controller?.addListener(() {
       setState(() {
         _selectedIndexD = _controller!.index;
       });
     });
+    super.initState();
   }
 
   _fetchhibah(String uslIdEx) async {
@@ -240,7 +247,17 @@ class _DetailPScreenState extends State<DetailPScreen>
                                 ),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () async {
+                              String url =
+                                  'http://simhega.sultengprov.go.id/docOrg/pro/$_uslIdEx';
+                              final Uri launcUri =
+                                  Uri(scheme: 'https', path: url);
+                              if (await canLaunchUrl(launcUri)) {
+                                await launchUrl(launcUri);
+                              } else {
+                                throw "Could not launch $url";
+                              }
+                            },
                             child: Container(
                               height: 45,
                               child: Center(
@@ -299,6 +316,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                     child: Column(
                       children: <Widget>[
                         DefaultTabController(
+                          initialIndex: _selectedIndexD,
                           length: 7,
                           child: Column(
                             children: <Widget>[
@@ -441,6 +459,63 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             ),
                                           ),
                                         ),
+                                        _uslIdEx != null && hibah!.uslSls == "2"
+                                            ? Center(
+                                                child: Container(
+                                                  width: 150,
+                                                  child: Center(
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          fontSize: 13.5,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                UslGmbrUList(
+                                                              uslGmbrUsl:
+                                                                  _uslIdEx!,
+                                                              uslNm:
+                                                                  hibah!.uslNm,
+                                                              orgNm:
+                                                                  hibah!.orgNm,
+                                                              orgIdEx:
+                                                                  hibah!.uslOrg,
+                                                              selectedIndexD:
+                                                                  _selectedIndexD,
+                                                              token: _token,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Container(
+                                                        height: 45,
+                                                        child: Center(
+                                                          child: Row(
+                                                            children: const <
+                                                                Widget>[
+                                                              Icon(Icons
+                                                                  .add_a_photo),
+                                                              SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Text('TAMBAH'),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(),
                                         _uslIdEx == null
                                             ? Column(
                                                 children: const <Widget>[
@@ -458,6 +533,10 @@ class _DetailPScreenState extends State<DetailPScreen>
                                               )
                                             : UslGmbrList(
                                                 uslIdEx: _uslIdEx!,
+                                                uslSls: hibah!.uslSls,
+                                                token: _token,
+                                                orgIdEx: hibah!.uslOrg,
+                                                selectedIndexD: _selectedIndexD,
                                               ),
                                         const SizedBox(
                                           height: 5,
@@ -511,6 +590,55 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             ),
                                           ),
                                         ),
+                                        _uslIdEx != null && hibah!.uslSls == "2"
+                                            ? Center(
+                                                child: Container(
+                                                  width: 150,
+                                                  child: Center(
+                                                    child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          fontSize: 13.5,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      onPressed: () =>
+                                                          showBottomModal(
+                                                              context,
+                                                              CompBottomUslVer(
+                                                                uslIdEx:
+                                                                    _uslIdEx!,
+                                                                orgIdEx: hibah!
+                                                                    .uslOrg,
+                                                                selectedIndex:
+                                                                    _selectedIndex!,
+                                                                token: _token,
+                                                              ),
+                                                              200),
+                                                      child: Container(
+                                                        height: 45,
+                                                        child: Center(
+                                                          child: Row(
+                                                            children: const <
+                                                                Widget>[
+                                                              Icon(Icons
+                                                                  .group_add_outlined),
+                                                              SizedBox(
+                                                                width: 5,
+                                                              ),
+                                                              Text('TAMBAH'),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(),
                                         _uslIdEx == null
                                             ? Column(
                                                 children: const <Widget>[
@@ -591,15 +719,25 @@ class _DetailPScreenState extends State<DetailPScreen>
                       children: <Widget>[
                         Container(
                           child: ListTile(
-                            onTap: () => showBottomModal(
-                                context,
-                                CompBottomUslT(
-                                  uslIdEx: _uslIdEx!,
-                                  orgIdEx: hibah!.uslOrg,
-                                  selectedIndex: _selectedIndex!,
-                                  token: _token!,
-                                ),
-                                200),
+                            onTap: hibah!.uslSls == "1"
+                                ? () => showBottomModal(
+                                    context,
+                                    CompBottomUslT(
+                                      uslIdEx: _uslIdEx!,
+                                      orgIdEx: hibah!.uslOrg,
+                                      selectedIndex: _selectedIndex!,
+                                      token: _token,
+                                    ),
+                                    200)
+                                : () {
+                                    AwesomeDialog(
+                                      dialogType: DialogType.ERROR,
+                                      context: context,
+                                      title: 'Maaf',
+                                      desc:
+                                          'Jenis Bantuan Sudah Tidak Dapat Diubah',
+                                    ).show();
+                                  },
                             minLeadingWidth: 0,
                             leading: const SizedBox(
                               height: double.infinity,
@@ -623,12 +761,14 @@ class _DetailPScreenState extends State<DetailPScreen>
                                 color: Colors.black87,
                               ),
                             ),
-                            trailing: const SizedBox(
+                            trailing: SizedBox(
                               height: double.infinity,
                               child: SPIcon(
                                 width: 15,
                                 height: 15,
-                                assetName: 'sync.png',
+                                assetName: hibah!.uslSls == "1"
+                                    ? 'sync.png'
+                                    : 'ban.png',
                               ),
                             ),
                           ),
@@ -636,6 +776,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                       ],
                     ),
                   ),
+                  UslConfList(uslIdEx: _uslIdEx!),
                 ],
               ),
             ],

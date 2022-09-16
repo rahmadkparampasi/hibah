@@ -10,12 +10,14 @@ class DetailScreen extends StatefulWidget {
   final String uslIdEx;
   final String orgIdEx;
   final int selectedIndex;
+  final int selectedIndexD;
 
   const DetailScreen({
     required this.token,
     required this.uslIdEx,
     required this.orgIdEx,
     this.selectedIndex = 0,
+    this.selectedIndexD = 0,
   });
 
   @override
@@ -54,6 +56,7 @@ class _DetailScreenState extends State<DetailScreen> {
           token: _token,
           selectedIndex: _selectedIndex,
           uslIdEx: _uslIdEx!,
+          selectedIndexD: widget.selectedIndexD,
         ),
         DetailOScreen(
           token: _token,

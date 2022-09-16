@@ -28,6 +28,32 @@ class HibahForList {
   }
 }
 
+class PgwForList {
+  String pgwIdEx;
+  String pgwNm;
+  String pgwNip;
+  String pgwJbt;
+  String pgwGol;
+  int no;
+  PgwForList(
+      {required this.pgwIdEx,
+      required this.pgwNm,
+      required this.pgwNip,
+      required this.pgwJbt,
+      required this.no,
+      required this.pgwGol});
+  factory PgwForList.fromJson(Map<String, dynamic> item) {
+    return PgwForList(
+      pgwIdEx: item['pgw_id_ex'],
+      pgwNm: item['pgw_nm'],
+      pgwNip: item['pgw_nip'],
+      pgwJbt: item['pgw_jbt'],
+      no: item['no'],
+      pgwGol: item['pgw_gol'],
+    );
+  }
+}
+
 class Hibah {
   String uslIdEx;
   String uslNm;
@@ -36,6 +62,8 @@ class Hibah {
   String uslOrg;
   String uslT;
   String uslThn;
+  String uslSls;
+  String orgNm;
 
   Hibah({
     required this.uslIdEx,
@@ -45,6 +73,8 @@ class Hibah {
     required this.uslOrg,
     required this.uslT,
     required this.uslThn,
+    required this.uslSls,
+    required this.orgNm,
   });
   factory Hibah.fromJson(Map<String, dynamic> item) {
     return Hibah(
@@ -55,6 +85,8 @@ class Hibah {
       uslOrg: item['usl_org'],
       uslT: item['usl_t'],
       uslThn: item['usl_thn'],
+      uslSls: item['usl_sls'],
+      orgNm: item['org_nm'],
     );
   }
 }

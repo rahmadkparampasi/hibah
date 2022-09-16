@@ -485,4 +485,32 @@ class HibahService {
       ),
     );
   }
+
+  Future<APIResponseHibah<List<PgwForList>>> getPgwListPage() {
+    Uri newApiUrl = Uri.parse('$apiURL/pgw/getAllM');
+
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final pgwList = <PgwForList>[];
+        for (var item in jsonData) {
+          pgwList.add(PgwForList.fromJson(item));
+        }
+        return APIResponseHibah<List<PgwForList>>(data: pgwList);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final pgwList = <PgwForList>[];
+        for (var item in jsonData) {
+          pgwList.add(PgwForList.fromJson(item));
+        }
+        return APIResponseHibah<List<PgwForList>>(data: pgwList);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<PgwForList>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan, Silahkan Muat Kembali',
+        status: 500,
+      ),
+    );
+  }
 }

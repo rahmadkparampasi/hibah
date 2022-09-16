@@ -193,61 +193,36 @@ class _ProsesScreenState extends State<ProsesScreen> {
                     color: Colors.green,
                   ),
               itemBuilder: (_, index) {
-                return Dismissible(
-                  key: ValueKey(_apiResponseHibah!.data![index].orgNama),
-                  direction: DismissDirection.startToEnd,
-                  onDismissed: (direction) {},
-                  confirmDismiss: (direction) async {
-                    final result = await showDialog(
-                      context: context,
-                      builder: (_) => ProsesScreen(
-                        token: _token,
-                        selectedIndex: _selectedIndex!,
-                      ),
-                    );
-                    return result;
-                  },
-                  background: Container(
-                    color: Colors.red,
-                    padding: const EdgeInsets.only(left: 16),
-                    child: const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Icon(
-                        Icons.delete,
-                        color: Colors.white,
+                return Card(
+                  elevation: 3,
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.blueAccent,
+                      child: Text(
+                        _apiResponseHibah!.data![index].no.toString(),
                       ),
                     ),
-                  ),
-                  child: Card(
-                    elevation: 3,
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.blueAccent,
-                        child:
-                            Text(_apiResponseHibah!.data![index].no.toString()),
-                      ),
-                      title: Text(
-                        '${_apiResponseHibah!.data![index].orgNama} - ${_apiResponseHibah!.data![index].uslNm}',
-                        style: TextStyle(color: Theme.of(context).primaryColor),
-                      ),
-                      subtitle: Text(
-                          '${_apiResponseHibah!.data![index].anggaran} - ${_apiResponseHibah!.data![index].uslHsl}'),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => DetailScreen(
-                              token: _token,
-                              uslIdEx: _apiResponseHibah!.data![index].uslIdEx,
-                              orgIdEx: _apiResponseHibah!.data![index].uslOrg,
-                              selectedIndex: _selectedIndex!,
-                            ),
+                    title: Text(
+                      '${_apiResponseHibah!.data![index].orgNama} - ${_apiResponseHibah!.data![index].uslNm}',
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
+                    subtitle: Text(
+                        '${_apiResponseHibah!.data![index].anggaran} - ${_apiResponseHibah!.data![index].uslHsl}'),
+                    onTap: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailScreen(
+                            token: _token,
+                            uslIdEx: _apiResponseHibah!.data![index].uslIdEx,
+                            orgIdEx: _apiResponseHibah!.data![index].uslOrg,
+                            selectedIndex: _selectedIndex!,
                           ),
-                        );
-                      },
-                    ),
+                        ),
+                      );
+                    },
                   ),
                 );
               },

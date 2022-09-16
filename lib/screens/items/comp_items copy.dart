@@ -482,55 +482,65 @@ class _CompBottomUslVerState extends State<CompBottomUslVer> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: <Widget>[
-        Builder(
-          builder: (_) {
-            if (_isLoading) {
-              return Column(
-                children: const <Widget>[
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                  ),
-                ],
-              );
-            }
-            if (_apiResponsePgw == null) {
-              return Center(
-                child: Column(
-                  children: <Widget>[
-                    Text(errorMessage),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                  ],
-                ),
-              );
-            }
-            return ListView.separated(
-                shrinkWrap: true,
-                separatorBuilder: (_, __) => const Divider(
-                      height: 1,
-                      color: Colors.green,
-                    ),
-                itemBuilder: (_, index) {
-                  return ListTile(
-                    onTap: () {},
-                    minLeadingWidth: 0,
-                    leading: const SizedBox(
-                      height: double.infinity,
-                      child: SPIcon(assetName: 'rating.png'),
-                    ),
-                    title: Text(
-                      '${_apiResponsePgw!.data![index].pgwNm}',
-                      style: TextStyle(color: Colors.black, fontSize: 15),
+    return DraggableScrollableSheet(
+      builder: (_, controller) => Container(
+        child: ListView(
+          children: <Widget>[
+            Builder(
+              builder: (_) {
+                if (_isLoading) {
+                  return Column(
+                    children: const <Widget>[
+                      CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                      ),
+                    ],
+                  );
+                }
+                if (_apiResponsePgw == null) {
+                  return Center(
+                    child: Column(
+                      children: <Widget>[
+                        Text(errorMessage),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                      ],
                     ),
                   );
-                },
-                itemCount: _apiResponsePgw!.data!.length);
-          },
+                }
+                return ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (_, __) => const Divider(
+                          height: 1,
+                          color: Colors.green,
+                        ),
+                    itemBuilder: (_, index) {
+                      return Column(
+                        children: <Widget>[
+                          ListTile(
+                            onTap: () {},
+                            minLeadingWidth: 0,
+                            leading: const SizedBox(
+                              height: double.infinity,
+                              child: SPIcon(assetName: 'rating.png'),
+                            ),
+                            title: Text(
+                              '${_apiResponsePgw!.data![index].pgwNm}',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 15),
+                            ),
+                          ),
+                          const Divider()
+                        ],
+                      );
+                    },
+                    itemCount: _apiResponsePgw!.data!.length);
+              },
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }
