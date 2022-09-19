@@ -853,9 +853,8 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
   APIResponseHibah<List<SrtForList>>? _apiResponseSrt;
 
   DateTime _date = DateTime.now();
-  TimeOfDay _time = const TimeOfDay(hour: 21, minute: 0);
 
-  Future<Null> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     DateTime? _datePicker = await showDatePicker(
         context: context,
         initialDate: _date,
@@ -870,16 +869,31 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
     }
   }
 
-  Future<Null> _selectTime(BuildContext context) async {
+  Future<void> _selectTime(BuildContext context) async {
     final newTime = await showTimePicker(
       context: context,
-      initialTime: _time,
+      initialTime: const TimeOfDay(hour: 9, minute: 0),
+      builder: (context, childWidget) {
+        final Widget mediaQueryWrapper = MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            alwaysUse24HourFormat: true,
+          ),
+          child: childWidget!,
+        );
+        if (Localizations.localeOf(context).languageCode == 'in') {
+          return Localizations.override(
+            context: context,
+            locale: const Locale('in', 'id'),
+            child: mediaQueryWrapper,
+          );
+        }
+        return mediaQueryWrapper;
+      },
     );
 
     if (newTime == null) return;
     setState(() {
-      _time = newTime;
-      inbJam.text = _time.format(context);
+      inbJam.text = newTime.format(context);
     });
   }
 
@@ -887,7 +901,6 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _fetchSrt();
     setState(() {
@@ -1093,7 +1106,7 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 prefixIcon: Icon(
-                  Icons.calendar_month_outlined,
+                  Icons.access_time_rounded,
                   size: 20,
                 ),
                 labelText: 'Pilih Jam',
@@ -1109,6 +1122,94 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
         const SizedBox(
           height: 5,
         ),
+        Container(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => FullScreenLoader(),
+                    );
+                    if (inbPsn.text == '' ||
+                        inbSrt == null ||
+                        inbTgl.text == '' ||
+                        inbJam.text == '') {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.ERROR,
+                        animType: AnimType.TOPSLIDE,
+                        title: 'Maaf',
+                        desc: 'Lengkapi Data Terlebih Dahulu',
+                        btnOkOnPress: () => Navigator.pop(context),
+                      ).show();
+                    } else {
+                      final insertInb = InsertInb(
+                        inbOrg: widget.orgIdEx,
+                        inbUsl: widget.uslIdEx,
+                        inbSrt: inbSrt!,
+                        inbTgl: inbTgl.text,
+                        inbJam: inbJam.text,
+                        inbPsn: inbPsn.text,
+                      );
+                      final result = await service.insertInb(insertInb);
+                      Navigator.pop(context);
+                      final title = result.error ? 'Maaf' : 'Terima Kasih';
+                      final text = result.error
+                          ? (result.status == 500
+                              ? 'Terjadi Kesalahan'
+                              : result.data?.message)
+                          : result.data?.message;
+                      final dialog = result.dialog;
+                      if (result.error) {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: dialog,
+                          animType: AnimType.TOPSLIDE,
+                          title: title,
+                          desc: text!,
+                          btnOkOnPress: () {
+                            Navigator.pop(context);
+                          },
+                        ).show();
+                      } else {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: dialog,
+                          animType: AnimType.TOPSLIDE,
+                          title: title,
+                          desc: text!,
+                          btnOkOnPress: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailScreen(
+                                  uslIdEx: uslIdEx!,
+                                  orgIdEx: orgIdEx!,
+                                  token: token!,
+                                  selectedIndex: 0,
+                                  selectedIndexD: selectedIndex!,
+                                ),
+                              ),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                        ).show();
+                      }
+                    }
+                  },
+                  child: const Text('SIMPAN'),
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
       ],
     );
   }
@@ -1120,7 +1221,10 @@ class FullScreenLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        decoration: const BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.5)),
-        child: const Center(child: CircularProgressIndicator()));
+      decoration: const BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.5)),
+      child: const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
   }
 }

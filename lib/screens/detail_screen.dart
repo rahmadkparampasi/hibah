@@ -15,6 +15,7 @@ class DetailScreen extends StatefulWidget {
   final int selectedIndexD;
 
   const DetailScreen({
+    super.key,
     required this.token,
     required this.uslIdEx,
     required this.orgIdEx,
@@ -120,7 +121,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     selectedIndex: _selectedIndex,
                     token: _token,
                   ),
-                  400),
+                  500),
               child: const Icon(
                 Icons.mail_outline,
                 size: 26.0,

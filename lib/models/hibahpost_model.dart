@@ -58,6 +58,33 @@ class InsertUslVer {
   }
 }
 
+class InsertInb {
+  String inbOrg;
+  String inbUsl;
+  String inbSrt;
+  String inbTgl;
+  String inbJam;
+  String inbPsn;
+  InsertInb({
+    required this.inbOrg,
+    required this.inbUsl,
+    required this.inbSrt,
+    required this.inbTgl,
+    required this.inbJam,
+    required this.inbPsn,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "inb_org": inbOrg,
+      "inb_usl": inbUsl,
+      "inb_srt": inbSrt,
+      "inb_tgl": inbTgl,
+      "inb_jam": inbJam,
+      "inb_psn": inbPsn,
+    };
+  }
+}
+
 class FeedBackUsl {
   String message;
   String response;
