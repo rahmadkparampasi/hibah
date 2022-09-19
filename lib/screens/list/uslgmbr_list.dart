@@ -5,7 +5,6 @@ import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:SimhegaM/screens/items/preimg_items.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:SimhegaM/services/hibahcomp_services.dart';
-import 'package:SimhegaM/widgets/scrollable_widget.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';

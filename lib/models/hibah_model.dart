@@ -176,15 +176,19 @@ class UslT {
 }
 
 class UslThp {
+  String uslThpIdEx;
   String uslThpNm;
   String uslThpTglM;
+  String uslThpTglMAlt;
   String uslThpTglA;
   String uslThpKet;
   String uslThpJns;
   int no;
   UslThp({
+    required this.uslThpIdEx,
     required this.uslThpNm,
     required this.uslThpTglM,
+    required this.uslThpTglMAlt,
     required this.uslThpTglA,
     required this.uslThpKet,
     required this.uslThpJns,
@@ -192,8 +196,10 @@ class UslThp {
   });
   factory UslThp.fromJson(Map<String, dynamic> item) {
     return UslThp(
+      uslThpIdEx: item['thp_id_ex'],
       uslThpNm: item['thp_nm'],
       uslThpTglM: item['uslthp_tglm'],
+      uslThpTglMAlt: item['uslthp_tglmAlt'],
       uslThpTglA: item['uslthp_tgla'],
       uslThpKet: item['uslthp_ket'],
       uslThpJns: item['uslthp_jns'],

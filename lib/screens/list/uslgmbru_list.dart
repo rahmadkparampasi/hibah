@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/screens/detail_screen.dart';
-import 'package:SimhegaM/screens/detailp_screen.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:SimhegaM/services/hibahcomp_services.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';

@@ -3,13 +3,25 @@ import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:SimhegaM/screens/items/prepdf_items.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
+import 'package:SimhegaM/services/hibahcomp_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class UslBaList extends StatefulWidget {
   final String uslIdEx;
+  final String uslSls;
+  final String orgIdEx;
+  final String token;
+  final int selectedIndexD;
 
-  const UslBaList({super.key, required this.uslIdEx});
+  const UslBaList({
+    super.key,
+    required this.uslIdEx,
+    required this.uslSls,
+    required this.orgIdEx,
+    required this.token,
+    required this.selectedIndexD,
+  });
 
   @override
   State<UslBaList> createState() => _UslBaListState();
@@ -17,7 +29,10 @@ class UslBaList extends StatefulWidget {
 
 class _UslBaListState extends State<UslBaList> {
   String? uslIdEx;
+  String uslSls = "2";
+
   HibahService get service => GetIt.I<HibahService>();
+  HibahCompService get serviceComp => GetIt.I<HibahCompService>();
 
   int? sortColumnIndex;
   bool isAscending = false;
@@ -27,12 +42,14 @@ class _UslBaListState extends State<UslBaList> {
   APIResponseHibah<List<UslBa>>? uslBa;
 
   final columns = ['No', 'Nama Berkas', 'Berkas'];
+  final columnsE = ['No', 'Nama Berkas', 'Berkas', 'Aksi'];
 
   @override
   void initState() {
     super.initState();
     setState(() {
       uslIdEx = widget.uslIdEx;
+      uslSls = widget.uslSls;
       _isError = true;
     });
     _fetchUslBa(uslIdEx!);

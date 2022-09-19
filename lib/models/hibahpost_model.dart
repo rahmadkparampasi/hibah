@@ -85,6 +85,57 @@ class InsertInb {
   }
 }
 
+class ChangeThp {
+  String uslThpUsl;
+  String uslThpThp;
+  String uslThpTglM;
+  String uslThpTglA;
+  String uslThpKet;
+  ChangeThp({
+    required this.uslThpUsl,
+    required this.uslThpThp,
+    required this.uslThpTglM,
+    required this.uslThpTglA,
+    required this.uslThpKet,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "uslthp_usl": uslThpUsl,
+      "uslthp_thp": uslThpThp,
+      "uslthp_tglm": uslThpTglM,
+      "uslthp_tgla": uslThpTglA,
+      "uslthp_ket": uslThpKet,
+    };
+  }
+}
+
+class InsertThp {
+  String inbOrg;
+  String inbUsl;
+  String inbSrt;
+  String inbTgl;
+  String inbJam;
+  String inbPsn;
+  InsertThp({
+    required this.inbOrg,
+    required this.inbUsl,
+    required this.inbSrt,
+    required this.inbTgl,
+    required this.inbJam,
+    required this.inbPsn,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "inb_org": inbOrg,
+      "inb_usl": inbUsl,
+      "inb_srt": inbSrt,
+      "inb_tgl": inbTgl,
+      "inb_jam": inbJam,
+      "inb_psn": inbPsn,
+    };
+  }
+}
+
 class FeedBackUsl {
   String message;
   String response;

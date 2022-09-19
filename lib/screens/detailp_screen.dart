@@ -1,4 +1,3 @@
-import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
@@ -441,7 +440,13 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                   ),
                                                 ],
                                               )
-                                            : UslThpList(uslIdEx: _uslIdEx!),
+                                            : UslThpList(
+                                                uslIdEx: _uslIdEx!,
+                                                orgIdEx: hibah!.uslOrg,
+                                                token: _token,
+                                                selectedIndexD: _selectedIndexD,
+                                                uslSls: hibah!.uslSls,
+                                              ),
                                       ],
                                     ),
                                     ListView(
@@ -562,12 +567,8 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                     : hibah!.uslOrg,
                                                 selectedIndexD: _selectedIndexD,
                                               ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        const Divider(),
-                                        const SizedBox(
-                                          height: 5,
+                                        const Divider(
+                                          height: 10,
                                         ),
                                         Container(
                                           child: const Center(
@@ -580,6 +581,75 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             ),
                                           ),
                                         ),
+                                        _uslIdEx != null
+                                            ? hibah != null
+                                                ? hibah!.uslSls == "4"
+                                                    ? Center(
+                                                        child: Container(
+                                                          width: 130,
+                                                          child: Center(
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                textStyle:
+                                                                    const TextStyle(
+                                                                  fontSize:
+                                                                      13.5,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                              onPressed: () =>
+                                                                  showBottomModal(
+                                                                context,
+                                                                CompBottomUslBa(
+                                                                    uslIdEx:
+                                                                        _uslIdEx!,
+                                                                    orgIdEx: hibah!
+                                                                        .uslOrg,
+                                                                    selectedIndex:
+                                                                        _selectedIndexD,
+                                                                    token:
+                                                                        _token),
+                                                                400,
+                                                              ),
+                                                              child: Container(
+                                                                height: 45,
+                                                                child: Center(
+                                                                  child: Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: const <
+                                                                        Widget>[
+                                                                      Icon(
+                                                                        Icons
+                                                                            .note_add_outlined,
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                        'TAMBAH',
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container()
+                                                : Container()
+                                            : Container(),
                                         _uslIdEx == null
                                             ? Column(
                                                 children: const <Widget>[
@@ -595,7 +665,17 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                   ),
                                                 ],
                                               )
-                                            : UslBaList(uslIdEx: _uslIdEx!),
+                                            : UslBaList(
+                                                uslIdEx: _uslIdEx!,
+                                                orgIdEx: hibah == null
+                                                    ? ""
+                                                    : hibah!.uslOrg,
+                                                uslSls: hibah == null
+                                                    ? "0"
+                                                    : hibah!.uslSls,
+                                                token: _token,
+                                                selectedIndexD: _selectedIndexD,
+                                              ),
                                       ],
                                     ),
                                     ListView(

@@ -1,13 +1,25 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
+import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class UslThpList extends StatefulWidget {
   final String uslIdEx;
-  const UslThpList({super.key, required this.uslIdEx});
+  final String uslSls;
+  final String orgIdEx;
+  final String token;
+  final int selectedIndexD;
+  const UslThpList({
+    super.key,
+    required this.uslIdEx,
+    required this.uslSls,
+    required this.orgIdEx,
+    required this.token,
+    required this.selectedIndexD,
+  });
 
   @override
   State<UslThpList> createState() => _UslThpListState();
@@ -89,13 +101,13 @@ class _UslThpListState extends State<UslThpList> {
             : Container(
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: SingleChildScrollView(
-                  child:
-                  DataTable(
-                  columns: getColumns(columns),
-                  rows: getRows(
-                    uslThp,
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: getColumns(columns),
+                    rows: getRows(
+                      uslThp,
+                    ),
                   ),
-                ) ,
                 ),
               );
   }
@@ -113,14 +125,25 @@ class _UslThpListState extends State<UslThpList> {
           SizedBox(width: 150, child: Text(usl.uslThpNm)),
           SizedBox(width: 100, child: Text(usl.uslThpTglM)),
           SizedBox(width: 100, child: Text(usl.uslThpTglA)),
-          SizedBox(width: 60, child: Text(usl.uslThpJns)),
-          SizedBox(width: 60, child: Text(usl.uslThpKet)),
+          SizedBox(width: 80, child: Text(usl.uslThpJns)),
+          SizedBox(width: 80, child: Text(usl.uslThpKet)),
           SizedBox(
             width: 40,
             child: ButtonDTP(
               child: IconButton(
                 iconSize: 20,
-                onPressed: () {},
+                onPressed: () => showBottomModal(
+                    context,
+                    CompBottomThp(
+                      uslIdEx: uslIdEx!,
+                      orgIdEx: widget.orgIdEx,
+                      selectedIndex: widget.selectedIndexD,
+                      token: widget.token,
+                      uslThpNm: usl.uslThpNm,
+                      uslThpIdEx: usl.uslThpIdEx,
+                      uslThpTglMAlt: usl.uslThpTglMAlt,
+                    ),
+                    470),
                 icon: const Icon(
                   Icons.change_circle_outlined,
                   color: Colors.white,

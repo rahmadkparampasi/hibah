@@ -213,7 +213,76 @@ class _UslConfListState extends State<UslConfList> {
                       ),
                     ),
                   )
-                : Container();
+                : hibah!.uslSls == "3"
+                    ? Container(
+                        child: DismissibleWidget(
+                            item: hibah,
+                            child: const Card(
+                              elevation: 3,
+                              child: const ListTile(
+                                leading: SizedBox(
+                                  height: double.infinity,
+                                  child: SPIcon(assetName: 'check.png'),
+                                ),
+                                title: const Text(
+                                  'Jenis Verifikasi',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 15),
+                                ),
+                                subtitle: Text(
+                                  'Terbitkan Berita Acara Hasil Verifikasi',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onDismissed: (direction) async {
+                              showDialog(
+                                context: context,
+                                builder: (ctx) => const FullScreenLoader(),
+                              );
+                              dismissItem(context, direction,
+                                  'Menerbitkan Berita Acara Hasil Verifikasi',
+                                  () async {
+                                final url = 'brtVer/$uslIdEx';
+                                final result = await serviceStj.changeStj(url);
+                                final title =
+                                    result.error ? 'Maaf' : 'Terima Kasih';
+                                final text = result.error
+                                    ? (result.status == 500
+                                        ? 'Terjadi Kesalahan'
+                                        : result.data?.message)
+                                    : result.data?.message;
+                                final dialog = result.dialog;
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: dialog,
+                                  animType: AnimType.TOPSLIDE,
+                                  title: title,
+                                  desc: text!,
+                                  btnOkOnPress: () {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DetailScreen(
+                                          uslIdEx: widget.uslIdEx,
+                                          orgIdEx: hibah!.uslOrg,
+                                          token: widget.token,
+                                          selectedIndexD: widget.selectedIndexD,
+                                        ),
+                                      ),
+                                      (Route<dynamic> route) => false,
+                                    );
+                                  },
+                                ).show();
+                              }, () {
+                                Navigator.pop(context);
+                              });
+                            }),
+                      )
+                    : Container();
   }
 
   void dismissItem(BuildContext context, DismissDirection direction,
