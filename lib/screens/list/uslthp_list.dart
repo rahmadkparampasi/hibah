@@ -88,11 +88,14 @@ class _UslThpListState extends State<UslThpList> {
               )
             : Container(
                 padding: const EdgeInsets.only(left: 8, right: 8),
-                child: DataTable(
+                child: SingleChildScrollView(
+                  child:
+                  DataTable(
                   columns: getColumns(columns),
                   rows: getRows(
                     uslThp,
                   ),
+                ) ,
                 ),
               );
   }
