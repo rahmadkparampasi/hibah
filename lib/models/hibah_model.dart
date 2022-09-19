@@ -64,6 +64,10 @@ class Hibah {
   String uslThn;
   String uslSls;
   String orgNm;
+  String anggaran;
+  String anggaranAlt;
+  String uslHsl;
+  String uslHslAlt;
 
   Hibah({
     required this.uslIdEx,
@@ -75,6 +79,10 @@ class Hibah {
     required this.uslThn,
     required this.uslSls,
     required this.orgNm,
+    required this.anggaran,
+    required this.anggaranAlt,
+    required this.uslHsl,
+    required this.uslHslAlt,
   });
   factory Hibah.fromJson(Map<String, dynamic> item) {
     return Hibah(
@@ -87,6 +95,10 @@ class Hibah {
       uslThn: item['usl_thn'],
       uslSls: item['usl_sls'],
       orgNm: item['org_nm'],
+      anggaran: item['anggaran'],
+      anggaranAlt: item['anggaranAlt'],
+      uslHsl: item['usl_hsl'],
+      uslHslAlt: item['usl_hslAlt'],
     );
   }
 }
@@ -388,6 +400,25 @@ class PengOrganisasiForList {
       pengNik: item['peng_nik'],
       pengPicKtp: item['peng_ktp'],
       pengPic: item['peng_pic'],
+      no: item['no'],
+    );
+  }
+}
+
+class SrtForList {
+  String srtIdEx;
+  String srtNm;
+
+  int no;
+  SrtForList({
+    required this.srtIdEx,
+    required this.srtNm,
+    required this.no,
+  });
+  factory SrtForList.fromJson(Map<String, dynamic> item) {
+    return SrtForList(
+      srtIdEx: item['srt_id_ex'],
+      srtNm: item['srt_nm'],
       no: item['no'],
     );
   }

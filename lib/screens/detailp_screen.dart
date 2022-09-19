@@ -1,3 +1,4 @@
+import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
@@ -459,62 +460,81 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             ),
                                           ),
                                         ),
-                                        _uslIdEx != null && hibah!.uslSls == "2"
-                                            ? Center(
-                                                child: Container(
-                                                  width: 150,
-                                                  child: Center(
-                                                    child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        textStyle:
-                                                            const TextStyle(
-                                                          fontSize: 13.5,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                      onPressed: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                UslGmbrUList(
-                                                              uslGmbrUsl:
-                                                                  _uslIdEx!,
-                                                              uslNm:
-                                                                  hibah!.uslNm,
-                                                              orgNm:
-                                                                  hibah!.orgNm,
-                                                              orgIdEx:
-                                                                  hibah!.uslOrg,
-                                                              selectedIndexD:
-                                                                  _selectedIndexD,
-                                                              token: _token,
+                                        _uslIdEx != null
+                                            ? hibah != null
+                                                ? hibah!.uslSls == "2"
+                                                    ? Center(
+                                                        child: Container(
+                                                          width: 130,
+                                                          child: Center(
+                                                            child:
+                                                                ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                textStyle:
+                                                                    const TextStyle(
+                                                                  fontSize:
+                                                                      13.5,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            UslGmbrUList(
+                                                                      uslGmbrUsl:
+                                                                          _uslIdEx!,
+                                                                      uslNm: hibah!
+                                                                          .uslNm,
+                                                                      orgNm: hibah!
+                                                                          .orgNm,
+                                                                      orgIdEx:
+                                                                          hibah!
+                                                                              .uslOrg,
+                                                                      selectedIndexD:
+                                                                          _selectedIndexD,
+                                                                      token:
+                                                                          _token,
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                              child: Container(
+                                                                height: 45,
+                                                                child: Center(
+                                                                  child: Row(
+                                                                    crossAxisAlignment:
+                                                                        CrossAxisAlignment
+                                                                            .center,
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .center,
+                                                                    children: const <
+                                                                        Widget>[
+                                                                      Icon(Icons
+                                                                          .add_a_photo),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            5,
+                                                                      ),
+                                                                      Text(
+                                                                          'TAMBAH'),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
-                                                        );
-                                                      },
-                                                      child: Container(
-                                                        height: 45,
-                                                        child: Center(
-                                                          child: Row(
-                                                            children: const <
-                                                                Widget>[
-                                                              Icon(Icons
-                                                                  .add_a_photo),
-                                                              SizedBox(
-                                                                width: 5,
-                                                              ),
-                                                              Text('TAMBAH'),
-                                                            ],
-                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
+                                                      )
+                                                    : Container()
+                                                : Container()
                                             : Container(),
                                         _uslIdEx == null
                                             ? Column(
@@ -533,9 +553,13 @@ class _DetailPScreenState extends State<DetailPScreen>
                                               )
                                             : UslGmbrList(
                                                 uslIdEx: _uslIdEx!,
-                                                uslSls: hibah!.uslSls,
+                                                uslSls: hibah == null
+                                                    ? "0"
+                                                    : hibah!.uslSls,
                                                 token: _token,
-                                                orgIdEx: hibah!.uslOrg,
+                                                orgIdEx: hibah == null
+                                                    ? ""
+                                                    : hibah!.uslOrg,
                                                 selectedIndexD: _selectedIndexD,
                                               ),
                                         const SizedBox(
@@ -590,23 +614,29 @@ class _DetailPScreenState extends State<DetailPScreen>
                                             ),
                                           ),
                                         ),
-                                        _uslIdEx != null && hibah!.uslSls == "2"
-                                            ? Center(
-                                                child: Container(
-                                                  width: 150,
-                                                  child: Center(
-                                                    child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        textStyle:
-                                                            const TextStyle(
-                                                          fontSize: 13.5,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                      onPressed: () =>
-                                                          showBottomModal(
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        _uslIdEx != null
+                                            ? hibah != null
+                                                ? hibah!.uslSls == "2"
+                                                    ? Center(
+                                                        child: SizedBox(
+                                                          width: 130,
+                                                          child: ElevatedButton(
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                fontSize: 13.5,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                              ),
+                                                            ),
+                                                            onPressed: () =>
+                                                                showBottomModal(
                                                               context,
                                                               CompBottomUslVer(
                                                                 uslIdEx:
@@ -614,30 +644,38 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                                 orgIdEx: hibah!
                                                                     .uslOrg,
                                                                 selectedIndex:
-                                                                    _selectedIndex!,
+                                                                    _selectedIndexD,
                                                                 token: _token,
                                                               ),
-                                                              200),
-                                                      child: Container(
-                                                        height: 45,
-                                                        child: Center(
-                                                          child: Row(
-                                                            children: const <
-                                                                Widget>[
-                                                              Icon(Icons
-                                                                  .group_add_outlined),
-                                                              SizedBox(
-                                                                width: 5,
+                                                              250,
+                                                            ),
+                                                            child: SizedBox(
+                                                              height: 45,
+                                                              child: Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                children: const <
+                                                                    Widget>[
+                                                                  Icon(Icons
+                                                                      .group_add_outlined),
+                                                                  SizedBox(
+                                                                    width: 5,
+                                                                  ),
+                                                                  Text(
+                                                                    'TAMBAH',
+                                                                  ),
+                                                                ],
                                                               ),
-                                                              Text('TAMBAH'),
-                                                            ],
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              )
+                                                      )
+                                                    : Container()
+                                                : Container()
                                             : Container(),
                                         _uslIdEx == null
                                             ? Column(
@@ -656,6 +694,14 @@ class _DetailPScreenState extends State<DetailPScreen>
                                               )
                                             : UslVerList(
                                                 uslIdEx: _uslIdEx!,
+                                                orgIdEx: hibah == null
+                                                    ? ""
+                                                    : hibah!.uslOrg,
+                                                selectedIndexD: _selectedIndexD,
+                                                token: _token,
+                                                uslSls: hibah == null
+                                                    ? "0"
+                                                    : hibah!.uslSls,
                                               ),
                                         const SizedBox(
                                           height: 5,
@@ -719,25 +765,29 @@ class _DetailPScreenState extends State<DetailPScreen>
                       children: <Widget>[
                         Container(
                           child: ListTile(
-                            onTap: hibah!.uslSls == "1"
-                                ? () => showBottomModal(
-                                    context,
-                                    CompBottomUslT(
-                                      uslIdEx: _uslIdEx!,
-                                      orgIdEx: hibah!.uslOrg,
-                                      selectedIndex: _selectedIndex!,
-                                      token: _token,
-                                    ),
-                                    200)
-                                : () {
-                                    AwesomeDialog(
-                                      dialogType: DialogType.ERROR,
-                                      context: context,
-                                      title: 'Maaf',
-                                      desc:
-                                          'Jenis Bantuan Sudah Tidak Dapat Diubah',
-                                    ).show();
-                                  },
+                            onTap: hibah == null
+                                ? () {}
+                                : hibah!.uslSls == "1"
+                                    ? () => showBottomModal(
+                                        context,
+                                        CompBottomUslT(
+                                          uslIdEx: _uslIdEx!,
+                                          orgIdEx: hibah == null
+                                              ? ""
+                                              : hibah!.uslOrg,
+                                          selectedIndex: _selectedIndex!,
+                                          token: _token,
+                                        ),
+                                        200)
+                                    : () {
+                                        AwesomeDialog(
+                                          dialogType: DialogType.ERROR,
+                                          context: context,
+                                          title: 'Maaf',
+                                          desc:
+                                              'Jenis Bantuan Sudah Tidak Dapat Diubah',
+                                        ).show();
+                                      },
                             minLeadingWidth: 0,
                             leading: const SizedBox(
                               height: double.infinity,
@@ -766,9 +816,11 @@ class _DetailPScreenState extends State<DetailPScreen>
                               child: SPIcon(
                                 width: 15,
                                 height: 15,
-                                assetName: hibah!.uslSls == "1"
-                                    ? 'sync.png'
-                                    : 'ban.png',
+                                assetName: hibah == null
+                                    ? 'ban.png'
+                                    : hibah!.uslSls == "1"
+                                        ? 'sync.png'
+                                        : 'ban.png',
                               ),
                             ),
                           ),
@@ -776,7 +828,11 @@ class _DetailPScreenState extends State<DetailPScreen>
                       ],
                     ),
                   ),
-                  UslConfList(uslIdEx: _uslIdEx!),
+                  UslConfList(
+                    uslIdEx: _uslIdEx!,
+                    selectedIndexD: _selectedIndexD,
+                    token: _token,
+                  ),
                 ],
               ),
             ],

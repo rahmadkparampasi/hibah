@@ -53,6 +53,7 @@ dependencies:
   flutter_pdfview: ^1.2.1
   flutter_downloader: ^1.8.3
   webcontent_converter: ^0.0.7+2
+  datetime_picker_formfield: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -2,6 +2,7 @@
 
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
+import 'package:SimhegaM/screens/detail_screen.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:SimhegaM/services/hibahstj_services.dart';
@@ -12,8 +13,15 @@ import 'package:SimhegaM/screens/items/comp_items.dart';
 
 class UslConfList extends StatefulWidget {
   String uslIdEx;
+  String token;
+  int selectedIndexD;
 
-  UslConfList({super.key, required this.uslIdEx});
+  UslConfList({
+    super.key,
+    required this.uslIdEx,
+    required this.token,
+    required this.selectedIndexD,
+  });
 
   @override
   State<UslConfList> createState() => _UslConfListState();
@@ -97,9 +105,24 @@ class _UslConfListState extends State<UslConfList> {
                         animType: AnimType.TOPSLIDE,
                         title: title,
                         desc: text!,
-                        btnOkOnPress: () => Navigator.pop(context),
+                        btnOkOnPress: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailScreen(
+                                uslIdEx: widget.uslIdEx,
+                                orgIdEx: hibah!.uslOrg,
+                                token: widget.token,
+                                selectedIndexD: widget.selectedIndexD,
+                              ),
+                            ),
+                            (Route<dynamic> route) => false,
+                          );
+                        },
                       ).show();
-                    }, () {});
+                    }, () {
+                      Navigator.pop(context);
+                    });
                   },
                   child: const Card(
                     elevation: 3,
@@ -123,7 +146,74 @@ class _UslConfListState extends State<UslConfList> {
                   ),
                 ),
               )
-            : Container();
+            : hibah!.uslSls == "2"
+                ? Container(
+                    child: DismissibleWidget(
+                      item: hibah,
+                      onDismissed: (direction) async {
+                        showDialog(
+                          context: context,
+                          builder: (ctx) => const FullScreenLoader(),
+                        );
+                        dismissItem(context, direction, 'Verifikasi Lapangan',
+                            () async {
+                          final url = 'verLap/$uslIdEx';
+                          final result = await serviceStj.changeStj(url);
+                          final title = result.error ? 'Maaf' : 'Terima Kasih';
+                          final text = result.error
+                              ? (result.status == 500
+                                  ? 'Terjadi Kesalahan'
+                                  : result.data?.message)
+                              : result.data?.message;
+                          final dialog = result.dialog;
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: dialog,
+                            animType: AnimType.TOPSLIDE,
+                            title: title,
+                            desc: text!,
+                            btnOkOnPress: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailScreen(
+                                    uslIdEx: widget.uslIdEx,
+                                    orgIdEx: hibah!.uslOrg,
+                                    token: widget.token,
+                                    selectedIndexD: widget.selectedIndexD,
+                                  ),
+                                ),
+                                (Route<dynamic> route) => false,
+                              );
+                            },
+                          ).show();
+                        }, () {
+                          Navigator.pop(context);
+                        });
+                      },
+                      child: const Card(
+                        elevation: 3,
+                        child: const ListTile(
+                          leading: SizedBox(
+                            height: double.infinity,
+                            child: SPIcon(assetName: 'check.png'),
+                          ),
+                          title: const Text(
+                            'Jenis Verifikasi',
+                            style: TextStyle(color: Colors.grey, fontSize: 15),
+                          ),
+                          subtitle: Text(
+                            'Verifikasi Lapangan',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container();
   }
 
   void dismissItem(BuildContext context, DismissDirection direction,
@@ -131,23 +221,23 @@ class _UslConfListState extends State<UslConfList> {
     switch (direction) {
       case DismissDirection.endToStart:
         AwesomeDialog(
-                context: context,
-                dialogType: DialogType.QUESTION,
-                title: 'Menolak',
-                desc: desc,
-                btnOkOnPress: ok,
-                btnCancelOnPress: () {})
-            .show();
+          context: context,
+          dialogType: DialogType.QUESTION,
+          title: 'Menolak',
+          desc: desc,
+          btnOkOnPress: ok,
+          btnCancelOnPress: cancel,
+        ).show();
         break;
       case DismissDirection.startToEnd:
         AwesomeDialog(
-                context: context,
-                dialogType: DialogType.QUESTION,
-                title: 'Menyetujui',
-                desc: desc,
-                btnOkOnPress: ok,
-                btnCancelOnPress: () {})
-            .show();
+          context: context,
+          dialogType: DialogType.QUESTION,
+          title: 'Menyetujui',
+          desc: desc,
+          btnOkOnPress: ok,
+          btnCancelOnPress: cancel,
+        ).show();
         break;
       default:
         break;

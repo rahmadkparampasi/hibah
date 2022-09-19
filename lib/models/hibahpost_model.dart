@@ -40,6 +40,24 @@ class ChangeUslT {
   }
 }
 
+class InsertUslVer {
+  String uslVerUsl;
+  String uslVerPgw;
+  String uslVerP;
+  InsertUslVer({
+    required this.uslVerUsl,
+    required this.uslVerPgw,
+    required this.uslVerP,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "uslver_usl": uslVerUsl,
+      "uslver_pgw": uslVerPgw,
+      "uslver_p": uslVerP
+    };
+  }
+}
+
 class FeedBackUsl {
   String message;
   String response;

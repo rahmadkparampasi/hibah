@@ -2,6 +2,8 @@ import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/screens/detailo_screen.dart';
 import 'package:SimhegaM/screens/detailp_screen.dart';
 import 'package:SimhegaM/screens/home_screen.dart';
+import 'package:SimhegaM/screens/items/comp_items.dart';
+import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -106,6 +108,27 @@ class _DetailScreenState extends State<DetailScreen> {
         centerTitle: false,
         backgroundColor: Colors.white,
         elevation: 0,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () => showBottomModal(
+                  context,
+                  CompBottomSrt(
+                    uslIdEx: _uslIdEx!,
+                    orgIdEx: widget.orgIdEx,
+                    selectedIndex: _selectedIndex,
+                    token: _token,
+                  ),
+                  400),
+              child: const Icon(
+                Icons.mail_outline,
+                size: 26.0,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ],
       ),
       body: options.elementAt(_selectedIndexD),
       bottomNavigationBar: Container(

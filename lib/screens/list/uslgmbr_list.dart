@@ -87,10 +87,12 @@ class _UslGmbrListState extends State<UslGmbrList> {
             ? Container(
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                        columns: getColumns(uslSls != "2" ? columns : columnsE),
-                        rows: getRows(uslGmbr))),
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: getColumns(uslSls != "2" ? columns : columnsE),
+                    rows: getRows(uslGmbr),
+                  ),
+                ),
               )
             : Column(
                 children: const <Widget>[

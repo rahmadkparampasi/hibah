@@ -1,13 +1,27 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
+import 'package:SimhegaM/screens/detail_screen.dart';
+import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class UslVerList extends StatefulWidget {
   final String uslIdEx;
+  final String uslSls;
+  final String orgIdEx;
+  final String token;
+  final int selectedIndexD;
 
-  const UslVerList({super.key, required this.uslIdEx});
+  const UslVerList({
+    super.key,
+    required this.uslIdEx,
+    required this.uslSls,
+    required this.orgIdEx,
+    required this.token,
+    required this.selectedIndexD,
+  });
 
   @override
   State<UslVerList> createState() => _UslVerListState();
@@ -15,6 +29,8 @@ class UslVerList extends StatefulWidget {
 
 class _UslVerListState extends State<UslVerList> {
   String? uslIdEx;
+  String uslSls = "2";
+
   HibahService get service => GetIt.I<HibahService>();
 
   int? sortColumnIndex;
@@ -25,12 +41,14 @@ class _UslVerListState extends State<UslVerList> {
   APIResponseHibah<List<UslVer>>? uslVer;
 
   final columns = ['No', 'Nama', 'Jabatan'];
+  final columnsE = ['No', 'Nama', 'Jabatan', 'Aksi'];
 
   @override
   void initState() {
     super.initState();
     setState(() {
       uslIdEx = widget.uslIdEx;
+      uslSls = widget.uslSls;
       _isError = true;
     });
     _fetchUslVer(uslIdEx!);
@@ -79,8 +97,13 @@ class _UslVerListState extends State<UslVerList> {
               )
             : Container(
                 padding: const EdgeInsets.only(left: 8, right: 8),
-                child: DataTable(
-                    columns: getColumns(columns), rows: getRows(uslVer)),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: DataTable(
+                    columns: getColumns(uslSls != "2" ? columns : columnsE),
+                    rows: getRows(uslVer),
+                  ),
+                ),
               );
   }
 
@@ -90,15 +113,76 @@ class _UslVerListState extends State<UslVerList> {
       )
       .toList();
 
-  List<DataRow> getRows(APIResponseHibah<List<UslVer>>? uslVer) =>
-      uslVer!.data!.map((UslVer usl) {
-        final cells = [
-          Text('${usl.no}'),
-          Text(usl.pgwNm),
-          Text(usl.pgwJbt),
-        ];
-        return DataRow(cells: getCells(cells));
-      }).toList();
+  List<DataRow> getRows(APIResponseHibah<List<UslVer>>? uslVer) => uslSls != "2"
+      ? uslVer!.data!.map((UslVer usl) {
+          final cells = [
+            Container(width: 20, child: Text('${usl.no}')),
+            Container(width: 100, child: Text(usl.pgwNm)),
+            Container(width: 100, child: Text(usl.pgwJbt)),
+          ];
+          return DataRow(cells: getCells(cells));
+        }).toList()
+      : uslVer!.data!.map((UslVer usl) {
+          final cells = [
+            Container(width: 20, child: Text('${usl.no}')),
+            Container(width: 100, child: Text(usl.pgwNm)),
+            Container(width: 100, child: Text(usl.pgwJbt)),
+            Container(
+              width: 40,
+              child: ButtonDTP(
+                child: IconButton(
+                  iconSize: 20,
+                  onPressed: () {
+                    AwesomeDialog(
+                      context: context,
+                      dialogType: DialogType.QUESTION,
+                      title: 'Menyetujui',
+                      desc: 'Menghapus Anggota Verifikator',
+                      btnOkOnPress: () async {
+                        final result =
+                            await service.uslVerDelete(usl.uslVerIdEx);
+                        final title = result.error ? 'Maaf' : 'Terima Kasih';
+                        final text = result.error
+                            ? (result.status == 500
+                                ? 'Terjadi Kesalahan'
+                                : result.data?.message)
+                            : result.data?.message;
+                        final dialog = result.dialog;
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: dialog,
+                          animType: AnimType.TOPSLIDE,
+                          title: title,
+                          desc: text!,
+                          btnOkOnPress: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => DetailScreen(
+                                  uslIdEx: widget.uslIdEx,
+                                  orgIdEx: widget.orgIdEx,
+                                  token: widget.token,
+                                  selectedIndexD: widget.selectedIndexD,
+                                ),
+                              ),
+                              (Route<dynamic> route) => false,
+                            );
+                          },
+                        ).show();
+                      },
+                      btnCancelOnPress: () {},
+                    ).show();
+                  },
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ];
+          return DataRow(cells: getCells(cells));
+        }).toList();
 
   List<DataCell> getCells(List<dynamic> cells) =>
       cells.map((data) => DataCell(data)).toList();
