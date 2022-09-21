@@ -11,6 +11,7 @@ class UslThpList extends StatefulWidget {
   final String uslSls;
   final String orgIdEx;
   final String token;
+  final String pgnJns;
   final int selectedIndexD;
   const UslThpList({
     super.key,
@@ -18,6 +19,7 @@ class UslThpList extends StatefulWidget {
     required this.uslSls,
     required this.orgIdEx,
     required this.token,
+    required this.pgnJns,
     required this.selectedIndexD,
   });
 
@@ -142,6 +144,7 @@ class _UslThpListState extends State<UslThpList> {
                       uslThpNm: usl.uslThpNm,
                       uslThpIdEx: usl.uslThpIdEx,
                       uslThpTglMAlt: usl.uslThpTglMAlt,
+                      pgnJns: widget.pgnJns,
                     ),
                     470),
                 icon: const Icon(

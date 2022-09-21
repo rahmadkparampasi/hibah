@@ -14,12 +14,14 @@ import 'package:SimhegaM/screens/items/comp_items.dart';
 class UslConfList extends StatefulWidget {
   String uslIdEx;
   String token;
+  String pgnJns;
   int selectedIndexD;
 
   UslConfList({
     super.key,
     required this.uslIdEx,
     required this.token,
+    required this.pgnJns,
     required this.selectedIndexD,
   });
 
@@ -114,6 +116,7 @@ class _UslConfListState extends State<UslConfList> {
                                 orgIdEx: hibah!.uslOrg,
                                 token: widget.token,
                                 selectedIndexD: widget.selectedIndexD,
+                                pgnJns: widget.pgnJns,
                               ),
                             ),
                             (Route<dynamic> route) => false,
@@ -181,6 +184,7 @@ class _UslConfListState extends State<UslConfList> {
                                     orgIdEx: hibah!.uslOrg,
                                     token: widget.token,
                                     selectedIndexD: widget.selectedIndexD,
+                                    pgnJns: widget.pgnJns,
                                   ),
                                 ),
                                 (Route<dynamic> route) => false,
@@ -271,6 +275,7 @@ class _UslConfListState extends State<UslConfList> {
                                           orgIdEx: hibah!.uslOrg,
                                           token: widget.token,
                                           selectedIndexD: widget.selectedIndexD,
+                                          pgnJns: widget.pgnJns,
                                         ),
                                       ),
                                       (Route<dynamic> route) => false,

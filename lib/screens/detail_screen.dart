@@ -1,14 +1,20 @@
 import 'package:SimhegaM/constants/style_constant.dart';
+import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/detailo_screen.dart';
 import 'package:SimhegaM/screens/detailp_screen.dart';
 import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:SimhegaM/screens/items/func_item.dart';
+import 'package:SimhegaM/screens/masuk_screen.dart';
+import 'package:SimhegaM/services/hibah_services.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 
 class DetailScreen extends StatefulWidget {
   final String token;
+  final String pgnJns;
   final String uslIdEx;
   final String orgIdEx;
   final int selectedIndex;
@@ -17,6 +23,7 @@ class DetailScreen extends StatefulWidget {
   const DetailScreen({
     super.key,
     required this.token,
+    required this.pgnJns,
     required this.uslIdEx,
     required this.orgIdEx,
     this.selectedIndex = 0,
@@ -30,10 +37,17 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   int _selectedIndexD = 0;
   late String _token;
+  late String _pgnJns;
   String? _uslIdEx;
   String? _orgIdEx;
 
+  Hibah? hibah;
+
+  HibahService get service => GetIt.I<HibahService>();
+
   String? errorMessage;
+  bool _isError = false;
+  bool _isLoading = false;
 
   late int _selectedIndex;
 
@@ -49,7 +63,9 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     super.initState();
     setState(() {
+      _isLoading = true;
       _token = widget.token;
+      _pgnJns = widget.pgnJns;
       _uslIdEx = widget.uslIdEx;
       _orgIdEx = widget.orgIdEx;
 
@@ -60,6 +76,7 @@ class _DetailScreenState extends State<DetailScreen> {
           selectedIndex: _selectedIndex,
           uslIdEx: _uslIdEx!,
           selectedIndexD: widget.selectedIndexD,
+          pgnJns: _pgnJns,
         ),
         DetailOScreen(
           token: _token,
@@ -68,6 +85,26 @@ class _DetailScreenState extends State<DetailScreen> {
         )
       ];
     });
+    if (_uslIdEx != null) {
+      service.getHibah(_uslIdEx!).then((value) {
+        setState(() {
+          hibah = value.data;
+
+          if (hibah == null) {
+            _isError = true;
+          } else {
+            _isError = false;
+          }
+          if (value.error) {
+            _isLoading = false;
+            errorMessage = value.errorMessage!;
+          } else {
+            _isLoading = false;
+          }
+          _isLoading = false;
+        });
+      });
+    }
   }
 
   @override
@@ -91,6 +128,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       selectedIndex: _selectedIndex,
                       token: _token,
                       changeOptions: 0,
+                      pgnJns: _pgnJns,
                     ),
                   ),
                 ),
@@ -110,6 +148,34 @@ class _DetailScreenState extends State<DetailScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         actions: <Widget>[
+          hibah == null
+              ? const Padding(
+                  padding: EdgeInsets.only(right: 20.0),
+                )
+              : hibah!.uslSls != ''
+                  ? hibah!.uslSls != "0" ||
+                          hibah!.uslSls != "1" ||
+                          hibah!.uslSls != "2" ||
+                          hibah!.uslSls != "3"
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: GestureDetector(
+                            onTap: () async {
+                              showBottomModal(context, Container(), 300);
+                            },
+                            child: const Icon(
+                              Icons.bookmark_added_outlined,
+                              size: 26.0,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                        )
+                  : const Padding(
+                      padding: EdgeInsets.only(right: 20.0),
+                    ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(
@@ -120,10 +186,39 @@ class _DetailScreenState extends State<DetailScreen> {
                     orgIdEx: widget.orgIdEx,
                     selectedIndex: _selectedIndex,
                     token: _token,
+                    pgnJns: _pgnJns,
                   ),
                   500),
               child: const Icon(
                 Icons.mail_outline,
+                size: 26.0,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                AwesomeDialog(
+                  context: context,
+                  dialogType: DialogType.QUESTION,
+                  title: 'Maaf',
+                  desc: 'Apakah Ingin Keluar Dari Aplikasi',
+                  btnOkOnPress: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MasukScreen(),
+                      ),
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                  btnCancelOnPress: () {},
+                ).show();
+              },
+              child: const Icon(
+                Icons.power_settings_new_rounded,
                 size: 26.0,
                 color: Colors.blue,
               ),

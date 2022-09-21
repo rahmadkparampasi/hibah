@@ -189,7 +189,7 @@ class _DetailOScreenState extends State<DetailOScreen> {
                         ),
                         Positioned(
                           bottom: 22,
-                          left: 170,
+                          left: 160,
                           child: ElevatedButton(
                             style: ButtonStyle(
                               textStyle: MaterialStateProperty.all(
@@ -211,11 +211,20 @@ class _DetailOScreenState extends State<DetailOScreen> {
                               child: Center(
                                 child: Row(
                                   children: const <Widget>[
-                                    Icon(Icons.phone),
+                                    Icon(
+                                      Icons.phone,
+                                      size: 16,
+                                    ),
                                     SizedBox(
                                       width: 2,
                                     ),
-                                    Text('TELEPON'),
+                                    Text(
+                                      'TELEPON',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -224,7 +233,7 @@ class _DetailOScreenState extends State<DetailOScreen> {
                         ),
                         Positioned(
                           bottom: 22,
-                          left: 300,
+                          left: 270,
                           child: ElevatedButton(
                             style: ButtonStyle(
                               textStyle: MaterialStateProperty.all(
@@ -246,11 +255,20 @@ class _DetailOScreenState extends State<DetailOScreen> {
                               child: Center(
                                 child: Row(
                                   children: const <Widget>[
-                                    Icon(Icons.mail_outlined),
+                                    Icon(
+                                      Icons.mail_outlined,
+                                      size: 16,
+                                    ),
                                     SizedBox(
                                       width: 2,
                                     ),
-                                    Text('SMS'),
+                                    Text(
+                                      'SMS',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),

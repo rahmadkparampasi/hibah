@@ -11,11 +11,13 @@ class CheckMasuk {
 
 class FeedBackMasuk {
   String token;
+  String pgnJns;
   String message;
   String response;
   String type;
   FeedBackMasuk(
       {required this.token,
+      required this.pgnJns,
       required this.message,
       required this.response,
       required this.type});
@@ -23,6 +25,7 @@ class FeedBackMasuk {
   factory FeedBackMasuk.fromJson(Map<String, dynamic> item) {
     return FeedBackMasuk(
       token: item['token'],
+      pgnJns: item['jns'],
       message: item['message'],
       type: item['type'],
       response: item['response'],

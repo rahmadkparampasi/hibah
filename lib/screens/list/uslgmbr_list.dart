@@ -14,6 +14,7 @@ class UslGmbrList extends StatefulWidget {
   final String uslSls;
   final String orgIdEx;
   final String token;
+  final String pgnJns;
   final int selectedIndexD;
 
   const UslGmbrList({
@@ -22,6 +23,7 @@ class UslGmbrList extends StatefulWidget {
     required this.uslSls,
     required this.orgIdEx,
     required this.token,
+    required this.pgnJns,
     required this.selectedIndexD,
   });
 
@@ -210,6 +212,7 @@ class _UslGmbrListState extends State<UslGmbrList> {
                                           orgIdEx: widget.orgIdEx,
                                           token: widget.token,
                                           selectedIndexD: widget.selectedIndexD,
+                                          pgnJns: widget.pgnJns,
                                         ),
                                       ),
                                       (Route<dynamic> route) => false,

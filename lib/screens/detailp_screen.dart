@@ -20,11 +20,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 class DetailPScreen extends StatefulWidget {
   final String token;
+  final String pgnJns;
   final String uslIdEx;
   final int selectedIndex;
   final int selectedIndexD;
   const DetailPScreen(
       {required this.token,
+      required this.pgnJns,
       required this.uslIdEx,
       required this.selectedIndex,
       required this.selectedIndexD,
@@ -39,6 +41,7 @@ class _DetailPScreenState extends State<DetailPScreen>
     with SingleTickerProviderStateMixin {
   TabController? _controller;
   late String _token;
+  late String _pgnJns;
   String? _uslIdEx;
 
   bool _isLoading = false;
@@ -81,6 +84,7 @@ class _DetailPScreenState extends State<DetailPScreen>
   void initState() {
     setState(() {
       _token = widget.token;
+      _pgnJns = widget.pgnJns;
       _uslIdEx = widget.uslIdEx;
       _isLoading = true;
       _selectedIndex = widget.selectedIndex;
@@ -249,11 +253,14 @@ class _DetailPScreenState extends State<DetailPScreen>
                             ),
                             onPressed: () async {
                               String url =
-                                  'http://simhega.sultengprov.go.id/docOrg/pro/$_uslIdEx';
+                                  'simhega.sultengprov.go.id/docOrg/pro/$_uslIdEx';
                               final Uri launcUri =
-                                  Uri(scheme: 'https', path: url);
+                                  Uri(scheme: 'http', path: url);
                               if (await canLaunchUrl(launcUri)) {
-                                await launchUrl(launcUri);
+                                await launchUrl(
+                                  launcUri,
+                                  mode: LaunchMode.externalApplication,
+                                );
                               } else {
                                 throw "Could not launch $url";
                               }
@@ -446,6 +453,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                 token: _token,
                                                 selectedIndexD: _selectedIndexD,
                                                 uslSls: hibah!.uslSls,
+                                                pgnJns: _pgnJns,
                                               ),
                                       ],
                                     ),
@@ -506,6 +514,8 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                                           _selectedIndexD,
                                                                       token:
                                                                           _token,
+                                                                      pgnJns:
+                                                                          _pgnJns,
                                                                     ),
                                                                   ),
                                                                 );
@@ -566,6 +576,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                     ? ""
                                                     : hibah!.uslOrg,
                                                 selectedIndexD: _selectedIndexD,
+                                                pgnJns: _pgnJns,
                                               ),
                                         const Divider(
                                           height: 10,
@@ -726,6 +737,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                                 selectedIndex:
                                                                     _selectedIndexD,
                                                                 token: _token,
+                                                                pgnJns: _pgnJns,
                                                               ),
                                                               250,
                                                             ),
@@ -782,6 +794,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                                 uslSls: hibah == null
                                                     ? "0"
                                                     : hibah!.uslSls,
+                                                pgnJns: _pgnJns,
                                               ),
                                         const SizedBox(
                                           height: 5,
@@ -857,6 +870,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                                               : hibah!.uslOrg,
                                           selectedIndex: _selectedIndex!,
                                           token: _token,
+                                          pgnJns: _pgnJns,
                                         ),
                                         200)
                                     : () {
@@ -912,6 +926,7 @@ class _DetailPScreenState extends State<DetailPScreen>
                     uslIdEx: _uslIdEx!,
                     selectedIndexD: _selectedIndexD,
                     token: _token,
+                    pgnJns: _pgnJns,
                   ),
                 ],
               ),

@@ -166,21 +166,23 @@ class _MasukScreenState extends State<MasukScreen> {
                                 ).show();
                               } else {
                                 // ignore: use_build_context_synchronously
-                                Navigator.pushReplacement(
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => HomeScreen(
                                       token: result.data!.token,
                                       selectedIndex: 0,
+                                      pgnJns: result.data!.pgnJns,
                                     ),
                                   ),
+                                  (Route<dynamic> route) => false,
                                 );
                               }
                             }
                           },
                           style: ElevatedButton.styleFrom(
                             fixedSize: const Size(200, 50),
-                            primary: kPrimaryColor,
+                            backgroundColor: Colors.blue,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),

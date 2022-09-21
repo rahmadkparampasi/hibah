@@ -8,11 +8,14 @@ class HomeScreen extends StatefulWidget {
   final int changeOptions;
 
   final String token;
+  final String pgnJns;
   final int selectedIndex = 0;
-  const HomeScreen(
-      {this.changeOptions = 0,
-      required this.token,
-      required int selectedIndex});
+  const HomeScreen({
+    this.changeOptions = 0,
+    required this.token,
+    required this.pgnJns,
+    required int selectedIndex,
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int? _selectedIndex;
   late String _token;
+  late String _pgnJns;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -38,15 +42,18 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     setState(() {
       _token = widget.token;
+      _pgnJns = widget.pgnJns;
       _selectedIndex = widget.selectedIndex;
       options = [
         ProsesScreen(
           token: _token,
           selectedIndex: _selectedIndex!,
+          pgnJns: _pgnJns,
         ),
         SelesaiScreen(
           token: _token,
           selectedIndex: _selectedIndex!,
+          pgnJns: _pgnJns,
         ),
       ];
     });

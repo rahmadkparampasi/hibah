@@ -1,4 +1,5 @@
 import 'package:SimhegaM/screens/home_screen.dart';
+import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:flutter/material.dart';
 import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/api_response.dart';
@@ -8,9 +9,14 @@ import 'package:get_it/get_it.dart';
 
 class SelesaiScreen extends StatefulWidget {
   final String token;
+  final String pgnJns;
   final int selectedIndex;
 
-  const SelesaiScreen({required this.token, required this.selectedIndex});
+  const SelesaiScreen({
+    required this.token,
+    required this.selectedIndex,
+    required this.pgnJns,
+  });
 
   @override
   State<SelesaiScreen> createState() => _SelesaiScreenState();
@@ -18,6 +24,7 @@ class SelesaiScreen extends StatefulWidget {
 
 class _SelesaiScreenState extends State<SelesaiScreen> {
   String? _token;
+  String? _pgnJns;
 
   HibahService get service => GetIt.I<HibahService>();
 
@@ -34,6 +41,7 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
     _fetchHibah();
     setState(() {
       _token = widget.token;
+      _pgnJns = widget.pgnJns;
       _selectedIndex = widget.selectedIndex;
       _isLoading = false;
     });
@@ -60,75 +68,10 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
     return ListView(
       physics: const ClampingScrollPhysics(),
       children: <Widget>[
-        Stack(
-          children: <Widget>[
-            Container(
-              height: height * 0.25,
-              width: width,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/images/def_head_1.png"),
-                    fit: BoxFit.cover),
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Colors.blue.withOpacity(1.0),
-                    Colors.blue.withOpacity(0.5),
-                    Colors.blue.withOpacity(0.1),
-                    Colors.blue.withOpacity(0.5),
-                    Colors.blue.withOpacity(1.0),
-                  ], begin: Alignment.topRight, end: Alignment.bottomLeft),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0.0,
-              right: 0.0,
-              left: 0.0,
-              top: 50.0,
-              child: Column(
-                children: <Widget>[
-                  const Image(
-                      image: AssetImage("assets/images/favicon.png"),
-                      height: 50),
-                  RichText(
-                    text: const TextSpan(
-                      text: 'SI-MHEGA',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black,
-                            blurRadius: 10.0,
-                            offset: Offset.zero,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  RichText(
-                    text: const TextSpan(
-                      text: 'Data Pengajuan Dengan Status Telah Selesai',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black,
-                            blurRadius: 10.0,
-                            offset: Offset.zero,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
+        TopHomeScreen(
+          height: height,
+          width: width,
+          title: 'Data Pengajuan Dengan Status Telah Selesai',
         ),
         Transform.translate(
           offset: Offset(0.5, -(height * 0.3 - height * 0.28)),
@@ -170,6 +113,7 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
                           builder: (context) => HomeScreen(
                             token: _token!,
                             selectedIndex: _selectedIndex!,
+                            pgnJns: _pgnJns!,
                           ),
                         ),
                       );
@@ -205,6 +149,7 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
                       builder: (_) => SelesaiScreen(
                         token: _token!,
                         selectedIndex: _selectedIndex!,
+                        pgnJns: _pgnJns!,
                       ),
                     );
                     return result;

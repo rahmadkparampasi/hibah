@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 class UslGmbrUList extends StatefulWidget {
   final String uslGmbrUsl;
   final String token;
+  final String pgnJns;
   final String orgIdEx;
   final String uslNm;
   final String orgNm;
@@ -22,6 +23,7 @@ class UslGmbrUList extends StatefulWidget {
       required this.orgNm,
       required this.selectedIndexD,
       required this.token,
+      required this.pgnJns,
       required this.orgIdEx});
 
   @override
@@ -300,6 +302,7 @@ class _UslGmbrUListState extends State<UslGmbrUList> {
                                             token: widget.token,
                                             selectedIndexD:
                                                 widget.selectedIndexD,
+                                            pgnJns: widget.pgnJns,
                                           ),
                                         ),
                                         (Route<dynamic> route) => false,

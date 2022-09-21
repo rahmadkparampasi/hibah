@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:SimhegaM/screens/home_screen.dart';
+import 'package:SimhegaM/screens/masuk_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -31,10 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(
-            token: '',
-            selectedIndex: 0,
-          ),
+          builder: (context) => const MasukScreen(),
         ),
       ),
     );

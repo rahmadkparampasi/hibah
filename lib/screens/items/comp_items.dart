@@ -6,6 +6,7 @@ import 'package:SimhegaM/models/hibahpost_model.dart';
 import 'package:SimhegaM/screens/detail_screen.dart';
 import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
+import 'package:SimhegaM/screens/masuk_screen.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:SimhegaM/services/hibahcomp_services.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -106,12 +107,14 @@ class CompBottomUslT extends StatefulWidget {
   final String orgIdEx;
   final int selectedIndex;
   final String token;
+  final String pgnJns;
   const CompBottomUslT({
     super.key,
     required this.uslIdEx,
     required this.orgIdEx,
     required this.selectedIndex,
     required this.token,
+    required this.pgnJns,
   });
 
   @override
@@ -123,6 +126,7 @@ class _CompBottomUslTState extends State<CompBottomUslT> {
   String? orgIdEx;
   int? selectedIndex;
   String? token;
+  String? pgnJns;
   @override
   void initState() {
     // TODO: implement initState
@@ -132,6 +136,7 @@ class _CompBottomUslTState extends State<CompBottomUslT> {
       orgIdEx = widget.orgIdEx;
       selectedIndex = widget.selectedIndex;
       token = widget.token;
+      pgnJns = widget.pgnJns;
     });
   }
 
@@ -167,6 +172,7 @@ class _CompBottomUslTState extends State<CompBottomUslT> {
                 orgIdEx: orgIdEx!,
                 selectedIndex: selectedIndex!,
                 token: token!,
+                pgnJns: pgnJns!,
               ),
               350,
             );
@@ -194,6 +200,7 @@ class _CompBottomUslTState extends State<CompBottomUslT> {
                 orgIdEx: orgIdEx!,
                 selectedIndex: selectedIndex!,
                 token: token!,
+                pgnJns: pgnJns!,
               ),
               350,
             );
@@ -220,6 +227,7 @@ class CompBottomUslTThn extends StatefulWidget {
   final String orgIdEx;
   final int selectedIndex;
   final String token;
+  final String pgnJns;
   const CompBottomUslTThn({
     super.key,
     required this.uslT,
@@ -228,6 +236,7 @@ class CompBottomUslTThn extends StatefulWidget {
     required this.orgIdEx,
     required this.selectedIndex,
     required this.token,
+    required this.pgnJns,
   });
 
   @override
@@ -242,6 +251,7 @@ class _CompBottomUslTThnState extends State<CompBottomUslTThn> {
   String? orgIdEx;
   int? selectedIndex;
   String? token;
+  String? pgnJns;
 
   HibahService get service => GetIt.I<HibahService>();
 
@@ -256,6 +266,7 @@ class _CompBottomUslTThnState extends State<CompBottomUslTThn> {
       orgIdEx = widget.orgIdEx;
       selectedIndex = widget.selectedIndex;
       token = widget.token;
+      pgnJns = widget.pgnJns;
       if (widget.uslT == "2") {
         uslTT = "Bantuan Barang";
         icon = widget.icon;
@@ -343,6 +354,7 @@ class _CompBottomUslTThnState extends State<CompBottomUslTThn> {
                           orgIdEx: orgIdEx!,
                           selectedIndex: selectedIndex!,
                           token: token!,
+                          pgnJns: pgnJns!,
                         ),
                         200);
                   },
@@ -407,6 +419,7 @@ class _CompBottomUslTThnState extends State<CompBottomUslTThn> {
                                   orgIdEx: orgIdEx!,
                                   token: token!,
                                   selectedIndex: selectedIndex!,
+                                  pgnJns: pgnJns!,
                                 ),
                               ),
                               (Route<dynamic> route) => false,
@@ -432,12 +445,14 @@ class CompBottomUslVer extends StatefulWidget {
   final String orgIdEx;
   final int selectedIndex;
   final String token;
+  final String pgnJns;
   const CompBottomUslVer({
     super.key,
     required this.uslIdEx,
     required this.orgIdEx,
     required this.selectedIndex,
     required this.token,
+    required this.pgnJns,
   });
 
   @override
@@ -449,6 +464,7 @@ class _CompBottomUslVerState extends State<CompBottomUslVer> {
   String? orgIdEx;
   int? selectedIndex;
   String? token;
+  String? pgnJns;
   HibahService get service => GetIt.I<HibahService>();
 
   APIResponseHibah<List<PgwForList>>? _apiResponsePgw;
@@ -467,6 +483,7 @@ class _CompBottomUslVerState extends State<CompBottomUslVer> {
       orgIdEx = widget.orgIdEx;
       selectedIndex = widget.selectedIndex;
       token = widget.token;
+      pgnJns = widget.pgnJns;
       _isLoading = false;
     });
   }
@@ -522,16 +539,18 @@ class _CompBottomUslVerState extends State<CompBottomUslVer> {
                             showBottomModal(
                               context,
                               CompBottomUslVerP(
-                                  uslVerUsl: uslIdEx!,
-                                  orgIdEx: orgIdEx!,
-                                  selectedIndex: selectedIndex!,
-                                  token: token!,
-                                  pgwNm: _apiResponsePgw!.data![index].pgwNm,
-                                  uslVerPgw:
-                                      _apiResponsePgw!.data![index].pgwIdEx,
-                                  pgwGol: _apiResponsePgw!.data![index].pgwGol,
-                                  pgwJbt: _apiResponsePgw!.data![index].pgwJbt,
-                                  pgwNip: _apiResponsePgw!.data![index].pgwNip),
+                                uslVerUsl: uslIdEx!,
+                                orgIdEx: orgIdEx!,
+                                selectedIndex: selectedIndex!,
+                                token: token!,
+                                pgwNm: _apiResponsePgw!.data![index].pgwNm,
+                                uslVerPgw:
+                                    _apiResponsePgw!.data![index].pgwIdEx,
+                                pgwGol: _apiResponsePgw!.data![index].pgwGol,
+                                pgwJbt: _apiResponsePgw!.data![index].pgwJbt,
+                                pgwNip: _apiResponsePgw!.data![index].pgwNip,
+                                pgnJns: pgnJns!,
+                              ),
                               300,
                             );
                           },
@@ -570,6 +589,7 @@ class CompBottomUslVerP extends StatefulWidget {
   final String orgIdEx;
   final int selectedIndex;
   final String token;
+  final String pgnJns;
   final String pgwJbt;
   final String pgwNip;
   final String pgwGol;
@@ -579,6 +599,7 @@ class CompBottomUslVerP extends StatefulWidget {
     required this.orgIdEx,
     required this.selectedIndex,
     required this.token,
+    required this.pgnJns,
     required this.pgwNm,
     required this.uslVerPgw,
     required this.pgwGol,
@@ -600,6 +621,7 @@ class _CompBottomUslVerPState extends State<CompBottomUslVerP> {
   String? orgIdEx;
   int? selectedIndex;
   String? token;
+  String? pgnJns;
 
   HibahService get service => GetIt.I<HibahService>();
 
@@ -618,6 +640,7 @@ class _CompBottomUslVerPState extends State<CompBottomUslVerP> {
       pgwNip = widget.pgwNip;
       selectedIndex = widget.selectedIndex;
       token = widget.token;
+      pgnJns = widget.pgnJns;
     });
   }
 
@@ -719,6 +742,7 @@ class _CompBottomUslVerPState extends State<CompBottomUslVerP> {
                         orgIdEx: orgIdEx!,
                         selectedIndex: selectedIndex!,
                         token: token!,
+                        pgnJns: pgnJns!,
                       ),
                       250,
                     );
@@ -790,6 +814,7 @@ class _CompBottomUslVerPState extends State<CompBottomUslVerP> {
                                   token: token!,
                                   selectedIndex: 0,
                                   selectedIndexD: selectedIndex!,
+                                  pgnJns: pgnJns!,
                                 ),
                               ),
                               (Route<dynamic> route) => false,
@@ -815,12 +840,14 @@ class CompBottomSrt extends StatefulWidget {
   final String orgIdEx;
   final int selectedIndex;
   final String token;
+  final String pgnJns;
   const CompBottomSrt({
     super.key,
     required this.uslIdEx,
     required this.orgIdEx,
     required this.selectedIndex,
     required this.token,
+    required this.pgnJns,
   });
 
   @override
@@ -832,6 +859,7 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
   String? orgIdEx;
   int? selectedIndex;
   String? token;
+  String? pgnJns;
 
   Hibah? hibah;
 
@@ -911,6 +939,7 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
       orgIdEx = widget.orgIdEx;
       selectedIndex = widget.selectedIndex;
       token = widget.token;
+      pgnJns = widget.token;
     });
     if (uslIdEx != null) {
       service.getHibah(uslIdEx!).then((value) {
@@ -1200,6 +1229,7 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
                                         token: token!,
                                         selectedIndex: 0,
                                         selectedIndexD: selectedIndex!,
+                                        pgnJns: pgnJns!,
                                       ),
                                     ),
                                     (Route<dynamic> route) => false,
@@ -1228,6 +1258,7 @@ class CompBottomThp extends StatefulWidget {
   final String orgIdEx;
   final int selectedIndex;
   final String token;
+  final String pgnJns;
   final String uslThpNm;
   final String uslThpIdEx;
   final String uslThpTglMAlt;
@@ -1237,6 +1268,7 @@ class CompBottomThp extends StatefulWidget {
     required this.orgIdEx,
     required this.selectedIndex,
     required this.token,
+    required this.pgnJns,
     required this.uslThpNm,
     required this.uslThpIdEx,
     required this.uslThpTglMAlt,
@@ -1251,6 +1283,7 @@ class _CompBottomThpState extends State<CompBottomThp> {
   String? orgIdEx;
   int? selectedIndex;
   String? token;
+  String? pgnJns;
 
   Hibah? hibah;
 
@@ -1296,6 +1329,7 @@ class _CompBottomThpState extends State<CompBottomThp> {
       orgIdEx = widget.orgIdEx;
       selectedIndex = widget.selectedIndex;
       token = widget.token;
+      pgnJns = widget.pgnJns;
       uslThpNm.text = widget.uslThpNm;
       uslThpTglM.text = widget.uslThpTglMAlt;
     });
@@ -1548,6 +1582,7 @@ class _CompBottomThpState extends State<CompBottomThp> {
                                         token: token!,
                                         selectedIndex: 0,
                                         selectedIndexD: selectedIndex!,
+                                        pgnJns: pgnJns!,
                                       ),
                                     ),
                                     (Route<dynamic> route) => false,
@@ -1767,6 +1802,132 @@ class FullScreenLoader extends StatelessWidget {
       child: const Center(
         child: CircularProgressIndicator(),
       ),
+    );
+  }
+}
+
+class TopHomeScreen extends StatefulWidget {
+  final double height;
+  final double width;
+  final String title;
+  const TopHomeScreen({
+    super.key,
+    required this.height,
+    required this.width,
+    required this.title,
+  });
+
+  @override
+  State<TopHomeScreen> createState() => _TopHomeScreenState();
+}
+
+class _TopHomeScreenState extends State<TopHomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: <Widget>[
+        Container(
+          height: widget.height * 0.25,
+          width: widget.width,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/def_head_1.png"),
+                fit: BoxFit.cover),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                Colors.blue.withOpacity(1.0),
+                Colors.blue.withOpacity(0.5),
+                Colors.blue.withOpacity(0.1),
+                Colors.blue.withOpacity(0.5),
+                Colors.blue.withOpacity(1.0),
+              ], begin: Alignment.topRight, end: Alignment.bottomLeft),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0.0,
+          right: 0.0,
+          left: 0.0,
+          top: 50.0,
+          child: Column(
+            children: <Widget>[
+              const Image(
+                  image: AssetImage("assets/images/favicon.png"), height: 50),
+              RichText(
+                text: const TextSpan(
+                  text: 'SI-MHEGA',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black,
+                        blurRadius: 10.0,
+                        offset: Offset.zero,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              RichText(
+                text: TextSpan(
+                  text: widget.title,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        color: Colors.black,
+                        blurRadius: 10.0,
+                        offset: Offset.zero,
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Positioned(
+          right: 0,
+          top: 0,
+          child: IconButton(
+            onPressed: () {
+              AwesomeDialog(
+                context: context,
+                dialogType: DialogType.QUESTION,
+                title: 'Maaf',
+                desc: 'Apakah Ingin Keluar Dari Aplikasi',
+                btnOkOnPress: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const MasukScreen(),
+                    ),
+                    (Route<dynamic> route) => false,
+                  );
+                },
+                btnCancelOnPress: () {},
+              ).show();
+            },
+            icon: const Icon(
+              Icons.power_settings_new_rounded,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  color: Colors.black,
+                  blurRadius: 10.0,
+                  offset: Offset.zero,
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
