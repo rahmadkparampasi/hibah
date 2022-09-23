@@ -287,7 +287,156 @@ class _UslConfListState extends State<UslConfList> {
                               });
                             }),
                       )
-                    : Container();
+                    : hibah!.uslSls == "4" && widget.pgnJns == "CR"
+                        ? Container(
+                            child: DismissibleWidget(
+                              item: hibah,
+                              onDismissed: (direction) async {
+                                showDialog(
+                                  context: context,
+                                  builder: (ctx) => const FullScreenLoader(),
+                                );
+                                dismissItem(context, direction,
+                                    'Menyutujui Bantuan Masjid At-Taqwa Dalam Verifikasi Pimpinan',
+                                    () async {
+                                  final url = 'stjPmp/$uslIdEx';
+                                  final result =
+                                      await serviceStj.changeStj(url);
+                                  final title =
+                                      result.error ? 'Maaf' : 'Terima Kasih';
+                                  final text = result.error
+                                      ? (result.status == 500
+                                          ? 'Terjadi Kesalahan'
+                                          : result.data?.message)
+                                      : result.data?.message;
+                                  final dialog = result.dialog;
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: dialog,
+                                    animType: AnimType.TOPSLIDE,
+                                    title: title,
+                                    desc: text!,
+                                    btnOkOnPress: () {
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DetailScreen(
+                                            uslIdEx: widget.uslIdEx,
+                                            orgIdEx: hibah!.uslOrg,
+                                            token: widget.token,
+                                            selectedIndexD:
+                                                widget.selectedIndexD,
+                                            pgnJns: widget.pgnJns,
+                                          ),
+                                        ),
+                                        (Route<dynamic> route) => false,
+                                      );
+                                    },
+                                  ).show();
+                                }, () {
+                                  Navigator.pop(context);
+                                });
+                              },
+                              child: const Card(
+                                elevation: 3,
+                                child: const ListTile(
+                                  leading: SizedBox(
+                                    height: double.infinity,
+                                    child: SPIcon(assetName: 'approved.png'),
+                                  ),
+                                  title: const Text(
+                                    'Jenis Verifikasi',
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 15),
+                                  ),
+                                  subtitle: Text(
+                                    'Persetujuan Pimpinan',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : hibah!.uslSls == "5" && widget.pgnJns == "CR"
+                            ? Container(
+                                child: DismissibleWidget(
+                                    item: hibah,
+                                    child: const Card(
+                                      elevation: 3,
+                                      child: const ListTile(
+                                        leading: SizedBox(
+                                          height: double.infinity,
+                                          child:
+                                              SPIcon(assetName: 'approved.png'),
+                                        ),
+                                        title: const Text(
+                                          'Jenis Verifikasi',
+                                          style: TextStyle(
+                                              color: Colors.grey, fontSize: 15),
+                                        ),
+                                        subtitle: Text(
+                                          'Proses Pencairan',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black87,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    onDismissed: (direction) async {
+                                      showDialog(
+                                        context: context,
+                                        builder: (ctx) =>
+                                            const FullScreenLoader(),
+                                      );
+                                      dismissItem(context, direction,
+                                          'Menyelesaikan Bantuan Masjid At-Taqwa Dalam Proses Pencairan',
+                                          () async {
+                                        final url = 'cair/$uslIdEx';
+                                        final result =
+                                            await serviceStj.changeStj(url);
+                                        final title = result.error
+                                            ? 'Maaf'
+                                            : 'Terima Kasih';
+                                        final text = result.error
+                                            ? (result.status == 500
+                                                ? 'Terjadi Kesalahan'
+                                                : result.data?.message)
+                                            : result.data?.message;
+                                        final dialog = result.dialog;
+                                        AwesomeDialog(
+                                          context: context,
+                                          dialogType: dialog,
+                                          animType: AnimType.TOPSLIDE,
+                                          title: title,
+                                          desc: text!,
+                                          btnOkOnPress: () {
+                                            Navigator.pushAndRemoveUntil(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailScreen(
+                                                  uslIdEx: widget.uslIdEx,
+                                                  orgIdEx: hibah!.uslOrg,
+                                                  token: widget.token,
+                                                  selectedIndexD:
+                                                      widget.selectedIndexD,
+                                                  pgnJns: widget.pgnJns,
+                                                ),
+                                              ),
+                                              (Route<dynamic> route) => false,
+                                            );
+                                          },
+                                        ).show();
+                                      }, () {
+                                        Navigator.pop(context);
+                                      });
+                                    }),
+                              )
+                            : Container();
   }
 
   void dismissItem(BuildContext context, DismissDirection direction,

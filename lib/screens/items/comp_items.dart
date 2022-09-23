@@ -939,7 +939,7 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
       orgIdEx = widget.orgIdEx;
       selectedIndex = widget.selectedIndex;
       token = widget.token;
-      pgnJns = widget.token;
+      pgnJns = widget.pgnJns;
     });
     if (uslIdEx != null) {
       service.getHibah(uslIdEx!).then((value) {
@@ -1168,7 +1168,7 @@ class _CompBottomSrtState extends State<CompBottomSrt> {
                         onPressed: () async {
                           showDialog(
                             context: context,
-                            builder: (ctx) => FullScreenLoader(),
+                            builder: (ctx) => const FullScreenLoader(),
                           );
                           if (inbPsn.text == '' ||
                               inbSrt == null ||
@@ -1789,6 +1789,598 @@ class _CompBottomUslBaState extends State<CompBottomUslBa> {
               ),
             ],
           );
+  }
+}
+
+class CompBottomVerCtk extends StatefulWidget {
+  final String uslIdEx;
+  final String orgIdEx;
+  final int selectedIndex;
+  final String token;
+  final String pgnJns;
+  const CompBottomVerCtk({
+    super.key,
+    required this.uslIdEx,
+    required this.orgIdEx,
+    required this.selectedIndex,
+    required this.token,
+    required this.pgnJns,
+  });
+
+  @override
+  State<CompBottomVerCtk> createState() => _CompBottomVerCtkState();
+}
+
+class _CompBottomVerCtkState extends State<CompBottomVerCtk> {
+  String? errorMessage;
+
+  bool _isLoading = false;
+
+  HibahService get service => GetIt.I<HibahService>();
+  HibahCompService get serviceComp => GetIt.I<HibahCompService>();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : ListView(
+            children: <Widget>[
+              const SizedBox(
+                height: 10,
+              ),
+              const Center(
+                child: Text(
+                  'CETAK',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  //verCtk1
+                  String url =
+                      'simhega.sultengprov.go.id/docVerM/verCtk1/${widget.uslIdEx}';
+                  final result =
+                      await serviceComp.getNumSrt('${widget.uslIdEx}/verCtk1');
+
+                  if (result.error) {
+                    showBottomModal(
+                      context,
+                      CompBottomNmrSrt(
+                        uslIdEx: widget.uslIdEx,
+                        orgIdEx: widget.orgIdEx,
+                        selectedIndex: widget.selectedIndex,
+                        token: widget.token,
+                        pgnJns: widget.pgnJns,
+                        srtNm: 'BAP Peninjauan Lapangan',
+                        url: url,
+                        docDoc: 'verCtk1',
+                      ),
+                      400,
+                    );
+                  } else {
+                    final Uri launcUri = Uri(scheme: 'http', path: url);
+                    if (await canLaunchUrl(launcUri)) {
+                      await launchUrl(
+                        launcUri,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } else {
+                      throw "Could not launch $url";
+                    }
+                  }
+                },
+                minLeadingWidth: 0,
+                leading: const SizedBox(
+                  height: double.infinity,
+                  child: SPIcon(assetName: 'eye.png'),
+                ),
+                title: const Text(
+                  'BAP Peninjauan Lapangan',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  //verCtk2
+                  String url =
+                      'simhega.sultengprov.go.id/docVerM/verCtk2/${widget.uslIdEx}';
+                  final result =
+                      await serviceComp.getNumSrt('${widget.uslIdEx}/verCtk2');
+                  if (result.error) {
+                    showBottomModal(
+                      context,
+                      CompBottomNmrSrt(
+                        uslIdEx: widget.uslIdEx,
+                        orgIdEx: widget.orgIdEx,
+                        selectedIndex: widget.selectedIndex,
+                        token: widget.token,
+                        pgnJns: widget.pgnJns,
+                        srtNm: 'Hasil Penelitian Kelengkapan Administrasi',
+                        url: url,
+                        docDoc: 'verCtk2',
+                      ),
+                      400,
+                    );
+                  } else {
+                    final Uri launcUri = Uri(scheme: 'http', path: url);
+                    if (await canLaunchUrl(launcUri)) {
+                      await launchUrl(
+                        launcUri,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } else {
+                      throw "Could not launch $url";
+                    }
+                  }
+                },
+                minLeadingWidth: 0,
+                leading: const SizedBox(
+                  height: double.infinity,
+                  child: SPIcon(assetName: 'list.png'),
+                ),
+                title: const Text(
+                  'Hasil Penelitian Kelengkapan Administrasi',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                onTap: () async {
+                  //verCtk3
+                  Navigator.pop(context);
+                  String url =
+                      'simhega.sultengprov.go.id/docVerM/verCtk3/${widget.uslIdEx}';
+                  final result =
+                      await serviceComp.getNumSrt('${widget.uslIdEx}/verCtk3');
+
+                  if (result.error) {
+                    showBottomModal(
+                      context,
+                      CompBottomNmrSrt(
+                        uslIdEx: widget.uslIdEx,
+                        orgIdEx: widget.orgIdEx,
+                        selectedIndex: widget.selectedIndex,
+                        token: widget.token,
+                        pgnJns: widget.pgnJns,
+                        srtNm: 'Surat Pemberitahuan Hasil Evaluasi',
+                        url: url,
+                        docDoc: 'verCtk1',
+                      ),
+                      400,
+                    );
+                  } else {
+                    final Uri launcUri = Uri(scheme: 'http', path: url);
+                    if (await canLaunchUrl(launcUri)) {
+                      await launchUrl(
+                        launcUri,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } else {
+                      throw "Could not launch $url";
+                    }
+                  }
+                },
+                minLeadingWidth: 0,
+                leading: const SizedBox(
+                  height: double.infinity,
+                  child: SPIcon(assetName: 'evaluation.png'),
+                ),
+                title: const Text(
+                  'Surat Pemberitahuan Hasil Evaluasi',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+              const Divider(),
+            ],
+          );
+  }
+}
+
+class CompBottomCairCtk extends StatefulWidget {
+  final String uslIdEx;
+  final String orgIdEx;
+  final int selectedIndex;
+  final String token;
+  final String pgnJns;
+  const CompBottomCairCtk({
+    super.key,
+    required this.uslIdEx,
+    required this.orgIdEx,
+    required this.selectedIndex,
+    required this.token,
+    required this.pgnJns,
+  });
+
+  @override
+  State<CompBottomCairCtk> createState() => _CompBottomCairCtkState();
+}
+
+class _CompBottomCairCtkState extends State<CompBottomCairCtk> {
+  String? uslIdEx;
+  String? orgIdEx;
+  int? selectedIndex;
+  String? token;
+
+  String? errorMessage;
+
+  bool _isLoading = false;
+
+  HibahService get service => GetIt.I<HibahService>();
+  HibahCompService get serviceComp => GetIt.I<HibahCompService>();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      uslIdEx = widget.uslIdEx;
+      orgIdEx = widget.orgIdEx;
+      selectedIndex = widget.selectedIndex;
+      token = widget.token;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _isLoading
+        ? const Center(
+            child: CircularProgressIndicator(),
+          )
+        : ListView(
+            children: <Widget>[
+              const SizedBox(
+                height: 10,
+              ),
+              const Center(
+                child: Text(
+                  'CETAK',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  final String url =
+                      'simhega.sultengprov.go.id/docCair/cairCtk2/${widget.uslIdEx}';
+                  final Uri launcUri = Uri(scheme: 'http', path: url);
+                  if (await canLaunchUrl(launcUri)) {
+                    await launchUrl(
+                      launcUri,
+                      mode: LaunchMode.externalApplication,
+                    );
+                  } else {
+                    throw "Could not launch $url";
+                  }
+                },
+                minLeadingWidth: 0,
+                leading: const SizedBox(
+                  height: double.infinity,
+                  child: SPIcon(assetName: 'invoice.png'),
+                ),
+                title: const Text(
+                  'Kwitansi',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  final String url =
+                      'simhega.sultengprov.go.id/docCair/cairCtk4/${widget.uslIdEx}';
+                  final Uri launcUri = Uri(scheme: 'http', path: url);
+                  if (await canLaunchUrl(launcUri)) {
+                    await launchUrl(
+                      launcUri,
+                      mode: LaunchMode.externalApplication,
+                    );
+                  } else {
+                    throw "Could not launch $url";
+                  }
+                },
+                minLeadingWidth: 0,
+                leading: const SizedBox(
+                  height: double.infinity,
+                  child: SPIcon(assetName: 'sign.png'),
+                ),
+                title: const Text(
+                  'Perjanjian Hibah Uang',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  //cairCtk5
+                  String url =
+                      'simhega.sultengprov.go.id/docCair/cairCtk5M/${widget.uslIdEx}';
+                  final result =
+                      await serviceComp.getNumSrt('${widget.uslIdEx}/cairCtk5');
+                  if (result.error) {
+                    showBottomModal(
+                      context,
+                      CompBottomNmrSrt(
+                        uslIdEx: widget.uslIdEx,
+                        orgIdEx: widget.orgIdEx,
+                        selectedIndex: widget.selectedIndex,
+                        token: widget.token,
+                        pgnJns: widget.pgnJns,
+                        srtNm:
+                            'Surat Keterangan Kelengkapan Dokumen (Hibah Uang)',
+                        url: url,
+                        docDoc: 'verCtk1',
+                      ),
+                      400,
+                    );
+                  } else {
+                    final Uri launcUri = Uri(scheme: 'http', path: url);
+                    if (await canLaunchUrl(launcUri)) {
+                      await launchUrl(
+                        launcUri,
+                        mode: LaunchMode.externalApplication,
+                      );
+                    } else {
+                      throw "Could not launch $url";
+                    }
+                  }
+                },
+                minLeadingWidth: 0,
+                leading: const SizedBox(
+                  height: double.infinity,
+                  child: SPIcon(assetName: 'list.png'),
+                ),
+                title: const Text(
+                  'Surat Keterangan Kelengkapan Dokumen (Hibah Uang)',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+              const Divider(),
+              ListTile(
+                onTap: () async {
+                  Navigator.pop(context);
+                  final String url =
+                      'simhega.sultengprov.go.id/docCair/cairCtk7/${widget.uslIdEx}';
+                  final Uri launcUri = Uri(scheme: 'http', path: url);
+                  if (await canLaunchUrl(launcUri)) {
+                    await launchUrl(
+                      launcUri,
+                      mode: LaunchMode.externalApplication,
+                    );
+                  } else {
+                    throw "Could not launch $url";
+                  }
+                },
+                minLeadingWidth: 0,
+                leading: const SizedBox(
+                  height: double.infinity,
+                  child: SPIcon(assetName: 'file.png'),
+                ),
+                title: const Text(
+                  'Surat Pernyataan Penerima Uang',
+                  style: TextStyle(color: Colors.black, fontSize: 15),
+                ),
+              ),
+            ],
+          );
+  }
+}
+
+class CompBottomNmrSrt extends StatefulWidget {
+  final String uslIdEx;
+  final String orgIdEx;
+  final int selectedIndex;
+  final String token;
+  final String pgnJns;
+  final String srtNm;
+  final String docDoc;
+  final String url;
+  const CompBottomNmrSrt({
+    super.key,
+    required this.uslIdEx,
+    required this.orgIdEx,
+    required this.selectedIndex,
+    required this.token,
+    required this.pgnJns,
+    required this.srtNm,
+    required this.docDoc,
+    required this.url,
+  });
+
+  @override
+  State<CompBottomNmrSrt> createState() => _CompBottomNmrSrtState();
+}
+
+class _CompBottomNmrSrtState extends State<CompBottomNmrSrt> {
+  String? uslIdEx;
+  String? orgIdEx;
+  int? selectedIndex;
+  String? token;
+  String? pgnJns;
+  String? srtNm;
+
+  HibahService get service => GetIt.I<HibahService>();
+
+  HibahCompService get serviceComp => GetIt.I<HibahCompService>();
+
+  final TextEditingController usldocNmr = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      uslIdEx = widget.uslIdEx;
+      orgIdEx = widget.orgIdEx;
+      selectedIndex = widget.selectedIndex;
+      token = widget.token;
+      pgnJns = widget.pgnJns;
+      srtNm = widget.srtNm;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: <Widget>[
+        const SizedBox(
+          height: 10,
+        ),
+        const Center(
+          child: Text(
+            'Cetak Surat',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        ListTile(
+          onTap: () {},
+          minLeadingWidth: 0,
+          leading: const SizedBox(
+            height: double.infinity,
+            child: SPIcon(assetName: 'certificate.png'),
+          ),
+          title: const Text(
+            'Nama Surat',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 15,
+            ),
+          ),
+          subtitle: Text(
+            srtNm == null ? 'Tidak Ada Nama Surat' : '$srtNm',
+          ),
+        ),
+        const Divider(
+          height: 2,
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: TextFieldContainer(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom),
+              child: TextField(
+                controller: usldocNmr,
+                decoration: const InputDecoration(
+                  floatingLabelAlignment: FloatingLabelAlignment.start,
+                  border: InputBorder.none,
+                  prefixIcon: Icon(
+                    Icons.format_list_numbered,
+                    size: 20,
+                  ),
+                  labelText: 'Nomor Surat',
+                  labelStyle: TextStyle(
+                    fontSize: 15,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 5,
+        ),
+        Container(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => const FullScreenLoader(),
+                    );
+                    if (usldocNmr.text == '') {
+                      AwesomeDialog(
+                        context: context,
+                        dialogType: DialogType.ERROR,
+                        animType: AnimType.TOPSLIDE,
+                        title: 'Maaf',
+                        desc: 'Lengkapi Data Terlebih Dahulu',
+                        btnOkOnPress: () => Navigator.pop(context),
+                      ).show();
+                    } else {
+                      final insertDocUsl = InsertDocUsl(
+                        uslDocUsl: widget.uslIdEx,
+                        uslDocDoc: widget.docDoc,
+                        uslDocNmr: usldocNmr.text,
+                      );
+                      final result = await service.insertDocUsl(insertDocUsl);
+                      Navigator.pop(context);
+                      final title = result.error ? 'Maaf' : 'Terima Kasih';
+                      final text = result.error
+                          ? (result.status == 500
+                              ? 'Terjadi Kesalahan'
+                              : result.data?.message)
+                          : result.data?.message;
+                      final dialog = result.dialog;
+                      if (result.error) {
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: dialog,
+                          animType: AnimType.TOPSLIDE,
+                          title: title,
+                          desc: text!,
+                          btnOkOnPress: () {
+                            Navigator.pop(context);
+                          },
+                        ).show();
+                      } else {
+                        final Uri launcUri =
+                            Uri(scheme: 'http', path: widget.url);
+                        if (await canLaunchUrl(launcUri)) {
+                          await launchUrl(
+                            launcUri,
+                            mode: LaunchMode.externalApplication,
+                          );
+                        } else {
+                          throw "Could not launch ${widget.url}";
+                        }
+                      }
+                    }
+                  },
+                  child: const Text('SIMPAN'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 

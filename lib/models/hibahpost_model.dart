@@ -139,6 +139,24 @@ class InsertThp {
   }
 }
 
+class InsertDocUsl {
+  String uslDocUsl;
+  String uslDocDoc;
+  String uslDocNmr;
+  InsertDocUsl({
+    required this.uslDocUsl,
+    required this.uslDocDoc,
+    required this.uslDocNmr,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "usldoc_usl": uslDocUsl,
+      "usldoc_doc": uslDocDoc,
+      "usldoc_nmr": uslDocNmr,
+    };
+  }
+}
+
 class FeedBackUsl {
   String message;
   String response;

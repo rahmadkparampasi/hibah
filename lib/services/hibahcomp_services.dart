@@ -111,4 +111,27 @@ class HibahCompService {
       ),
     );
   }
+
+  Future<APIResponse> getNumSrt(String url) {
+    Uri newApiUrl = Uri.parse('$apiURL/docUsl/getNum/$url');
+    print('url $newApiUrl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        return APIResponse(error: false, status: data.statusCode);
+      } else {
+        return APIResponse(
+          error: true,
+          status: data.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError(
+      (_) => APIResponse(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan, Silahkan Muat Kembali',
+        status: 500,
+        dialog: DialogType.ERROR,
+      ),
+    );
+  }
 }

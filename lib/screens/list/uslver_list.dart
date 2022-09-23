@@ -118,18 +118,18 @@ class _UslVerListState extends State<UslVerList> {
   List<DataRow> getRows(APIResponseHibah<List<UslVer>>? uslVer) => uslSls != "2"
       ? uslVer!.data!.map((UslVer usl) {
           final cells = [
-            Container(width: 20, child: Text('${usl.no}')),
-            Container(width: 100, child: Text(usl.pgwNm)),
-            Container(width: 100, child: Text(usl.pgwJbt)),
+            SizedBox(width: 20, child: Text('${usl.no}')),
+            SizedBox(width: 100, child: Text(usl.pgwNm)),
+            SizedBox(width: 100, child: Text(usl.pgwJbt)),
           ];
           return DataRow(cells: getCells(cells));
         }).toList()
       : uslVer!.data!.map((UslVer usl) {
           final cells = [
-            Container(width: 20, child: Text('${usl.no}')),
-            Container(width: 100, child: Text(usl.pgwNm)),
-            Container(width: 100, child: Text(usl.pgwJbt)),
-            Container(
+            SizedBox(width: 20, child: Text('${usl.no}')),
+            SizedBox(width: 100, child: Text(usl.pgwNm)),
+            SizedBox(width: 100, child: Text(usl.pgwJbt)),
+            SizedBox(
               width: 40,
               child: ButtonDTP(
                 child: IconButton(

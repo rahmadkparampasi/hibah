@@ -643,4 +643,37 @@ class HibahService {
       ),
     );
   }
+
+  Future<APIResponse<FeedBackUsl>> insertDocUsl(InsertDocUsl uslDoc) {
+    Uri newApiUrl = Uri.parse('$apiURL/docUsl/setNum');
+    return http.post(newApiUrl, body: uslDoc.toJson()).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          data: FeedBackUsl.fromJson(jsonData),
+          status: data.statusCode,
+          dialog: (jsonData['type'] == "info")
+              ? DialogType.INFO
+              : (jsonData['type'] == "warning")
+                  ? DialogType.WARNING
+                  : DialogType.SUCCES,
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          error: true,
+          data: FeedBackUsl.fromJson(jsonData),
+          errorMessage: 'Terjadi Kesalahan',
+          status: jsonData.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError(
+      (_) => APIResponse<FeedBackUsl>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        dialog: DialogType.ERROR,
+      ),
+    );
+  }
 }

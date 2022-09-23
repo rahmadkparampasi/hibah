@@ -161,10 +161,38 @@ class _DetailScreenState extends State<DetailScreen> {
                           padding: const EdgeInsets.only(right: 20.0),
                           child: GestureDetector(
                             onTap: () async {
-                              showBottomModal(context, Container(), 300);
+                              _pgnJns == ''
+                                  ? false
+                                  : showBottomModal(
+                                      context,
+                                      _pgnJns == 'VER'
+                                          ? CompBottomVerCtk(
+                                              uslIdEx: hibah!.uslIdEx,
+                                              orgIdEx: hibah!.uslOrg,
+                                              selectedIndex:
+                                                  widget.selectedIndexD,
+                                              token: widget.token,
+                                              pgnJns: widget.pgnJns,
+                                            )
+                                          : _pgnJns == 'CR'
+                                              ? CompBottomCairCtk(
+                                                  uslIdEx: hibah!.uslIdEx,
+                                                  orgIdEx: hibah!.uslOrg,
+                                                  selectedIndex:
+                                                      widget.selectedIndexD,
+                                                  token: widget.token,
+                                                  pgnJns: widget.pgnJns,
+                                                )
+                                              : const Center(
+                                                  child: Text(
+                                                    'Tidak Ada Data Untuk Dicetak',
+                                                  ),
+                                                ),
+                                      _pgnJns == 'VER' ? 300 : 350,
+                                    );
                             },
                             child: const Icon(
-                              Icons.bookmark_added_outlined,
+                              Icons.print_outlined,
                               size: 26.0,
                               color: Colors.blue,
                             ),
