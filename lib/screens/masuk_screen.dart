@@ -165,18 +165,41 @@ class _MasukScreenState extends State<MasukScreen> {
                                   },
                                 ).show();
                               } else {
-                                // ignore: use_build_context_synchronously
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => HomeScreen(
-                                      token: result.data!.token,
-                                      selectedIndex: 0,
-                                      pgnJns: result.data!.pgnJns,
+                                if (result.data!.pgnJns == "ADM" ||
+                                    result.data!.pgnJns == "VER" ||
+                                    result.data!.pgnJns == "CR" ||
+                                    result.data!.pgnJns == "VERL") {
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => HomeScreen(
+                                        token: result.data!.token,
+                                        selectedIndex: 0,
+                                        pgnJns: result.data!.pgnJns,
+                                      ),
                                     ),
-                                  ),
-                                  (Route<dynamic> route) => false,
-                                );
+                                    (Route<dynamic> route) => false,
+                                  );
+                                } else {
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.ERROR,
+                                    animType: AnimType.TOPSLIDE,
+                                    title: 'Maaf',
+                                    desc:
+                                        'Pengelola Rumah Ibadah Tidak Dapat Menggunakan Aplikasi Ini',
+                                    btnOkOnPress: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MasukScreen(),
+                                        ),
+                                      );
+                                    },
+                                  ).show();
+                                }
                               }
                             }
                           },
@@ -201,6 +224,15 @@ class _MasukScreenState extends State<MasukScreen> {
                   )
                 ],
               ),
+      ),
+      bottomNavigationBar: Container(
+        height: 80,
+        child: Column(
+          children: const <Widget>[
+            Text('Biro Kesejahteraan Rakyat'),
+            Text('Sekretariat Daerah Provinsi Sulawesi Tengah'),
+          ],
+        ),
       ),
     );
   }

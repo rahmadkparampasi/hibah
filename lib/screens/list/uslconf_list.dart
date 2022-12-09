@@ -3,6 +3,7 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/detail_screen.dart';
+import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:SimhegaM/screens/items/sp_icon.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:SimhegaM/services/hibahstj_services.dart';
@@ -125,6 +126,27 @@ class _UslConfListState extends State<UslConfList> {
                       ).show();
                     }, () {
                       Navigator.pop(context);
+                    }, () {
+                      Navigator.pop(context);
+
+                      showBottomModal(
+                          context,
+                          CompBottomTolak(
+                            uslIdEx: widget.uslIdEx,
+                            orgIdEx: hibah!.uslOrg,
+                            selectedIndex: 0,
+                            token: widget.token,
+                            pgnJns: widget.pgnJns,
+                            inbJdlBrt: 'Penolakan Verifikasi Berkas Fisik',
+                            uslSlsBrt: '9',
+                            uslHslBrt: '2',
+                            inbOrgBrt: hibah!.uslOrg,
+                            inbUslBrt: widget.uslIdEx,
+                            inbSrtBrt: 'MiJ00',
+                          ),
+                          500);
+                    }, () {
+                      Navigator.pop(context);
                     });
                   },
                   child: const Card(
@@ -193,6 +215,27 @@ class _UslConfListState extends State<UslConfList> {
                           ).show();
                         }, () {
                           Navigator.pop(context);
+                        }, () {
+                          Navigator.pop(context);
+
+                          showBottomModal(
+                              context,
+                              CompBottomTolak(
+                                uslIdEx: widget.uslIdEx,
+                                orgIdEx: hibah!.uslOrg,
+                                selectedIndex: 0,
+                                token: widget.token,
+                                pgnJns: widget.pgnJns,
+                                inbJdlBrt: 'Penolakan Verifikasi Lapangan',
+                                uslSlsBrt: '9',
+                                uslHslBrt: '2',
+                                inbOrgBrt: hibah!.uslOrg,
+                                inbUslBrt: widget.uslIdEx,
+                                inbSrtBrt: 'MiJ00',
+                              ),
+                              500);
+                        }, () {
+                          Navigator.pop(context);
                         });
                       },
                       child: const Card(
@@ -218,75 +261,88 @@ class _UslConfListState extends State<UslConfList> {
                     ),
                   )
                 : hibah!.uslSls == "3"
-                    ? Container(
-                        child: DismissibleWidget(
-                            item: hibah,
-                            child: const Card(
-                              elevation: 3,
-                              child: const ListTile(
-                                leading: SizedBox(
-                                  height: double.infinity,
-                                  child: SPIcon(assetName: 'check.png'),
-                                ),
-                                title: const Text(
-                                  'Jenis Verifikasi',
-                                  style: TextStyle(
-                                      color: Colors.grey, fontSize: 15),
-                                ),
-                                subtitle: Text(
-                                  'Terbitkan Berita Acara Hasil Verifikasi',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black87,
+                    ? hibah!.uslAtr == "0" && hibah!.uslT == "1"
+                        ? Container()
+                        : Container(
+                            child: DismissibleWidget(
+                                item: hibah,
+                                child: const Card(
+                                  elevation: 3,
+                                  child: const ListTile(
+                                    leading: SizedBox(
+                                      height: double.infinity,
+                                      child: SPIcon(assetName: 'check.png'),
+                                    ),
+                                    title: const Text(
+                                      'Jenis Verifikasi',
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 15),
+                                    ),
+                                    subtitle: Text(
+                                      'Terbitkan Berita Acara Hasil Verifikasi',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            onDismissed: (direction) async {
-                              showDialog(
-                                context: context,
-                                builder: (ctx) => const FullScreenLoader(),
-                              );
-                              dismissItem(context, direction,
-                                  'Menerbitkan Berita Acara Hasil Verifikasi',
-                                  () async {
-                                final url = 'brtVer/$uslIdEx';
-                                final result = await serviceStj.changeStj(url);
-                                final title =
-                                    result.error ? 'Maaf' : 'Terima Kasih';
-                                final text = result.error
-                                    ? (result.status == 500
-                                        ? 'Terjadi Kesalahan'
-                                        : result.data?.message)
-                                    : result.data?.message;
-                                final dialog = result.dialog;
-                                AwesomeDialog(
-                                  context: context,
-                                  dialogType: dialog,
-                                  animType: AnimType.TOPSLIDE,
-                                  title: title,
-                                  desc: text!,
-                                  btnOkOnPress: () {
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DetailScreen(
-                                          uslIdEx: widget.uslIdEx,
-                                          orgIdEx: hibah!.uslOrg,
-                                          token: widget.token,
-                                          selectedIndexD: widget.selectedIndexD,
-                                          pgnJns: widget.pgnJns,
-                                        ),
-                                      ),
-                                      (Route<dynamic> route) => false,
-                                    );
-                                  },
-                                ).show();
-                              }, () {
-                                Navigator.pop(context);
-                              });
-                            }),
-                      )
+                                onDismissed: (direction) async {
+                                  showDialog(
+                                    context: context,
+                                    builder: (ctx) => const FullScreenLoader(),
+                                  );
+                                  dismissItem(context, direction,
+                                      'Menerbitkan Berita Acara Hasil Verifikasi',
+                                      () async {
+                                    final url = 'brtVer/$uslIdEx';
+                                    final result =
+                                        await serviceStj.changeStj(url);
+                                    final title =
+                                        result.error ? 'Maaf' : 'Terima Kasih';
+                                    final text = result.error
+                                        ? (result.status == 500
+                                            ? 'Terjadi Kesalahan'
+                                            : result.data?.message)
+                                        : result.data?.message;
+                                    final dialog = result.dialog;
+                                    AwesomeDialog(
+                                      context: context,
+                                      dialogType: dialog,
+                                      animType: AnimType.TOPSLIDE,
+                                      title: title,
+                                      desc: text!,
+                                      btnOkOnPress: () {
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DetailScreen(
+                                              uslIdEx: widget.uslIdEx,
+                                              orgIdEx: hibah!.uslOrg,
+                                              token: widget.token,
+                                              selectedIndexD:
+                                                  widget.selectedIndexD,
+                                              pgnJns: widget.pgnJns,
+                                            ),
+                                          ),
+                                          (Route<dynamic> route) => false,
+                                        );
+                                      },
+                                    ).show();
+                                  }, () {
+                                    Navigator.pop(context);
+                                  }, () {
+                                    AwesomeDialog(
+                                      context: context,
+                                      title: 'Maaf',
+                                      desc: 'Tidak Dapat Melakukan Aksi Ini',
+                                      dialogType: DialogType.ERROR,
+                                    ).show();
+                                  }, () {
+                                    Navigator.pop(context);
+                                  });
+                                }),
+                          )
                     : hibah!.uslSls == "4" && widget.pgnJns == "CR"
                         ? Container(
                             child: DismissibleWidget(
@@ -335,6 +391,27 @@ class _UslConfListState extends State<UslConfList> {
                                   ).show();
                                 }, () {
                                   Navigator.pop(context);
+                                }, () {
+                                  Navigator.pop(context);
+
+                                  showBottomModal(
+                                      context,
+                                      CompBottomTolak(
+                                        uslIdEx: widget.uslIdEx,
+                                        orgIdEx: hibah!.uslOrg,
+                                        selectedIndex: 0,
+                                        token: widget.token,
+                                        pgnJns: widget.pgnJns,
+                                        inbJdlBrt: 'Penolakan Pimpinan',
+                                        uslSlsBrt: '9',
+                                        uslHslBrt: '2',
+                                        inbOrgBrt: hibah!.uslOrg,
+                                        inbUslBrt: widget.uslIdEx,
+                                        inbSrtBrt: 'MiJ00',
+                                      ),
+                                      500);
+                                }, () {
+                                  Navigator.pop(context);
                                 });
                               },
                               child: const Card(
@@ -360,87 +437,326 @@ class _UslConfListState extends State<UslConfList> {
                               ),
                             ),
                           )
-                        : hibah!.uslSls == "5" && widget.pgnJns == "CR"
-                            ? Container(
-                                child: DismissibleWidget(
-                                    item: hibah,
-                                    child: const Card(
-                                      elevation: 3,
-                                      child: const ListTile(
-                                        leading: SizedBox(
-                                          height: double.infinity,
-                                          child:
-                                              SPIcon(assetName: 'approved.png'),
+                        : hibah!.uslSls == "5" &&
+                                hibah!.uslPc == "0" &&
+                                widget.pgnJns == "CR"
+                            ? hibah!.uslNhpd == ""
+                                ? Container()
+                                : Container(
+                                    child: DismissibleWidget(
+                                        item: hibah,
+                                        child: const Card(
+                                          elevation: 3,
+                                          child: const ListTile(
+                                            leading: SizedBox(
+                                              height: double.infinity,
+                                              child: SPIcon(
+                                                  assetName: 'approved.png'),
+                                            ),
+                                            title: const Text(
+                                              'Jenis Verifikasi',
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 15),
+                                            ),
+                                            subtitle: Text(
+                                              'Proses Pencairan',
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black87,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                        title: const Text(
-                                          'Jenis Verifikasi',
-                                          style: TextStyle(
-                                              color: Colors.grey, fontSize: 15),
-                                        ),
-                                        subtitle: Text(
-                                          'Proses Pencairan',
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black87,
+                                        onDismissed: (direction) async {
+                                          showDialog(
+                                            context: context,
+                                            builder: (ctx) =>
+                                                const FullScreenLoader(),
+                                          );
+                                          dismissItem(context, direction,
+                                              'Meneruskan Bantuan Dalam Proses Pencairan',
+                                              () async {
+                                            final url = 'cairp/$uslIdEx';
+                                            final result =
+                                                await serviceStj.changeStj(url);
+                                            final title = result.error
+                                                ? 'Maaf'
+                                                : 'Terima Kasih';
+                                            final text = result.error
+                                                ? (result.status == 500
+                                                    ? 'Terjadi Kesalahan'
+                                                    : result.data?.message)
+                                                : result.data?.message;
+                                            final dialog = result.dialog;
+                                            AwesomeDialog(
+                                              context: context,
+                                              dialogType: dialog,
+                                              animType: AnimType.TOPSLIDE,
+                                              title: title,
+                                              desc: text!,
+                                              btnOkOnPress: () {
+                                                Navigator.pushAndRemoveUntil(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DetailScreen(
+                                                      uslIdEx: widget.uslIdEx,
+                                                      orgIdEx: hibah!.uslOrg,
+                                                      token: widget.token,
+                                                      selectedIndexD:
+                                                          widget.selectedIndexD,
+                                                      pgnJns: widget.pgnJns,
+                                                    ),
+                                                  ),
+                                                  (Route<dynamic> route) =>
+                                                      false,
+                                                );
+                                              },
+                                            ).show();
+                                          }, () {
+                                            Navigator.pop(context);
+                                          }, () {
+                                            Navigator.pop(context);
+
+                                            showBottomModal(
+                                                context,
+                                                CompBottomTolak(
+                                                  uslIdEx: widget.uslIdEx,
+                                                  orgIdEx: hibah!.uslOrg,
+                                                  selectedIndex: 0,
+                                                  token: widget.token,
+                                                  pgnJns: widget.pgnJns,
+                                                  inbJdlBrt:
+                                                      'Penolakan Pencairan',
+                                                  uslSlsBrt: '9',
+                                                  uslHslBrt: '2',
+                                                  inbOrgBrt: hibah!.uslOrg,
+                                                  inbUslBrt: widget.uslIdEx,
+                                                  inbSrtBrt: 'MiJ00',
+                                                ),
+                                                500);
+                                          }, () {
+                                            Navigator.pop(context);
+                                          });
+                                        }),
+                                  )
+                            : hibah!.uslSls == "5" &&
+                                    hibah!.uslPc == "1" &&
+                                    widget.pgnJns == "CR"
+                                ? Container(
+                                    child: DismissibleWidget(
+                                      item: hibah,
+                                      child: const Card(
+                                        elevation: 3,
+                                        child: const ListTile(
+                                          leading: SizedBox(
+                                            height: double.infinity,
+                                            child: SPIcon(
+                                                assetName: 'approved.png'),
+                                          ),
+                                          title: const Text(
+                                            'Jenis Verifikasi',
+                                            style: TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 15),
+                                          ),
+                                          subtitle: Text(
+                                            'Selesai Pencairan',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black87,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    onDismissed: (direction) async {
-                                      showDialog(
-                                        context: context,
-                                        builder: (ctx) =>
-                                            const FullScreenLoader(),
-                                      );
-                                      dismissItem(context, direction,
-                                          'Menyelesaikan Bantuan Masjid At-Taqwa Dalam Proses Pencairan',
-                                          () async {
-                                        final url = 'cair/$uslIdEx';
-                                        final result =
-                                            await serviceStj.changeStj(url);
-                                        final title = result.error
-                                            ? 'Maaf'
-                                            : 'Terima Kasih';
-                                        final text = result.error
-                                            ? (result.status == 500
-                                                ? 'Terjadi Kesalahan'
-                                                : result.data?.message)
-                                            : result.data?.message;
-                                        final dialog = result.dialog;
-                                        AwesomeDialog(
+                                      onDismissed: (direction) async {
+                                        showDialog(
                                           context: context,
-                                          dialogType: dialog,
-                                          animType: AnimType.TOPSLIDE,
-                                          title: title,
-                                          desc: text!,
-                                          btnOkOnPress: () {
-                                            Navigator.pushAndRemoveUntil(
+                                          builder: (ctx) =>
+                                              const FullScreenLoader(),
+                                        );
+                                        dismissItem(context, direction,
+                                            'Menyelesaikan Proses Pencairan Bantuan',
+                                            () async {
+                                          final url = 'cair/$uslIdEx';
+                                          final result =
+                                              await serviceStj.changeStj(url);
+                                          final title = result.error
+                                              ? 'Maaf'
+                                              : 'Terima Kasih';
+                                          final text = result.error
+                                              ? (result.status == 500
+                                                  ? 'Terjadi Kesalahan'
+                                                  : result.data?.message)
+                                              : result.data?.message;
+                                          final dialog = result.dialog;
+                                          AwesomeDialog(
+                                            context: context,
+                                            dialogType: dialog,
+                                            animType: AnimType.TOPSLIDE,
+                                            title: title,
+                                            desc: text!,
+                                            btnOkOnPress: () {
+                                              Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetailScreen(
+                                                    uslIdEx: widget.uslIdEx,
+                                                    orgIdEx: hibah!.uslOrg,
+                                                    token: widget.token,
+                                                    selectedIndexD:
+                                                        widget.selectedIndexD,
+                                                    pgnJns: widget.pgnJns,
+                                                  ),
+                                                ),
+                                                (Route<dynamic> route) => false,
+                                              );
+                                            },
+                                          ).show();
+                                        }, () {
+                                          Navigator.pop(context);
+                                        }, () {
+                                          Navigator.pop(context);
+
+                                          showBottomModal(
                                               context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetailScreen(
-                                                  uslIdEx: widget.uslIdEx,
-                                                  orgIdEx: hibah!.uslOrg,
-                                                  token: widget.token,
-                                                  selectedIndexD:
-                                                      widget.selectedIndexD,
-                                                  pgnJns: widget.pgnJns,
+                                              CompBottomTolak(
+                                                uslIdEx: widget.uslIdEx,
+                                                orgIdEx: hibah!.uslOrg,
+                                                selectedIndex: 0,
+                                                token: widget.token,
+                                                pgnJns: widget.pgnJns,
+                                                inbJdlBrt:
+                                                    'Penolakan Pencairan',
+                                                uslSlsBrt: '9',
+                                                uslHslBrt: '2',
+                                                inbOrgBrt: hibah!.uslOrg,
+                                                inbUslBrt: widget.uslIdEx,
+                                                inbSrtBrt: 'MiJ00',
+                                              ),
+                                              500);
+                                        }, () {
+                                          Navigator.pop(context);
+                                        });
+                                      },
+                                    ),
+                                  )
+                                : hibah!.uslSls == "8" &&
+                                        widget.pgnJns == "VERL"
+                                    ? Container(
+                                        child: DismissibleWidget(
+                                          item: hibah,
+                                          child: const Card(
+                                            elevation: 3,
+                                            child: const ListTile(
+                                              leading: SizedBox(
+                                                height: double.infinity,
+                                                child: SPIcon(
+                                                    assetName: 'approved.png'),
+                                              ),
+                                              title: const Text(
+                                                'Jenis Verifikasi',
+                                                style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 15),
+                                              ),
+                                              subtitle: Text(
+                                                'Setujui Laporan Pertanggung Jawaban',
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black87,
                                                 ),
                                               ),
-                                              (Route<dynamic> route) => false,
+                                            ),
+                                          ),
+                                          onDismissed: (direction) async {
+                                            showDialog(
+                                              context: context,
+                                              builder: (ctx) =>
+                                                  const FullScreenLoader(),
                                             );
+                                            dismissItem(context, direction,
+                                                'Menyetujui Laporan Pertanggung Jawaban',
+                                                () async {
+                                              final url = 'slsSls/$uslIdEx';
+                                              final result = await serviceStj
+                                                  .changeStj(url);
+                                              final title = result.error
+                                                  ? 'Maaf'
+                                                  : 'Terima Kasih';
+                                              final text = result.error
+                                                  ? (result.status == 500
+                                                      ? 'Terjadi Kesalahan'
+                                                      : result.data?.message)
+                                                  : result.data?.message;
+                                              final dialog = result.dialog;
+                                              AwesomeDialog(
+                                                context: context,
+                                                dialogType: dialog,
+                                                animType: AnimType.TOPSLIDE,
+                                                title: title,
+                                                desc: text!,
+                                                btnOkOnPress: () {
+                                                  Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DetailScreen(
+                                                        uslIdEx: widget.uslIdEx,
+                                                        orgIdEx: hibah!.uslOrg,
+                                                        token: widget.token,
+                                                        selectedIndexD: widget
+                                                            .selectedIndexD,
+                                                        pgnJns: widget.pgnJns,
+                                                      ),
+                                                    ),
+                                                    (Route<dynamic> route) =>
+                                                        false,
+                                                  );
+                                                },
+                                              ).show();
+                                            }, () {
+                                              Navigator.pop(context);
+                                            }, () {
+                                              Navigator.pop(context);
+
+                                              showBottomModal(
+                                                  context,
+                                                  CompBottomTolak(
+                                                    uslIdEx: widget.uslIdEx,
+                                                    orgIdEx: hibah!.uslOrg,
+                                                    selectedIndex: 0,
+                                                    token: widget.token,
+                                                    pgnJns: widget.pgnJns,
+                                                    inbJdlBrt:
+                                                        'Penolakan Laporan Pertanggung Jawaban',
+                                                    uslSlsBrt: '7',
+                                                    uslHslBrt: '0',
+                                                    inbOrgBrt: hibah!.uslOrg,
+                                                    inbUslBrt: widget.uslIdEx,
+                                                    inbSrtBrt: 'MiJ00',
+                                                  ),
+                                                  500);
+                                            }, () {
+                                              Navigator.pop(context);
+                                            });
                                           },
-                                        ).show();
-                                      }, () {
-                                        Navigator.pop(context);
-                                      });
-                                    }),
-                              )
-                            : Container();
+                                        ),
+                                      )
+                                    : Container();
   }
 
-  void dismissItem(BuildContext context, DismissDirection direction,
-      String desc, dynamic Function()? ok, dynamic Function()? cancel) {
+  void dismissItem(
+    BuildContext context,
+    DismissDirection direction,
+    String desc,
+    dynamic Function()? ok,
+    dynamic Function()? cancel,
+    dynamic Function()? okM,
+    dynamic Function()? cancelM,
+  ) {
     switch (direction) {
       case DismissDirection.endToStart:
         AwesomeDialog(
@@ -448,8 +764,8 @@ class _UslConfListState extends State<UslConfList> {
           dialogType: DialogType.QUESTION,
           title: 'Menolak',
           desc: desc,
-          btnOkOnPress: ok,
-          btnCancelOnPress: cancel,
+          btnOkOnPress: okM,
+          btnCancelOnPress: cancelM,
         ).show();
         break;
       case DismissDirection.startToEnd:

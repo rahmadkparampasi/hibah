@@ -127,8 +127,7 @@ class _DetailOScreenState extends State<DetailOScreen> {
                               child: Column(
                                 children: <Widget>[
                                   const Image(
-                                    image:
-                                        AssetImage("assets/images/favicon.png"),
+                                    image: AssetImage("assets/images/logo.png"),
                                     height: 40,
                                   ),
                                   RichText(

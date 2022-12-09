@@ -53,11 +53,12 @@ class _UslVerListState extends State<UslVerList> {
       uslSls = widget.uslSls;
       _isError = true;
     });
-    _fetchUslVer(uslIdEx!);
+    _fetchUslVer(widget.uslIdEx);
   }
 
   _fetchUslVer(String uslIdEx) async {
     uslVer = await service.getUslVer(uslIdEx);
+
     setState(() {
       if (uslVer!.data!.isEmpty) {
         _isError = true;

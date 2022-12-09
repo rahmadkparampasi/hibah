@@ -28,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     updateState();
     Timer(
-      const Duration(seconds: 2),
+      const Duration(seconds: 5),
       () => Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -75,9 +75,32 @@ class _SplashScreenState extends State<SplashScreen> {
                 const Text(
                   'SISTEM INFORMASI MANAJEMEN HIBAH KEAGAMAAN',
                   style: TextStyle(
-                      fontFamily: 'RobotoCondensed',
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500),
+                    fontFamily: 'RobotoCondensed',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                const Text(
+                  'BIRO KESEJAHTERAAN RAKYAT SEKRETARIAT DAERAH',
+                  style: TextStyle(
+                    fontFamily: 'RobotoCondensed',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                const Text(
+                  'PROVINSI SULAWESI TENGAH',
+                  style: TextStyle(
+                    fontFamily: 'RobotoCondensed',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),

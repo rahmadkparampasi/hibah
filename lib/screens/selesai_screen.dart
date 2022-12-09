@@ -1,3 +1,5 @@
+import 'package:SimhegaM/screens/detail_screen.dart';
+import 'package:SimhegaM/screens/detaila_screen.dart';
 import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:flutter/material.dart';
@@ -181,7 +183,34 @@ class _SelesaiScreenState extends State<SelesaiScreen> {
                       ),
                       subtitle: Text(
                           '${_apiResponseHibah!.data![index].anggaran} - ${_apiResponseHibah!.data![index].uslHsl}'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => _apiResponseHibah!
+                                        .data![index].uslT !=
+                                    "2"
+                                ? DetailScreenA(
+                                    token: _token!,
+                                    uslIdEx:
+                                        _apiResponseHibah!.data![index].uslIdEx,
+                                    orgIdEx:
+                                        _apiResponseHibah!.data![index].uslOrg,
+                                    selectedIndex: _selectedIndex!,
+                                    pgnJns: _pgnJns!,
+                                  )
+                                : DetailScreen(
+                                    token: _token!,
+                                    uslIdEx:
+                                        _apiResponseHibah!.data![index].uslIdEx,
+                                    orgIdEx:
+                                        _apiResponseHibah!.data![index].uslOrg,
+                                    selectedIndex: _selectedIndex!,
+                                    pgnJns: _pgnJns!,
+                                  ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 );

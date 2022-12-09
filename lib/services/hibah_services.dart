@@ -101,7 +101,6 @@ class HibahService {
     return http.get(newApiUrl).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body)['response'];
-
         return APIResponseHibah<Hibah>(data: Hibah.fromJson(jsonData));
       } else {
         final jsonData = json.decode(data.body)['response'];
@@ -241,7 +240,7 @@ class HibahService {
   }
 
   Future<APIResponseHibah<AnggaranStj>> getAnggaranStj(String uslIdEx) {
-    Uri newApiUrl = Uri.parse('$apiURL/uslvm/hitungAnggaran/$uslIdEx');
+    Uri newApiUrl = Uri.parse('$apiURL/uslvm/hitungAnggaranStj/$uslIdEx');
     return http.get(newApiUrl).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body)['response'];
@@ -647,6 +646,304 @@ class HibahService {
   Future<APIResponse<FeedBackUsl>> insertDocUsl(InsertDocUsl uslDoc) {
     Uri newApiUrl = Uri.parse('$apiURL/docUsl/setNum');
     return http.post(newApiUrl, body: uslDoc.toJson()).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          data: FeedBackUsl.fromJson(jsonData),
+          status: data.statusCode,
+          dialog: (jsonData['type'] == "info")
+              ? DialogType.INFO
+              : (jsonData['type'] == "warning")
+                  ? DialogType.WARNING
+                  : DialogType.SUCCES,
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          error: true,
+          data: FeedBackUsl.fromJson(jsonData),
+          errorMessage: 'Terjadi Kesalahan',
+          status: jsonData.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError(
+      (_) => APIResponse<FeedBackUsl>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        dialog: DialogType.ERROR,
+      ),
+    );
+  }
+
+  Future<APIResponse<FeedBackUsl>> insertUslAT(InsertUslAT uslAT, String IdEx) {
+    Uri newApiUrl = Uri.parse('$apiURL/usl/changeATM/$IdEx');
+    return http.post(newApiUrl, body: uslAT.toJson()).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          data: FeedBackUsl.fromJson(jsonData),
+          status: data.statusCode,
+          dialog: (jsonData['type'] == "info")
+              ? DialogType.INFO
+              : (jsonData['type'] == "warning")
+                  ? DialogType.WARNING
+                  : DialogType.SUCCES,
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          error: true,
+          data: FeedBackUsl.fromJson(jsonData),
+          errorMessage: 'Terjadi Kesalahan',
+          status: jsonData.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError(
+      (_) => APIResponse<FeedBackUsl>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        dialog: DialogType.ERROR,
+      ),
+    );
+  }
+
+  Future<APIResponse<FeedBackUsl>> insertUslNHPD(InsertUslNHPD uslAT) {
+    Uri newApiUrl = Uri.parse('$apiURL/usl/addNhpdM');
+    return http.post(newApiUrl, body: uslAT.toJson()).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          data: FeedBackUsl.fromJson(jsonData),
+          status: data.statusCode,
+          dialog: (jsonData['type'] == "info")
+              ? DialogType.INFO
+              : (jsonData['type'] == "warning")
+                  ? DialogType.WARNING
+                  : DialogType.SUCCES,
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          error: true,
+          data: FeedBackUsl.fromJson(jsonData),
+          errorMessage: 'Terjadi Kesalahan',
+          status: jsonData.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError(
+      (_) => APIResponse<FeedBackUsl>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        dialog: DialogType.ERROR,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslAP>>> getUslAP(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslAp/getAllByUslM/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslAP = <UslAP>[];
+        for (var item in jsonData) {
+          uslAP.add(UslAP.fromJson(item));
+        }
+        return APIResponseHibah<List<UslAP>>(data: uslAP);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslA = <UslAP>[];
+        for (var item in jsonData) {
+          uslA.add(UslAP.fromJson(item));
+        }
+        return APIResponseHibah<List<UslAP>>(data: uslA);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslAP>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponse<FeedBackUsl>> insertUslAP(InsertUslAP uslAP) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslAp/insertDataM');
+    return http.post(newApiUrl, body: uslAP.toJson()).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          data: FeedBackUsl.fromJson(jsonData),
+          status: data.statusCode,
+          dialog: (jsonData['type'] == "info")
+              ? DialogType.INFO
+              : (jsonData['type'] == "warning")
+                  ? DialogType.WARNING
+                  : DialogType.SUCCES,
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          error: true,
+          data: FeedBackUsl.fromJson(jsonData),
+          errorMessage: 'Terjadi Kesalahan',
+          status: jsonData.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError(
+      (_) => APIResponse<FeedBackUsl>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        dialog: DialogType.ERROR,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslNota>>> getUslNota(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslalg/getAllByUslM/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslNota = <UslNota>[];
+        for (var item in jsonData) {
+          uslNota.add(UslNota.fromJson(item));
+        }
+        return APIResponseHibah<List<UslNota>>(data: uslNota);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslGmbr = <UslNota>[];
+        for (var item in jsonData) {
+          uslGmbr.add(UslNota.fromJson(item));
+        }
+        return APIResponseHibah<List<UslNota>>(data: uslGmbr);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslNota>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<List<UslLPJ>>> getUslLPJ(String usl) {
+    Uri newApiUrl = Uri.parse('$apiURL/usllpj/getAllByUslM/$usl');
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        final uslAP = <UslLPJ>[];
+        for (var item in jsonData) {
+          uslAP.add(UslLPJ.fromJson(item));
+        }
+        return APIResponseHibah<List<UslLPJ>>(data: uslAP);
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        final uslA = <UslLPJ>[];
+        for (var item in jsonData) {
+          uslA.add(UslLPJ.fromJson(item));
+        }
+        return APIResponseHibah<List<UslLPJ>>(data: uslA);
+      }
+    }).catchError(
+      (_) => APIResponseHibah<UslLPJ>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        status: 500,
+      ),
+    );
+  }
+
+  Future<APIResponseHibah<Saldo>> getSaldo(String uslIdEx) {
+    Uri newApiUrl = Uri.parse('$apiURL/uslAp/sisaSaldo/$uslIdEx');
+
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+
+        return APIResponseHibah<Saldo>(data: Saldo.fromJson(jsonData));
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponseHibah<Saldo>(
+          error: true,
+          errorMessage: 'Terjadi Masalah',
+          data: Saldo.fromJson(jsonData),
+        );
+      }
+    }).catchError((_) => APIResponseHibah<Saldo>(
+        error: true, errorMessage: 'Terjadi Kesalahan'));
+  }
+
+  Future<APIResponse<FeedBackUsl>> insertUslNmr(InsertUslNmr uslNmr) {
+    Uri newApiUrl = Uri.parse('$apiURL/usl/insertNmrM');
+    return http.post(newApiUrl, body: uslNmr.toJson()).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          data: FeedBackUsl.fromJson(jsonData),
+          status: data.statusCode,
+          dialog: (jsonData['type'] == "info")
+              ? DialogType.INFO
+              : (jsonData['type'] == "warning")
+                  ? DialogType.WARNING
+                  : DialogType.SUCCES,
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          error: true,
+          data: FeedBackUsl.fromJson(jsonData),
+          errorMessage: 'Terjadi Kesalahan',
+          status: jsonData.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError(
+      (_) => APIResponse<FeedBackUsl>(
+        error: true,
+        errorMessage: 'Terjadi Kesalahan',
+        dialog: DialogType.ERROR,
+      ),
+    );
+  }
+
+  Future<APIResponse<FeedBackUsl>> uslSend(String uslIdEx) {
+    Uri newApiUrl = Uri.parse('$apiURL/usl/sendDataM/$uslIdEx');
+
+    return http.get(newApiUrl).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          data: FeedBackUsl.fromJson(jsonData),
+          status: data.statusCode,
+          dialog: (jsonData['type'] == "info")
+              ? DialogType.INFO
+              : (jsonData['type'] == "warning")
+                  ? DialogType.WARNING
+                  : DialogType.SUCCES,
+        );
+      } else {
+        final jsonData = json.decode(data.body)['response'];
+        return APIResponse<FeedBackUsl>(
+          error: true,
+          data: FeedBackUsl.fromJson(jsonData),
+          errorMessage: 'Terjadi Kesalahan',
+          status: jsonData.statusCode,
+          dialog: DialogType.ERROR,
+        );
+      }
+    }).catchError((_) => APIResponse<FeedBackUsl>(
+          error: true,
+          errorMessage: 'Terjadi Kesalahan',
+          dialog: DialogType.ERROR,
+        ));
+  }
+
+  Future<APIResponse<FeedBackUsl>> addBrt(AddBrt addBrt) {
+    Uri newApiUrl = Uri.parse('$apiURL/inb/addSrtM');
+    return http.post(newApiUrl, body: addBrt.toJson()).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body)['response'];
         return APIResponse<FeedBackUsl>(

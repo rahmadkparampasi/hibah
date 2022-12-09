@@ -39,8 +39,7 @@ class _PrePdfState extends State<PrePdf> {
       var bytes = data.bodyBytes;
       var dir = await getApplicationDocumentsDirectory();
       File file = File("${dir.path}/$fileName.pdf");
-      print('dir');
-      print(dir.path);
+
       File urlFile = await file.writeAsBytes(bytes);
       return urlFile;
     } catch (e) {
@@ -84,8 +83,7 @@ class _PrePdfState extends State<PrePdf> {
             child: GestureDetector(
               onTap: () async {
                 var dir = await getDownloadPath();
-                print('Tes Dir');
-                print(dir);
+
                 WidgetsFlutterBinding.ensureInitialized();
                 await FlutterDownloader.initialize();
                 await FlutterDownloader.enqueue(

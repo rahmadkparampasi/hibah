@@ -1,7 +1,7 @@
 import 'package:SimhegaM/constants/style_constant.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
 import 'package:SimhegaM/screens/detailo_screen.dart';
-import 'package:SimhegaM/screens/detailp_screen.dart';
+import 'package:SimhegaM/screens/detailpa_screen.dart';
 import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:SimhegaM/screens/items/func_item.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 
-class DetailScreen extends StatefulWidget {
+class DetailScreenA extends StatefulWidget {
   final String token;
   final String pgnJns;
   final String uslIdEx;
@@ -20,7 +20,7 @@ class DetailScreen extends StatefulWidget {
   final int selectedIndex;
   final int selectedIndexD;
 
-  const DetailScreen({
+  const DetailScreenA({
     super.key,
     required this.token,
     required this.pgnJns,
@@ -31,10 +31,10 @@ class DetailScreen extends StatefulWidget {
   });
 
   @override
-  State<DetailScreen> createState() => _DetailScreenState();
+  State<DetailScreenA> createState() => _DetailScreenAState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
+class _DetailScreenAState extends State<DetailScreenA> {
   int _selectedIndexD = 0;
   late String _token;
   late String _pgnJns;
@@ -71,7 +71,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
       _selectedIndex = widget.selectedIndex;
       options = [
-        DetailPScreen(
+        DetailPAScreen(
           token: _token,
           selectedIndex: _selectedIndex,
           uslIdEx: _uslIdEx!,
@@ -153,113 +153,66 @@ class _DetailScreenState extends State<DetailScreen> {
                   padding: EdgeInsets.only(right: 20.0),
                 )
               : hibah!.uslSls != ''
-                  ? _pgnJns == 'VER'
-                      ? hibah!.uslSls != "0" &&
-                              hibah!.uslSls != "1" &&
-                              hibah!.uslSls != "2" &&
-                              hibah!.uslSls != "3"
-                          ? Padding(
-                              padding: const EdgeInsets.only(right: 20.0),
-                              child: GestureDetector(
-                                onTap: () async {
-                                  _pgnJns == ''
-                                      ? false
-                                      : showBottomModal(
-                                          context,
-                                          CompBottomVerCtk(
-                                            uslIdEx: hibah!.uslIdEx,
-                                            orgIdEx: hibah!.uslOrg,
-                                            selectedIndex:
-                                                widget.selectedIndexD,
-                                            token: widget.token,
-                                            pgnJns: widget.pgnJns,
-                                          ),
-                                          300,
-                                        );
-                                },
-                                child: const Icon(
-                                  Icons.print_outlined,
-                                  size: 26.0,
-                                  color: Colors.blue,
-                                ),
-                              ),
-                            )
-                          : Container()
-                      : _pgnJns == 'CR'
-                          ? hibah!.uslSls != "0" &&
-                                  hibah!.uslSls != "1" &&
-                                  hibah!.uslSls != "2" &&
-                                  hibah!.uslSls != "3" &&
-                                  hibah!.uslSls != "4"
-                              ? hibah!.uslPc == "1"
-                                  ? Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 20.0),
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          _pgnJns == ''
-                                              ? false
-                                              : showBottomModal(
-                                                  context,
-                                                  hibah!.uslT == "1"
-                                                      ? CompBottomCairCtkU(
-                                                          uslIdEx:
-                                                              hibah!.uslIdEx,
-                                                          orgIdEx:
-                                                              hibah!.uslOrg,
-                                                          selectedIndex: widget
-                                                              .selectedIndexD,
-                                                          token: widget.token,
-                                                          pgnJns: widget.pgnJns,
-                                                        )
-                                                      : CompBottomCairCtkB(
-                                                          uslIdEx:
-                                                              hibah!.uslIdEx,
-                                                          orgIdEx:
-                                                              hibah!.uslOrg,
-                                                          selectedIndex: widget
-                                                              .selectedIndexD,
-                                                          token: widget.token,
-                                                          pgnJns: widget.pgnJns,
-                                                        ),
-                                                  350,
-                                                );
-                                        },
-                                        child: const Icon(
-                                          Icons.print_outlined,
-                                          size: 26.0,
-                                          color: Colors.blue,
-                                        ),
-                                      ),
-                                    )
-                                  : Container()
-                              : Container()
-                          : const Padding(
-                              padding: EdgeInsets.only(right: 20.0),
-                            )
+                  ? hibah!.uslSls != "0" ||
+                          hibah!.uslSls != "1" ||
+                          hibah!.uslSls != "2" ||
+                          hibah!.uslSls != "3"
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 20.0),
+                          child: GestureDetector(
+                            onTap: () async {
+                              _pgnJns == ''
+                                  ? false
+                                  : showBottomModal(
+                                      context,
+                                      _pgnJns == 'VER'
+                                          ? CompBottomVerCtk(
+                                              uslIdEx: hibah!.uslIdEx,
+                                              orgIdEx: hibah!.uslOrg,
+                                              selectedIndex:
+                                                  widget.selectedIndexD,
+                                              token: widget.token,
+                                              pgnJns: widget.pgnJns,
+                                            )
+                                          : _pgnJns == 'CR'
+                                              ? CompBottomCairCtk(
+                                                  uslIdEx: hibah!.uslIdEx,
+                                                  orgIdEx: hibah!.uslOrg,
+                                                  selectedIndex:
+                                                      widget.selectedIndexD,
+                                                  token: widget.token,
+                                                  pgnJns: widget.pgnJns,
+                                                )
+                                              : _pgnJns == 'ORG'
+                                                  ? CompBottomOrgCtk(
+                                                      uslIdEx: hibah!.uslIdEx,
+                                                      orgIdEx: hibah!.uslOrg,
+                                                      selectedIndex:
+                                                          widget.selectedIndexD,
+                                                      token: widget.token,
+                                                      pgnJns: widget.pgnJns,
+                                                    )
+                                                  : const Center(
+                                                      child: Text(
+                                                        'Tidak Ada Data Untuk Dicetak',
+                                                      ),
+                                                    ),
+                                      _pgnJns == 'VER' ? 300 : 350,
+                                    );
+                            },
+                            child: const Icon(
+                              Icons.print_outlined,
+                              size: 26.0,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                        )
                   : const Padding(
                       padding: EdgeInsets.only(right: 20.0),
                     ),
-          Padding(
-            padding: const EdgeInsets.only(right: 20.0),
-            child: GestureDetector(
-              onTap: () => showBottomModal(
-                  context,
-                  CompBottomSrt(
-                    uslIdEx: _uslIdEx!,
-                    orgIdEx: widget.orgIdEx,
-                    selectedIndex: _selectedIndex,
-                    token: _token,
-                    pgnJns: _pgnJns,
-                  ),
-                  500),
-              child: const Icon(
-                Icons.mail_outline,
-                size: 26.0,
-                color: Colors.blue,
-              ),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.only(right: 20.0),
             child: GestureDetector(

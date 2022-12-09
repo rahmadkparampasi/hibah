@@ -6,6 +6,7 @@ class HibahForList {
   String uslNm;
   String uslOrg;
   String uslSls;
+  String uslT;
 
   int no;
   HibahForList({
@@ -17,6 +18,7 @@ class HibahForList {
     required this.uslNm,
     required this.uslOrg,
     required this.uslSls,
+    required this.uslT,
   });
   factory HibahForList.fromJson(Map<String, dynamic> item) {
     return HibahForList(
@@ -28,6 +30,7 @@ class HibahForList {
       uslNm: item['usl_nm'],
       uslOrg: item['usl_org'],
       uslSls: item['usl_sls'],
+      uslT: item['usl_t'],
     );
   }
 }
@@ -65,13 +68,20 @@ class Hibah {
   String uslTtp;
   String uslOrg;
   String uslT;
+  String uslPc;
   String uslThn;
   String uslSls;
+  String uslAtr;
   String orgNm;
   String anggaran;
   String anggaranAlt;
   String uslHsl;
   String uslHslAlt;
+  String uslNhpd;
+  String uslNhpdt;
+  String uslNmr;
+
+  String send;
 
   Hibah({
     required this.uslIdEx,
@@ -80,13 +90,19 @@ class Hibah {
     required this.uslTtp,
     required this.uslOrg,
     required this.uslT,
+    required this.uslPc,
     required this.uslThn,
     required this.uslSls,
+    required this.uslAtr,
     required this.orgNm,
     required this.anggaran,
     required this.anggaranAlt,
     required this.uslHsl,
     required this.uslHslAlt,
+    required this.uslNhpd,
+    required this.uslNhpdt,
+    required this.uslNmr,
+    required this.send,
   });
   factory Hibah.fromJson(Map<String, dynamic> item) {
     return Hibah(
@@ -96,13 +112,19 @@ class Hibah {
       uslTtp: item['usl_ttp'],
       uslOrg: item['usl_org'],
       uslT: item['usl_t'],
+      uslPc: item['usl_pc'],
       uslThn: item['usl_thn'],
       uslSls: item['usl_sls'],
+      uslAtr: item['usl_atR'],
       orgNm: item['org_nm'],
       anggaran: item['anggaran'],
       anggaranAlt: item['anggaranAlt'],
       uslHsl: item['usl_hsl'],
       uslHslAlt: item['usl_hslAlt'],
+      uslNhpd: item['usl_nhpd'],
+      uslNhpdt: item['usl_nhpdt'],
+      uslNmr: item['usl_nmr'],
+      send: item['send'],
     );
   }
 }
@@ -131,6 +153,7 @@ class UslBrks {
 class UslA {
   String uslAUsl;
   String uslAU;
+  String uslIdEx;
   String uslAV;
   String uslAS;
   String uslAStn;
@@ -140,6 +163,7 @@ class UslA {
   UslA({
     required this.no,
     required this.uslAUsl,
+    required this.uslIdEx,
     required this.uslAU,
     required this.uslAV,
     required this.uslAS,
@@ -151,6 +175,7 @@ class UslA {
     return UslA(
       no: item['no'],
       uslAUsl: item['usla_usl'],
+      uslIdEx: item['usla_id_ex'],
       uslAU: item['usla_u'],
       uslAV: item['usla_v'],
       uslAS: item['usla_s'],
@@ -430,6 +455,93 @@ class SrtForList {
       srtIdEx: item['srt_id_ex'],
       srtNm: item['srt_nm'],
       no: item['no'],
+    );
+  }
+}
+
+class UslAP {
+  int uslAPno;
+  String uslAPU;
+  String uslAPP;
+  String uslAPK;
+  String uslAPS;
+  UslAP({
+    required this.uslAPno,
+    required this.uslAPU,
+    required this.uslAPP,
+    required this.uslAPK,
+    required this.uslAPS,
+  });
+  factory UslAP.fromJson(Map<String, dynamic> item) {
+    return UslAP(
+      uslAPno: item['no'],
+      uslAPU: item['u'],
+      uslAPP: item['p'],
+      uslAPK: item['k'],
+      uslAPS: item['s'],
+    );
+  }
+}
+
+class UslNota {
+  String uslNotaIdex;
+  String uslNotaUsl;
+  String uslNotaNm;
+  String uslNotaFl;
+  int no;
+  UslNota({
+    required this.uslNotaIdex,
+    required this.uslNotaUsl,
+    required this.uslNotaNm,
+    required this.uslNotaFl,
+    required this.no,
+  });
+  factory UslNota.fromJson(Map<String, dynamic> item) {
+    return UslNota(
+      uslNotaIdex: item['uslalg_id_ex'],
+      uslNotaUsl: item['uslalg_usl'],
+      uslNotaNm: item['uslalg_nm'],
+      uslNotaFl: item['uslalg_fl'],
+      no: item['no'],
+    );
+  }
+}
+
+class UslLPJ {
+  String uslLpjIdex;
+  String uslLpjUsl;
+  String uslLpjNm;
+  String uslLpjFl;
+  int no;
+  UslLPJ({
+    required this.uslLpjIdex,
+    required this.uslLpjUsl,
+    required this.uslLpjNm,
+    required this.uslLpjFl,
+    required this.no,
+  });
+  factory UslLPJ.fromJson(Map<String, dynamic> item) {
+    return UslLPJ(
+      uslLpjIdex: item['usllpj_id_ex'],
+      uslLpjUsl: item['usllpj_usl'],
+      uslLpjNm: item['usllpj_nm'],
+      uslLpjFl: item['usllpj_fl'],
+      no: item['no'],
+    );
+  }
+}
+
+class Saldo {
+  int saldo;
+  String saldoB;
+  Saldo({
+    required this.saldo,
+    required this.saldoB,
+  });
+  factory Saldo.fromJson(Map<String, dynamic> item) {
+    return Saldo(
+      saldo: item['saldo'],
+      saldoB: item['saldob'],
     );
   }
 }

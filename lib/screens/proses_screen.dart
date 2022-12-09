@@ -1,4 +1,6 @@
 import 'package:SimhegaM/screens/detail_screen.dart';
+import 'package:SimhegaM/screens/detaila_screen.dart';
+import 'package:SimhegaM/screens/detailp_screen.dart';
 import 'package:SimhegaM/screens/home_screen.dart';
 import 'package:SimhegaM/screens/items/comp_items.dart';
 import 'package:flutter/material.dart';
@@ -158,13 +160,43 @@ class _ProsesScreenState extends State<ProsesScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DetailScreen(
-                            token: _token,
-                            uslIdEx: _apiResponseHibah!.data![index].uslIdEx,
-                            orgIdEx: _apiResponseHibah!.data![index].uslOrg,
-                            selectedIndex: _selectedIndex!,
-                            pgnJns: _pgnJns,
-                          ),
+                          builder: (context) => _apiResponseHibah!
+                                          .data![index].uslSls ==
+                                      "6" ||
+                                  _apiResponseHibah!.data![index].uslSls ==
+                                      "7" ||
+                                  _apiResponseHibah!.data![index].uslSls ==
+                                      "8" ||
+                                  _apiResponseHibah!.data![index].uslSls == "9"
+                              ? _apiResponseHibah!.data![index].uslT != "2"
+                                  ? DetailScreenA(
+                                      token: _token,
+                                      uslIdEx: _apiResponseHibah!
+                                          .data![index].uslIdEx,
+                                      selectedIndex: _selectedIndex!,
+                                      pgnJns: _pgnJns,
+                                      selectedIndexD: 0,
+                                      orgIdEx: _apiResponseHibah!
+                                          .data![index].uslOrg,
+                                    )
+                                  : DetailScreen(
+                                      token: _token,
+                                      uslIdEx: _apiResponseHibah!
+                                          .data![index].uslIdEx,
+                                      orgIdEx: _apiResponseHibah!
+                                          .data![index].uslOrg,
+                                      selectedIndex: _selectedIndex!,
+                                      pgnJns: _pgnJns,
+                                    )
+                              : DetailScreen(
+                                  token: _token,
+                                  uslIdEx:
+                                      _apiResponseHibah!.data![index].uslIdEx,
+                                  orgIdEx:
+                                      _apiResponseHibah!.data![index].uslOrg,
+                                  selectedIndex: _selectedIndex!,
+                                  pgnJns: _pgnJns,
+                                ),
                         ),
                       );
                     },

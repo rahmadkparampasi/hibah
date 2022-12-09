@@ -1,12 +1,29 @@
 import 'package:SimhegaM/models/api_response.dart';
 import 'package:SimhegaM/models/hibah_model.dart';
+import 'package:SimhegaM/screens/items/comp_items.dart';
+import 'package:SimhegaM/screens/items/func_item.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 class UslAList extends StatefulWidget {
   final String uslIdEx;
-  const UslAList({super.key, required this.uslIdEx});
+  final String orgIdEx;
+  final int selectedIndex;
+  final String token;
+  final String pgnJns;
+  final String uslSls;
+  final String uslT;
+  const UslAList({
+    super.key,
+    required this.uslIdEx,
+    required this.uslSls,
+    required this.uslT,
+    required this.orgIdEx,
+    required this.selectedIndex,
+    required this.token,
+    required this.pgnJns,
+  });
 
   @override
   State<UslAList> createState() => _UslAListState();
@@ -227,46 +244,83 @@ class _UslAListState extends State<UslAList> {
                   const SizedBox(
                     height: 5,
                   ),
-                  _isErrorStj
-                      ? const Center(
-                          child: Text('Belum Ada Anggaran Disetujui'),
-                        )
-                      : Center(
-                          widthFactor: MediaQuery.of(context).size.width,
-                          child: Column(
+                  widget.uslT == "1"
+                      ? _isErrorStj
+                          ? const Center(
+                              child: Text('Belum Ada Anggaran Disetujui'),
+                            )
+                          : Center(
+                              widthFactor: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: <Widget>[
+                                  const Text(
+                                    'Anggaran Disetujui : ',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.black87, fontSize: 16),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    anggaranStj!.data!.anggaran,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    anggaranStj!.data!.anggaranb,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                      : Container(),
+                  widget.uslSls == "3" && widget.uslT == "1"
+                      ? Container(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              const Text(
-                                'Anggaran Disetujui : ',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.black87, fontSize: 16),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                anggaranStj!.data!.anggaran,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  textStyle: MaterialStateProperty.all(
+                                    const TextStyle(
+                                      fontSize: 13.5,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                anggaranStj!.data!.anggaranb,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.black87,
-                                  fontSize: 16,
+                                onPressed: () => showBottomModal(
+                                    context,
+                                    CompBottomUslAStj(
+                                      uslIdEx: widget.uslIdEx,
+                                      orgIdEx: widget.orgIdEx,
+                                      selectedIndex: widget.selectedIndex,
+                                      token: widget.token,
+                                      pgnJns: widget.pgnJns,
+                                    ),
+                                    350),
+                                child: Container(
+                                  height: 35,
+                                  child: const Center(
+                                    child: Text('UBAH ANGGARAN DISETUJUI'),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ),
+                        )
+                      : Container(),
                   const SizedBox(
                     height: 20,
                   ),

@@ -175,3 +175,93 @@ class FeedBackUsl {
     );
   }
 }
+
+class InsertUslAT {
+  String uslAt;
+  InsertUslAT({
+    required this.uslAt,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "usl_at": uslAt,
+    };
+  }
+}
+
+class InsertUslNHPD {
+  String uslIdEx;
+  String uslNphd;
+  String uslNphdT;
+  InsertUslNHPD({
+    required this.uslIdEx,
+    required this.uslNphd,
+    required this.uslNphdT,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "usl_id_exnhpd": uslIdEx,
+      "usl_nhpd": uslNphd,
+      "usl_nhpdt": uslNphdT,
+    };
+  }
+}
+
+class InsertUslAP {
+  String uslAPUsla;
+  String uslAPP;
+  InsertUslAP({
+    required this.uslAPUsla,
+    required this.uslAPP,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "uslap_usla": uslAPUsla,
+      "uslap_p": uslAPP,
+    };
+  }
+}
+
+class InsertUslNmr {
+  String uslIdEx;
+  String uslNmr;
+  InsertUslNmr({
+    required this.uslIdEx,
+    required this.uslNmr,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "usl_id_ex": uslIdEx,
+      "usl_nmr": uslNmr,
+    };
+  }
+}
+
+class AddBrt {
+  String inbOrg;
+  String inbUsl;
+  String inbSrt;
+  String inbJdl;
+  String inbPsn;
+  String uslSls;
+  String uslHsl;
+  AddBrt({
+    required this.inbOrg,
+    required this.inbUsl,
+    required this.inbSrt,
+    required this.inbJdl,
+    required this.inbPsn,
+    required this.uslSls,
+    required this.uslHsl,
+  });
+  Map<String, dynamic> toJson() {
+    return {
+      "inb_orgBrt": inbOrg,
+      "inb_uslBrt": inbUsl,
+      "srt_id_exBrt": inbSrt,
+      "inb_jdlBrt": inbJdl,
+      "inb_psnBrt": inbPsn,
+      "usl_slsBrt": uslSls,
+      "usl_hslBrt": uslHsl,
+    };
+  }
+}
