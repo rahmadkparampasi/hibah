@@ -11,7 +11,6 @@ import 'package:SimhegaM/screens/masuk_screen.dart';
 import 'package:SimhegaM/services/hibah_services.dart';
 import 'package:SimhegaM/services/hibahcomp_services.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:camera/camera.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
